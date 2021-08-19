@@ -12,24 +12,24 @@ spring:
       max-request-size: 500MB
   datasource:
     master:
-      url: jdbc:sqlserver://192.168.35.27:1433;DatabaseName=ARCHIVE
-      username: uAcer4Y33bbMbMobQKT0Ag==
-      password: uAcer4Y33bbMbMobQKT0Ag==
+      url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=underground
+      username: sA7+mCcw/APe13fxOfNgqw==
+      password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
       driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
       type: com.zaxxer.hikari.HikariDataSource
     cluster:
       - key: slave1
-        url: jdbc:sqlserver://192.168.35.27:1433;DatabaseName=ARCHIVE
-        username: uAcer4Y33bbMbMobQKT0Ag==
-        password: uAcer4Y33bbMbMobQKT0Ag==
+        url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=undergroundSys
+        username: sA7+mCcw/APe13fxOfNgqw==
+        password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         type: com.zaxxer.hikari.HikariDataSource
-      - key: slave2
-        url: jdbc:sqlserver://192.168.35.27:1433;DatabaseName=ARCHIVE
-        username: uAcer4Y33bbMbMobQKT0Ag==
-        password: uAcer4Y33bbMbMobQKT0Ag==
-        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-        type: com.zaxxer.hikari.HikariDataSource
+#      - key: slave2
+#        url: jdbc:sqlserver://192.168.35.27:1433;DatabaseName=ARCHIVE
+#        username: uAcer4Y33bbMbMobQKT0Ag==
+#        password: uAcer4Y33bbMbMobQKT0Ag==
+#        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#        type: com.zaxxer.hikari.HikariDataSource
     aop:
       auto: true
       proxy-target-class: true
@@ -37,6 +37,7 @@ spring:
 whitelist:
   urlList:
     - /test/hello
+    - /test/testProject
 
 allow:
   originList:

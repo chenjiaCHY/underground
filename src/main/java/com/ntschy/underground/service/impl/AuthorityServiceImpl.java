@@ -59,8 +59,9 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public UserInfoVO getUserInfo(String userID) {
-        return new UserInfoVO();
+    public UserInfoVO getUserInfo(String userId) {
+
+        return authorityDao.getSysUserInfo(userId);
     }
 
     @Override

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserInfoVO {
 
-    private String userID;
+    private String userId;
 
     private String account;
 
@@ -13,17 +13,11 @@ public class UserInfoVO {
 
     private Integer sex;
 
-    private String affiliation;
-
-    private String affiliationID;
-
     private String phone;
 
-    private String remark;
+    private String department;
 
-    private String roleID;
-
-    private String roleName;
+    private String roleId;
 
     private Integer status;
 }

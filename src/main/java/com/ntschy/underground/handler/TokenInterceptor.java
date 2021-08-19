@@ -70,7 +70,7 @@ public class TokenInterceptor implements HandlerInterceptor, Ordered {
 
         UserInfoVO userInfoVO = authorityService.getUserInfo(userID);
 
-        String roleID = Optional.ofNullable(userInfoVO.getRoleID()).orElse("");
+        String roleID = Optional.ofNullable(userInfoVO.getRoleId()).orElse("");
 
         if (StringUtils.isBlank(roleID)) {
             throw new CommonException(ExceptionEnum.NO_PERMISSIONS);

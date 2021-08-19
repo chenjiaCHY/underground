@@ -103,7 +103,7 @@ public class AccessFilter extends ZuulFilter {
                 return null;
             } else {
 
-                String roleID = Optional.ofNullable(userInfoVO.getRoleID()).orElse("");
+                String roleID = Optional.ofNullable(userInfoVO.getRoleId()).orElse("");
 
                 if (StringUtils.isBlank(roleID)) {
                     ctx.setSendZuulResponse(false);

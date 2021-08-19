@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ntschy.underground.dao.ProjectDao">
+
+    <select id="getProjectInfo" resultType="com.ntschy.underground.entity.vo.ProjectInfoVO">
+        SELECT ProjectId, Scope, Name, CreateTime, CreateUser
+        FROM PROJECT
+        WHERE ProjectId = #{projectId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
