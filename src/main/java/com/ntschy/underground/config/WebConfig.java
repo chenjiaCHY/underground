@@ -8,11 +8,16 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private WhiteList whiteList;
+
+    @Autowired
+    private AllowOrigin allowOrigin;
 
     private final AuthorityService authorityService;
 
@@ -29,7 +34,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        List<String> origins = allowOrigin.getOriginList();
+        String[] allowedOrigin = new String[origins.size()];
+        origins.toArray(allowedOrigin);
+
         registry.addMapping("/**")
+                .allowedOrigins(allowedOrigin)
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
