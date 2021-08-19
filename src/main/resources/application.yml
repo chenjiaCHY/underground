@@ -38,6 +38,7 @@ whitelist:
   urlList:
     - /test/hello
     - /test/testProject
+    - /authority/login
 
 allow:
   originList:

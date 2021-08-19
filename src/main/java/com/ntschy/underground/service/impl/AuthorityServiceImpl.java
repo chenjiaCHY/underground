@@ -5,28 +5,58 @@ import com.ntschy.underground.entity.base.LoginUserPwd;
 import com.ntschy.underground.entity.base.OperationLog;
 import com.ntschy.underground.entity.base.PageInfo;
 import com.ntschy.underground.entity.base.PageQuery;
-import com.ntschy.underground.entity.dto.ModifyRoleRequest;
-import com.ntschy.underground.entity.dto.ModifyUserRequest;
-import com.ntschy.underground.entity.dto.QueryRoleRequest;
-import com.ntschy.underground.entity.dto.QueryUserRequest;
+import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.LoginToken;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
 import com.ntschy.underground.entity.vo.UserInfoVO;
-import com.ntschy.underground.entity.vo.UserLogin;
 import com.ntschy.underground.service.AuthorityService;
-import org.apache.catalina.User;
+import com.ntschy.underground.utils.JwtUtil;
+import com.ntschy.underground.utils.MD5Utils;
+import com.ntschy.underground.utils.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
 
     @Resource
     private AuthorityDao authorityDao;
+
+    @Override
+    public Map<String, Object> userLogin(UserLogin userLogin) {
+
+        UserInfoVO userInfoVO = authorityDao.getSysUserInfo(null, userLogin.getAccount(), MD5Utils.StringToMD5(userLogin.getPwd()), 1);
+
+        if (ObjectUtils.isEmpty(userInfoVO)) {
+            throw new RuntimeException("账号或密码错误！！！");
+        }
+
+        String roleId = Optional.ofNullable(userInfoVO.getRoleId()).orElse("");
+        RoleInfoVO roleInfoVO = null;
+        if (StringUtils.isNotBlank(roleId)) {
+            roleInfoVO = authorityDao.getSysRoleInfo(roleId);
+        }
+
+        String token = JwtUtil.sign(userInfoVO.getAccount(), userInfoVO.getUserId());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, JwtUtil.EXPIRE_HOUR);
+        LoginToken loginToken = new LoginToken(userInfoVO.getUserId(), token, Utils.ConvertDateToString(calendar, Utils.YYYYMMDDHH24MMSS), 1, Utils.GetCurrentDateTime());
+        loginToken.setTokenId(Utils.GenerateUUID(32));
+        authorityDao.insertLoginToken(loginToken);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", token);
+        map.put("userId", userInfoVO.getUserId());
+        map.put("userName", userInfoVO.getName());
+        map.put("role", roleInfoVO);
+
+        return map;
+    }
 
     @Override
     public PageQuery getRoleList(QueryRoleRequest queryRoleRequest) {
@@ -61,17 +91,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public UserInfoVO getUserInfo(String userId) {
 
-        return authorityDao.getSysUserInfo(userId);
+        return null;
     }
 
     @Override
     public void resetPwd(String userID) {
 
-    }
-
-    @Override
-    public Map<String, Object> userLogin(UserLogin userLogin) {
-        return null;
     }
 
     @Override

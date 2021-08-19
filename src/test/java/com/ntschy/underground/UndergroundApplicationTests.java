@@ -1,5 +1,6 @@
 package com.ntschy.underground;
 
+import com.ntschy.underground.utils.Utils;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +13,9 @@ class UndergroundApplicationTests {
 
 	@Test
 	void contextLoads() {
+		for (int i = 0; i < 10; i ++) {
+			System.out.println(Utils.GenerateUUID(32));
+		}
 	}
-
-//	@Test
-//	public void testEncrypt() {
-//		BasicTextEncryptor encryptor = new BasicTextEncryptor();
-//		encryptor.setPassword("NTSchy123456");
-//		System.out.println(encryptor.encrypt("sde"));
-//	}
 
 }

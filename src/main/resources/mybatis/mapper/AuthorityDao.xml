@@ -5,7 +5,25 @@
     <select id="getSysUserInfo" resultType="com.ntschy.underground.entity.vo.UserInfoVO">
         SELECT UserId, Account, Name, Sex, Phone, Department, RoleId, Status
         FROM SYS_USER
-        WHERE UserId = #{userId,jdbcType=VARCHAR}
+        <where>
+            <if test="userId != null and userId != ''">
+                AND UserId = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="account != null and account != ''">
+                AND Account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="pwd != null and pwd != ''">
+                AND Password = #{pwd,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                AND Status = #{status,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
+
+    <insert id="insertLoginToken" parameterType="com.ntschy.underground.entity.vo.LoginToken">
+        INSERT INTO SYS_TOKEN(TokenId, UserId, Token, ExpiresTime, CreateTime, Status)
+        VALUES (#{tokenId}, #{userId}, #{token}, #{expiresTime}, #{createTime}, #{status})
+    </insert>
 
 </mapper>

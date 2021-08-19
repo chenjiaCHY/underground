@@ -4,14 +4,10 @@ import com.ntschy.underground.entity.base.LoginUserPwd;
 import com.ntschy.underground.entity.base.OperationLog;
 import com.ntschy.underground.entity.base.PageInfo;
 import com.ntschy.underground.entity.base.PageQuery;
-import com.ntschy.underground.entity.dto.ModifyRoleRequest;
-import com.ntschy.underground.entity.dto.ModifyUserRequest;
-import com.ntschy.underground.entity.dto.QueryRoleRequest;
-import com.ntschy.underground.entity.dto.QueryUserRequest;
+import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.LoginToken;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
 import com.ntschy.underground.entity.vo.UserInfoVO;
-import com.ntschy.underground.entity.vo.UserLogin;
 
 import java.util.List;
 import java.util.Map;

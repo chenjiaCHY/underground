@@ -91,3 +91,50 @@
 15:12:33.174 [http-nio-9099-exec-1] INFO  c.n.u.c.LogAspect - [doAfterReturning,125] - 返回数据:{"success":true,"data":{"projectId":"3434324","scope":"虹桥路与成山路交叉口","name":"新河路项目","createTime":"2021-08-19","createUser":"陈佳"}}
 15:12:33.217 [http-nio-9099-exec-1] INFO  c.n.u.c.LogAspect - [doAfterReturning,141] - 结束时间:2021-08-19 15:12:33
 15:12:33.218 [http-nio-9099-exec-1] INFO  c.n.u.c.LogAspect - [doAfterReturning,142] - 用时:555
+17:01:20.948 [main] INFO  c.n.u.UndergroundApplication - [logStartupProfileInfo,651] - No active profile set, falling back to default profiles: default
+17:01:21.901 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,65] - 注册默认数据源master成功
+17:01:21.909 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,97] - 注册数据源slave1成功
+17:01:21.912 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,111] - 注册数据源成功，一共注册2个数据源
+17:01:23.698 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-9099"]
+17:01:23.698 [main] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+17:01:23.699 [main] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/9.0.30]
+17:01:23.834 [main] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+17:01:24.042 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:01:24.070 [main] INFO  c.n.c.DynamicPropertyFactory - [getInstance,281] - DynamicPropertyFactory is initialized with configuration sources: com.netflix.config.ConcurrentCompositeConfiguration@fb49fdf
+17:01:25.057 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:01:26.447 [main] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-9099"]
+17:01:26.505 [main] INFO  c.n.u.UndergroundApplication - [logStarted,61] - Started UndergroundApplication in 7.3 seconds (JVM running for 8.202)
+17:02:41.026 [http-nio-9099-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+17:02:55.240 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doBefore,89] - 请求时间:2021-08-19 17:02:55
+17:02:55.241 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doBefore,90] - 请求URL:http://localhost:9099/authority/login
+17:02:55.241 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doBefore,91] - 请求方法:userLogin
+17:02:55.241 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doBefore,92] - 请求参数:{"account":"陈佳","pwd":"sdsd"}
+17:02:55.241 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doBefore,93] - 请求IP:0:0:0:0:0:0:0:1
+17:02:55.307 [http-nio-9099-exec-3] INFO  c.n.u.d.d.DynamicDataSourceContextHolder - [SetDataSourceRouteKey,26] - 切换到slave1数据源
+17:02:55.311 [http-nio-9099-exec-3] INFO  c.n.u.d.d.DynamicDataSourceContextHolder - [SetDataSourceRouteKey,26] - 切换到slave1数据源
+17:02:55.381 [http-nio-9099-exec-3] INFO  c.z.h.HikariDataSource - [getConnection,110] - HikariPool-1 - Starting...
+17:02:55.839 [http-nio-9099-exec-3] INFO  c.z.h.HikariDataSource - [getConnection,123] - HikariPool-1 - Start completed.
+17:02:55.963 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doAfterReturning,125] - 返回数据:{"success":false,"message":"账号或密码错误！！！"}
+17:02:55.970 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doAfterReturning,141] - 结束时间:2021-08-19 17:02:55
+17:02:55.971 [http-nio-9099-exec-3] INFO  c.n.u.c.LogAspect - [doAfterReturning,142] - 用时:853
+17:32:21.651 [main] INFO  c.n.u.UndergroundApplicationTests - [logStartupProfileInfo,651] - No active profile set, falling back to default profiles: default
+17:32:22.621 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,65] - 注册默认数据源master成功
+17:32:22.631 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,97] - 注册数据源slave1成功
+17:32:22.635 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,111] - 注册数据源成功，一共注册2个数据源
+17:32:25.062 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:32:25.074 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:32:28.012 [main] INFO  c.n.u.UndergroundApplicationTests - [logStarted,61] - Started UndergroundApplicationTests in 7.291 seconds (JVM running for 9.19)
+17:32:49.226 [main] INFO  c.n.u.UndergroundApplicationTests - [logStartupProfileInfo,651] - No active profile set, falling back to default profiles: default
+17:32:50.093 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,65] - 注册默认数据源master成功
+17:32:50.105 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,97] - 注册数据源slave1成功
+17:32:50.107 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,111] - 注册数据源成功，一共注册2个数据源
+17:32:52.265 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:32:52.275 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:32:54.743 [main] INFO  c.n.u.UndergroundApplicationTests - [logStarted,61] - Started UndergroundApplicationTests in 6.284 seconds (JVM running for 7.983)
+17:34:25.206 [main] INFO  c.n.u.UndergroundApplicationTests - [logStartupProfileInfo,651] - No active profile set, falling back to default profiles: default
+17:34:26.041 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,65] - 注册默认数据源master成功
+17:34:26.049 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,97] - 注册数据源slave1成功
+17:34:26.055 [main] INFO  c.n.u.d.d.DynamicDatasourceRegister - [registerBeanDefinitions,111] - 注册数据源成功，一共注册2个数据源
+17:34:28.515 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:34:28.524 [main] INFO  c.n.c.s.URLConfigurationSource - [<init>,122] - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+17:34:31.079 [main] INFO  c.n.u.UndergroundApplicationTests - [logStarted,61] - Started UndergroundApplicationTests in 6.782 seconds (JVM running for 8.271)
