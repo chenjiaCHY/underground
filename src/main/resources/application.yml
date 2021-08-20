@@ -41,6 +41,7 @@ whitelist:
     - /authority/login
     - /authority/roleModify
     - /authority/userModify
+    - /authority/getActionList
 
 allow:
   originList:

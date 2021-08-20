@@ -20,6 +20,8 @@ public interface AuthorityService {
 
     Result userModify(ModifyUserRequest modifyUserRequest);
 
+    Result getActionList();
+
     PageQuery getRoleList(QueryRoleRequest queryRoleRequest);
 
     PageQuery getUserList(QueryUserRequest queryUserRequest);

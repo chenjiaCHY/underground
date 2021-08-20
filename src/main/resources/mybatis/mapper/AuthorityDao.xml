@@ -118,4 +118,10 @@
         DELETE FROM SYS_USER
         WHERE UserId = #{userId,jdbcType=VARCHAR}
     </delete>
+
+    <select id="getActionList" resultType="com.ntschy.underground.entity.Action">
+        SELECT ActionId, Name, Sort
+        FROM SYS_ACTION
+        ORDER BY Sort
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.ntschy.underground.service.impl;
 
 import com.ntschy.underground.dao.AuthorityDao;
+import com.ntschy.underground.entity.Action;
 import com.ntschy.underground.entity.RoleActionMapping;
 import com.ntschy.underground.entity.base.LoginUserPwd;
 import com.ntschy.underground.entity.base.OperationLog;
@@ -179,6 +180,16 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
 
         return new Result(true);
+    }
+
+    @Override
+    public Result getActionList() {
+
+        List<Action> actionList = authorityDao.getActionList();
+
+        actionList = Optional.ofNullable(actionList).orElse(Collections.emptyList());
+
+        return new Result<>(actionList);
     }
 
     @Override

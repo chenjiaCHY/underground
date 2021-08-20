@@ -84,6 +84,21 @@ public class AuthorityController {
     }
 
     /**
+     * 获取所有权限列表
+     * @return
+     */
+    @GetMapping("/getActionList")
+    @ResponseBody
+    public Result getActionList() {
+        try {
+            Result result = authorityService.getActionList();
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
      * 获取角色列表，分页
      * @return
      */
