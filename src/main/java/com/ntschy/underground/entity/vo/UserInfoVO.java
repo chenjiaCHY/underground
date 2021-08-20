@@ -11,7 +11,7 @@ public class UserInfoVO {
 
     private String name;
 
-    private Integer sex;
+    private String sex;
 
     private String phone;
 

@@ -4,7 +4,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.ntschy.underground.dao.AuthorityDao;
-import com.ntschy.underground.entity.base.PageInfo;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
 import com.ntschy.underground.entity.vo.UserInfoVO;
 import com.ntschy.underground.service.AuthorityService;
@@ -121,26 +120,26 @@ public class AccessFilter extends ZuulFilter {
                     return null;
                 }
 
-                List<PageInfo> pageInfoList = Optional.ofNullable(roleInfoVO.getPageInfos()).orElse(Collections.emptyList());
+                //List<PageInfo> pageInfoList = Optional.ofNullable(roleInfoVO.getPageInfos()).orElse(Collections.emptyList());
 
-                if (CollectionUtils.isEmpty(pageInfoList)) {
-                    ctx.setSendZuulResponse(false);
-                    ctx.setResponseStatusCode(403);
-                    ctx.setResponseBody("{\"result\":\"no-authority\"}");
-                    return null;
-                }
+//                if (CollectionUtils.isEmpty(pageInfoList)) {
+//                    ctx.setSendZuulResponse(false);
+//                    ctx.setResponseStatusCode(403);
+//                    ctx.setResponseBody("{\"result\":\"no-authority\"}");
+//                    return null;
+//                }
 
                 String[] pageIds = authorityZuul.split(",");
 
                 boolean result = true;
-                for (String sting : pageIds) {
-                    Integer pageId = Integer.valueOf(sting);
-                    long count = pageInfoList.stream().filter(t -> t.getPageID() == pageId).count();
-                    if (count > 0) {
-                        result = false;
-                        break;
-                    }
-                }
+//                for (String sting : pageIds) {
+//                    Integer pageId = Integer.valueOf(sting);
+//                    long count = pageInfoList.stream().filter(t -> t.getPageID() == pageId).count();
+//                    if (count > 0) {
+//                        result = false;
+//                        break;
+//                    }
+//                }
 
                 if (result) {
                     ctx.setSendZuulResponse(false);

@@ -1,24 +1,57 @@
 package com.ntschy.underground.dao;
 
 import com.ntschy.underground.datasource.annotation.DataSource;
+import com.ntschy.underground.entity.RoleActionMapping;
+import com.ntschy.underground.entity.dto.ModifyUserRequest;
 import com.ntschy.underground.entity.vo.LoginToken;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
 import com.ntschy.underground.entity.vo.UserInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface AuthorityDao {
     @DataSource("slave1")
-    RoleInfoVO getSysRoleInfo(@Param("roleID") String roleID);
+    RoleInfoVO getSysRoleInfo(@Param("roleId") String roleID) throws RuntimeException;
 
     @DataSource("slave1")
     UserInfoVO getSysUserInfo(@Param("userId") String userId,
                               @Param("account") String account,
                               @Param("pwd") String pwd,
-                              @Param("status") Integer status);
+                              @Param("status") Integer status) throws RuntimeException;
 
     @DataSource("slave1")
-    void insertLoginToken(LoginToken loginToken);
+    void insertLoginToken(LoginToken loginToken) throws RuntimeException;
 
+    @DataSource("slave1")
+    Integer getRoleCountByName(@Param("roleId") String roleId, @Param("roleName") String roleName) throws RuntimeException;
+
+    @DataSource("slave1")
+    void deleteRoleActionMapping(@Param("roleId") String roleId) throws RuntimeException;
+
+    @DataSource("slave1")
+    void deleteRole(@Param("roleId") String roleId) throws RuntimeException;
+
+    @DataSource("slave1")
+    void insertRoleActionMapping(@Param("mappings") List<RoleActionMapping> mappings) throws RuntimeException;
+
+    @DataSource("slave1")
+    void insertRole(RoleInfoVO roleInfoVO) throws RuntimeException;
+
+    @DataSource("slave1")
+    void updateRole(RoleInfoVO roleInfoVO) throws RuntimeException;
+
+    @DataSource("slave1")
+    Integer getUserCountByAccount(@Param("userId") String userId, @Param("account") String account) throws RuntimeException;
+
+    @DataSource("slave1")
+    void insertUser(ModifyUserRequest modifyUserRequest) throws RuntimeException;
+
+    @DataSource("slave1")
+    void updateUser(ModifyUserRequest modifyUserRequest) throws RuntimeException;
+
+    @DataSource("slave1")
+    void deleteUser(@Param("userId") String userId) throws RuntimeException;
 }

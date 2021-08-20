@@ -8,14 +8,12 @@ import java.util.List;
 @Data
 public class ModifyRoleRequest {
 
-    private String roleID;
-
-    private Integer status;
+    private String roleId;
 
     private String roleName;
 
     private List<String> actionList;
 
     @NotNull(message = "操作类型不能为空")
-    private Integer operateLabel;
+    private Integer operateType; // 1：新增 2：修改 3：删除
 }

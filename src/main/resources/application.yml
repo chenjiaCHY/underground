@@ -39,6 +39,8 @@ whitelist:
     - /test/hello
     - /test/testProject
     - /authority/login
+    - /authority/roleModify
+    - /authority/userModify
 
 allow:
   originList:

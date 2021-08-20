@@ -26,4 +26,96 @@
         VALUES (#{tokenId}, #{userId}, #{token}, #{expiresTime}, #{createTime}, #{status})
     </insert>
 
+    <resultMap id="RoleInfoVO" type="com.ntschy.underground.entity.vo.RoleInfoVO">
+        <result column="RoleId" property="roleId"/>
+        <result column="Name" property="roleName"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="Status" property="status"/>
+        <collection property="actionList" ofType="com.ntschy.underground.entity.Action">
+            <result column="ActionId" property="actionId"/>
+            <result column="ActionName" property="name"/>
+            <result column="Sort" property="sort"/>
+        </collection>
+    </resultMap>
+
+    <select id="getSysRoleInfo" resultMap="RoleInfoVO">
+        SELECT
+            SR.RoleId,
+            SR.Name,
+            SR.CreateTime,
+            ST.ActionId,
+            ST.Name AS ActionName,
+            ST.Sort
+        FROM
+            SYS_ROLE SR
+        LEFT JOIN (
+            SELECT
+                SRAM.RoleId,
+                SA.ActionId,
+                SA.Name,
+                SA.Sort
+            FROM
+                SYS_ROLE_ACTION_MAPPING SRAM,
+                SYS_ACTION SA
+            WHERE
+                SRAM.ActionId = SA.ActionId AND SRAM.RoleId = #{roleId,jdbcType=VARCHAR}
+        ) ST ON SR.RoleId = ST.RoleId
+        WHERE SR.RoleId = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getRoleCountByName" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM SYS_ROLE
+        WHERE RoleId != #{roleId,jdbcType=VARCHAR} AND Name = #{roleName,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteRoleActionMapping">
+        DELETE FROM SYS_ROLE_ACTION_MAPPING
+        WHERE RoleId = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteRole">
+        DELETE FROM SYS_ROLE
+        WHERE RoleId = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertRoleActionMapping" parameterType="list" useGeneratedKeys="false">
+        INSERT INTO SYS_ROLE_ACTION_MAPPING(RoleId, ActionId)
+        VALUES
+        <foreach collection="mappings" item="item" separator=",">
+            (#{item.roleId,jdbcType=VARCHAR}, #{item.actionId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="insertRole" parameterType="com.ntschy.underground.entity.vo.RoleInfoVO">
+        INSERT INTO SYS_ROLE(RoleId, Name, CreateTime)
+        VALUES (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateRole" parameterType="com.ntschy.underground.entity.vo.RoleInfoVO">
+        UPDATE SYS_ROLE
+        SET Name = #{roleName,jdbcType=VARCHAR}
+        WHERE RoleId = #{roleId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getUserCountByAccount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM SYS_USER
+        WHERE UserId != #{userId,jdbcType=VARCHAR} AND Account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUser" parameterType="com.ntschy.underground.entity.dto.ModifyUserRequest">
+        INSERT INTO SYS_USER(UserId, Account, Name, Password, Sex, Phone, Department, RoleId, Status)
+        VALUES (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 1)
+    </insert>
+
+    <update id="updateUser">
+        UPDATE SYS_USER
+        SET Department = #{department,jdbcType=VARCHAR}, Phone = #{phone,jdbcType=VARCHAR}, RoleId = #{roleId,jdbcType=VARCHAR}
+        WHERE UserId =#{userId,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteUser">
+        DELETE FROM SYS_USER
+        WHERE UserId = #{userId,jdbcType=VARCHAR}
+    </delete>
 </mapper>

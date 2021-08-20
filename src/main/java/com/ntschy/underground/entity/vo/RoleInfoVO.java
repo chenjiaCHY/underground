@@ -1,6 +1,6 @@
 package com.ntschy.underground.entity.vo;
 
-import com.ntschy.underground.entity.base.PageInfo;
+import com.ntschy.underground.entity.Action;
 import lombok.Data;
 
 import java.util.List;
@@ -8,11 +8,13 @@ import java.util.List;
 @Data
 public class RoleInfoVO {
 
-    private String roleID;
+    private Integer rowNumber;
+
+    private String roleId;
 
     private String roleName;
 
-    private Integer status;
+    private String createTime;
 
-    private List<PageInfo> pageInfos;
+    private List<Action> actionList;
 }
