@@ -11,9 +11,11 @@
 
 package com.ntschy.underground.controller;
 
+import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.ModifyRoleRequest;
 import com.ntschy.underground.entity.dto.ModifyUserRequest;
+import com.ntschy.underground.entity.dto.QueryRoleRequest;
 import com.ntschy.underground.entity.dto.UserLogin;
 import com.ntschy.underground.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,7 @@ public class AuthorityController {
     }
 
     /**
-     * 获取所有权限列表
+     * 获取所有权限列表，新增角色时选择权限用
      * @return
      */
     @GetMapping("/getActionList")
@@ -104,8 +106,13 @@ public class AuthorityController {
      */
     @PostMapping("/getRoleList")
     @ResponseBody
-    public Result getRoleList() {
-        return null;
+    public Result getRoleList(@RequestBody @Validated QueryRoleRequest queryRoleRequest) {
+        try {
+            PageQuery pageQuery = authorityService.getRoleList(queryRoleRequest);
+            return new Result<>(pageQuery);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -125,7 +132,12 @@ public class AuthorityController {
     @GetMapping("/getFullRoleList")
     @ResponseBody
     public Result getFullRoleList() {
-        return null;
+        try {
+            Result result = authorityService.getFullRoleList();
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -158,4 +170,14 @@ public class AuthorityController {
         return null;
     }
 
+    /**
+     * 启用、禁用用户
+     * @return
+     */
+    @PostMapping("/activeUser")
+    @ResponseBody
+    public Result activeUser() {
+
+        return null;
+    }
 }

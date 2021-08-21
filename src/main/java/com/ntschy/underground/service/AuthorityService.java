@@ -22,6 +22,8 @@ public interface AuthorityService {
 
     Result getActionList();
 
+    Result getFullRoleList();
+
     PageQuery getRoleList(QueryRoleRequest queryRoleRequest);
 
     PageQuery getUserList(QueryUserRequest queryUserRequest);

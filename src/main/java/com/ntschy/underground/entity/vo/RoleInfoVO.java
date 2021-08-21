@@ -16,5 +16,7 @@ public class RoleInfoVO {
 
     private String createTime;
 
+    private Integer inUseCount;
+
     private List<Action> actionList;
 }

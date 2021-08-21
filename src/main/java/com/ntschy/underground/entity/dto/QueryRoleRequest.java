@@ -6,11 +6,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class QueryRoleRequest {
-    // 角色名称
-    private String roleName;
-
-    // 角色状态
-    private Integer roleStatus;
 
     // 当前页码
     @NotNull(message = "currPage不能为空")

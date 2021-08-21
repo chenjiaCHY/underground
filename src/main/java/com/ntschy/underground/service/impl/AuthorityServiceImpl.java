@@ -30,6 +30,11 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Resource
     private AuthorityDao authorityDao;
 
+    /**
+     * 用户登录
+     * @param userLogin
+     * @return
+     */
     @Override
     public Map<String, Object> userLogin(UserLogin userLogin) {
 
@@ -62,6 +67,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         return map;
     }
 
+    /**
+     * 角色新增、修改、删除
+     * @param modifyRoleRequest
+     * @return
+     */
     @Override
     public Result roleModify(ModifyRoleRequest modifyRoleRequest) {
 
@@ -135,6 +145,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         return new Result(true);
     }
 
+    /**
+     * 用户新增、修改、删除
+     * @param modifyUserRequest
+     * @return
+     */
     @Override
     public Result userModify(ModifyUserRequest modifyUserRequest) {
 
@@ -182,6 +197,10 @@ public class AuthorityServiceImpl implements AuthorityService {
         return new Result(true);
     }
 
+    /**
+     * 获取所有权限列表
+     * @return
+     */
     @Override
     public Result getActionList() {
 
@@ -192,9 +211,43 @@ public class AuthorityServiceImpl implements AuthorityService {
         return new Result<>(actionList);
     }
 
+    /**
+     * 获取所有角色列表
+     * @return
+     */
+    @Override
+    public Result getFullRoleList() {
+
+        List<RoleInfoVO> roleList = authorityDao.getFullRoleList();
+
+        roleList = Optional.ofNullable(roleList).orElse(Collections.emptyList());
+
+        return new Result<>(roleList);
+    }
+
     @Override
     public PageQuery getRoleList(QueryRoleRequest queryRoleRequest) {
-        return new PageQuery(1, 1, 10, null);
+        Integer startNo = PageQuery.startLine(queryRoleRequest.getCurrPage(), queryRoleRequest.getPageSize());
+        Integer endNo = PageQuery.endLine(queryRoleRequest.getCurrPage(), queryRoleRequest.getPageSize());
+
+        Integer total = authorityDao.getRoleCount();
+
+        List<RoleInfoVO> roleInfoVOList = authorityDao.getRoleList(startNo, endNo);
+
+        int rowNumber = (queryRoleRequest.getCurrPage() - 1) * queryRoleRequest.getPageSize() + 1;
+
+        if (!CollectionUtils.isEmpty(roleInfoVOList)) {
+            for (RoleInfoVO roleInfo : roleInfoVOList) {
+                roleInfo.setRowNumber(rowNumber);
+                // 获取该角色被多少用户使用
+                rowNumber ++;
+            }
+        }
+
+        PageQuery pageQuery = new PageQuery(queryRoleRequest.getCurrPage(), queryRoleRequest.getPageSize(),
+                total, Optional.ofNullable(roleInfoVOList).orElse(Collections.emptyList()));
+
+        return pageQuery;
     }
 
     @Override
