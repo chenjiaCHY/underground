@@ -1,6 +1,5 @@
 package com.ntschy.underground.service;
 
-import com.ntschy.underground.entity.base.LoginUserPwd;
 import com.ntschy.underground.entity.base.OperationLog;
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
@@ -9,7 +8,6 @@ import com.ntschy.underground.entity.vo.LoginToken;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
 import com.ntschy.underground.entity.vo.UserInfoVO;
 
-import java.util.List;
 import java.util.Map;
 
 public interface AuthorityService {
@@ -28,11 +26,9 @@ public interface AuthorityService {
 
     PageQuery getUserList(QueryUserRequest queryUserRequest);
 
-    RoleInfoVO getSysRoleInfo(String roleID);
+    RoleInfoVO getRoleInfo(String roleId);
 
-    UserInfoVO getUserInfo(String userID);
-
-    void resetPwd(String userID);
+    UserInfoVO getUserInfo(String userId);
 
     LoginToken getLoginToken(String userID, String getCurrentDateTime);
 
@@ -40,9 +36,11 @@ public interface AuthorityService {
 
     void insertOperateLog(OperationLog operationLog);
 
-    void modifyUserPwd(LoginUserPwd loginUserPwd);
+    Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest);
 
     UserInfoVO getUserInfoVO(String userID, String loginName);
 
     Integer getUrlPermissionUrl(String roleID, String uri);
+
+    Result activeUser(ActiveUserRequest activeUserRequest);
 }

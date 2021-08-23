@@ -15,10 +15,10 @@ import java.util.List;
 @Mapper
 public interface AuthorityDao {
     @DataSource("slave1")
-    RoleInfoVO getSysRoleInfo(@Param("roleId") String roleID) throws RuntimeException;
+    RoleInfoVO getRoleInfo(@Param("roleId") String roleID) throws RuntimeException;
 
     @DataSource("slave1")
-    UserInfoVO getSysUserInfo(@Param("userId") String userId,
+    UserInfoVO getUserInfo(@Param("userId") String userId,
                               @Param("account") String account,
                               @Param("pwd") String pwd,
                               @Param("status") Integer status) throws RuntimeException;
@@ -74,4 +74,20 @@ public interface AuthorityDao {
 
     @DataSource("slave1")
     Integer getRoleInUseCount(@Param("roleId") String roleId) throws RuntimeException;
+
+    @DataSource("slave1")
+    Integer getUserCount(@Param("account") String account) throws RuntimeException;
+
+    @DataSource("slave1")
+    List<UserInfoVO> getUserList(@Param("account") String account,
+                                 @Param("startNo") Integer startNo,
+                                 @Param("endNo") Integer endNo) throws RuntimeException;
+
+    @DataSource("slave1")
+    void modifyUserPwd(@Param("account") String account,
+                       @Param("newPwd") String newPwd) throws RuntimeException;
+
+    @DataSource("slave1")
+    void activeUser(@Param("userIdList") List<String> userIdList,
+                    @Param("status") Integer status) throws RuntimeException;
 }

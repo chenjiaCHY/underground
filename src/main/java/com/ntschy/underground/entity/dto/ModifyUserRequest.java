@@ -23,6 +23,8 @@ public class ModifyUserRequest {
 
     private String roleId;
 
+    private String createTime;
+
     @NotNull(message = "操作类型不能为空")
     private Integer operateType;
 }

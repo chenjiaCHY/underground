@@ -3,7 +3,6 @@ package com.ntschy.underground.service.impl;
 import com.ntschy.underground.dao.AuthorityDao;
 import com.ntschy.underground.entity.Action;
 import com.ntschy.underground.entity.RoleActionMapping;
-import com.ntschy.underground.entity.base.LoginUserPwd;
 import com.ntschy.underground.entity.base.OperationLog;
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
@@ -38,7 +37,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Map<String, Object> userLogin(UserLogin userLogin) {
 
-        UserInfoVO userInfoVO = authorityDao.getSysUserInfo(null, userLogin.getAccount(), MD5Utils.StringToMD5(userLogin.getPwd()), 1);
+        UserInfoVO userInfoVO = authorityDao.getUserInfo(null, userLogin.getAccount(), MD5Utils.StringToMD5(userLogin.getPwd()), 1);
 
         if (ObjectUtils.isEmpty(userInfoVO)) {
             throw new RuntimeException("账号或密码错误！！！");
@@ -47,7 +46,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         String roleId = Optional.ofNullable(userInfoVO.getRoleId()).orElse("");
         RoleInfoVO roleInfoVO = null;
         if (StringUtils.isNotBlank(roleId)) {
-            roleInfoVO = authorityDao.getSysRoleInfo(roleId);
+            roleInfoVO = authorityDao.getRoleInfo(roleId);
         }
 
         String token = JwtUtil.sign(userInfoVO.getAccount(), userInfoVO.getUserId());
@@ -171,7 +170,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
             Integer count = authorityDao.getUserCountByAccount(userId, account);
             if (count > 0) {
-                throw new RuntimeException("角色名称已存在，请勿重新创建！！！");
+                throw new RuntimeException("用户名已存在，请勿重新创建！！！");
             }
         }
 
@@ -180,8 +179,10 @@ public class AuthorityServiceImpl implements AuthorityService {
             if (StringUtils.isBlank(password)) {
                 throw new RuntimeException("密码不能为空");
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             modifyUserRequest.setUserId(userId);
             modifyUserRequest.setPassword(MD5Utils.StringToMD5(password));
+            modifyUserRequest.setCreateTime(sdf.format(new Date()));
 
             authorityDao.insertUser(modifyUserRequest);
         }
@@ -269,23 +270,57 @@ public class AuthorityServiceImpl implements AuthorityService {
      */
     @Override
     public PageQuery getUserList(QueryUserRequest queryUserRequest) {
-        return new PageQuery(1, 1, 10, null);
+        Integer startNo = PageQuery.startLine(queryUserRequest.getCurrPage(), queryUserRequest.getPageSize());
+        Integer endNo = PageQuery.endLine(queryUserRequest.getCurrPage(), queryUserRequest.getPageSize());
+
+        Integer total = authorityDao.getUserCount(queryUserRequest.getAccount());
+
+        List<UserInfoVO> userInfoList = authorityDao.getUserList(queryUserRequest.getAccount(), startNo, endNo);
+
+        int rowNumber = (queryUserRequest.getCurrPage() - 1) * queryUserRequest.getPageSize() + 1;
+
+        if (!CollectionUtils.isEmpty(userInfoList)) {
+            for (UserInfoVO userInfo : userInfoList) {
+                userInfo.setRowNumber(rowNumber);
+                rowNumber ++;
+            }
+        }
+
+        PageQuery pageQuery = new PageQuery(queryUserRequest.getCurrPage(), queryUserRequest.getPageSize(),
+                total, Optional.ofNullable(userInfoList).orElse(Collections.emptyList()));
+
+        return pageQuery;
     }
 
     @Override
-    public RoleInfoVO getSysRoleInfo(String roleID) {
-        return new RoleInfoVO();
+    public RoleInfoVO getRoleInfo(String roleId) {
+
+        RoleInfoVO roleInfoVO = authorityDao.getRoleInfo(roleId);
+
+        return roleInfoVO;
+
     }
 
     @Override
     public UserInfoVO getUserInfo(String userId) {
 
-        return null;
+        UserInfoVO userInfoVO = authorityDao.getUserInfo(userId, null, null, null);
+
+        return userInfoVO;
     }
 
     @Override
-    public void resetPwd(String userID) {
+    public Result activeUser(ActiveUserRequest activeUserRequest) {
 
+        authorityDao.activeUser(activeUserRequest.getUserIdList(), activeUserRequest.getStatus());
+
+        String message = "启用成功";
+
+        if (activeUserRequest.getStatus() == 0) {
+            message = "禁用成功";
+        }
+
+        return new Result(true, message);
     }
 
     @Override
@@ -304,7 +339,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public void modifyUserPwd(LoginUserPwd loginUserPwd) {
+    public Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest) {
+
+        modifyPwdRequest.setNewPwd(MD5Utils.StringToMD5(modifyPwdRequest.getNewPwd()));
+        authorityDao.modifyUserPwd(modifyPwdRequest.getAccount(), modifyPwdRequest.getNewPwd());
+
+        return new Result(true, "更新密码成功！");
 
     }
 

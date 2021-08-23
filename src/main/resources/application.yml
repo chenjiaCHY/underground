@@ -44,6 +44,11 @@ whitelist:
     - /authority/getActionList
     - /authority/getFullRoleList
     - /authority/getRoleList
+    - /authority/getUserList
+    - /authority/getRoleInfo
+    - /authority/getUserInfo
+    - /authority/modifyUserPwd
+    - /authority/activeUser
 
 allow:
   originList:

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ntschy.underground.dao.AuthorityDao">
 
-    <select id="getSysUserInfo" resultType="com.ntschy.underground.entity.vo.UserInfoVO">
+    <select id="getUserInfo" resultType="com.ntschy.underground.entity.vo.UserInfoVO">
         SELECT UserId, Account, Name, Sex, Phone, Department, RoleId, Status
         FROM SYS_USER
         <where>
@@ -42,23 +42,13 @@
             SR.RoleId,
             SR.Name,
             SR.CreateTime,
-            ST.ActionId,
-            ST.Name AS ActionName,
-            ST.Sort
+            SA.ActionId,
+            SA.Name AS ActionName,
+            SA.Sort
         FROM
             SYS_ROLE SR
-        LEFT JOIN (
-            SELECT
-                SRAM.RoleId,
-                SA.ActionId,
-                SA.Name,
-                SA.Sort
-            FROM
-                SYS_ROLE_ACTION_MAPPING SRAM,
-                SYS_ACTION SA
-            WHERE
-                SRAM.ActionId = SA.ActionId AND SRAM.RoleId = #{roleId,jdbcType=VARCHAR}
-        ) ST ON SR.RoleId = ST.RoleId
+        LEFT JOIN SYS_ROLE_ACTION_MAPPING SRAM ON SRAM.RoleId = SR.RoleId
+        LEFT JOIN SYS_ACTION SA ON SA.ActionId = SRAM.ActionId
         WHERE SR.RoleId = #{roleId,jdbcType=VARCHAR}
     </select>
 
@@ -102,9 +92,9 @@
     </select>
 
     <insert id="insertUser" parameterType="com.ntschy.underground.entity.dto.ModifyUserRequest">
-        INSERT INTO SYS_USER(UserId, Account, Name, Password, Sex, Phone, Department, RoleId, Status)
+        INSERT INTO SYS_USER(UserId, Account, Name, Password, Sex, Phone, Department, RoleId, Status, CreateTime)
         VALUES (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-        #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 1)
+        #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 1, #{createTime,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateUser">
@@ -160,4 +150,54 @@
         FROM SYS_USER
         WHERE RoleId = #{roleId,jdbcType=VARCHAR} AND Status = 1
     </select>
+
+    <select id="getUserCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM SYS_USER
+        <where>
+            <if test="account != null and account != ''">
+                Account = #{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getUserList" resultType="com.ntschy.underground.entity.vo.UserInfoVO">
+        SELECT * FROM (
+            SELECT
+                ROW_NUMBER() OVER(ORDER BY SU.CreateTime) ROWNO,
+                SU.UserId,
+                SU.Account,
+                SU.Name,
+                SU.Sex,
+                SU.Phone,
+                SU.Department,
+                SU.RoleId,
+                SR.Name AS RoleName,
+                SU.Status,
+                SU.CreateTime
+            FROM SYS_USER SU
+            LEFT JOIN SYS_ROLE SR ON SU.RoleId = SR.RoleId
+            <where>
+                <if test="account != null and account != ''">
+                    SU.Account = #{account,jdbcType=VARCHAR}
+                </if>
+            </where>
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN #{startNo} AND #{endNo}
+    </select>
+
+    <update id="modifyUserPwd">
+        UPDATE SYS_USER
+        SET Password = #{newPwd,jdbcType=VARCHAR}
+        WHERE Account = #{account,jdbcType=VARCHAR}
+    </update>
+
+    <update id="activeUser">
+        UPDATE SYS_USER
+        SET Status = #{status,jdbcType=VARCHAR}
+        WHERE UserId IN
+        <foreach collection="userIdList" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
 </mapper>

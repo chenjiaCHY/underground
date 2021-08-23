@@ -111,7 +111,7 @@ public class AccessFilter extends ZuulFilter {
                     return null;
                 }
 
-                RoleInfoVO roleInfoVO = authorityDao.getSysRoleInfo(roleID);
+                RoleInfoVO roleInfoVO = authorityDao.getRoleInfo(roleID);
 
                 if (ObjectUtils.isEmpty(roleInfoVO)) {
                     ctx.setSendZuulResponse(false);

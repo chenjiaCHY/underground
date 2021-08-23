@@ -6,13 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class QueryUserRequest {
-    private String name;
-
-    private Integer status;
-
-    private String startTime;
-
-    private String endTime;
+    private String account;
 
     @NotNull(message = "currPage不能为空")
     private Integer currPage;

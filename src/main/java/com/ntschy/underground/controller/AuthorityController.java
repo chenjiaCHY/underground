@@ -13,10 +13,9 @@ package com.ntschy.underground.controller;
 
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
-import com.ntschy.underground.entity.dto.ModifyRoleRequest;
-import com.ntschy.underground.entity.dto.ModifyUserRequest;
-import com.ntschy.underground.entity.dto.QueryRoleRequest;
-import com.ntschy.underground.entity.dto.UserLogin;
+import com.ntschy.underground.entity.dto.*;
+import com.ntschy.underground.entity.vo.RoleInfoVO;
+import com.ntschy.underground.entity.vo.UserInfoVO;
 import com.ntschy.underground.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -121,8 +120,13 @@ public class AuthorityController {
      */
     @PostMapping("/getUserList")
     @ResponseBody
-    public Result getUserList() {
-        return null;
+    public Result getUserList(@RequestBody @Validated QueryUserRequest queryUserRequest) {
+        try {
+            PageQuery pageQuery = authorityService.getUserList(queryUserRequest);
+            return new Result<>(pageQuery);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -146,8 +150,13 @@ public class AuthorityController {
      */
     @GetMapping("/getRoleInfo")
     @ResponseBody
-    public Result getRoleInfo() {
-        return null;
+    public Result getRoleInfo(@RequestParam("roleId") String roleId) {
+        try {
+            RoleInfoVO roleInfoVO = authorityService.getRoleInfo(roleId);
+            return new Result<>(roleInfoVO);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -156,8 +165,13 @@ public class AuthorityController {
      */
     @GetMapping("/getUserInfo")
     @ResponseBody
-    public Result getUserInfo() {
-        return null;
+    public Result getUserInfo(@RequestParam("userId") String userId) {
+        try {
+            UserInfoVO userInfoVO = authorityService.getUserInfo(userId);
+            return new Result<>(userInfoVO);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -166,8 +180,13 @@ public class AuthorityController {
      */
     @PostMapping("/modifyUserPwd")
     @ResponseBody
-    public Result modifyUserPwd() {
-        return null;
+    public Result modifyUserPwd(@RequestBody @Validated ModifyPwdRequest modifyPwdRequest) {
+        try {
+            Result result = authorityService.modifyUserPwd(modifyPwdRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 
     /**
@@ -176,8 +195,12 @@ public class AuthorityController {
      */
     @PostMapping("/activeUser")
     @ResponseBody
-    public Result activeUser() {
-
-        return null;
+    public Result activeUser(@RequestBody @Validated ActiveUserRequest activeUserRequest) {
+        try {
+            Result result = authorityService.activeUser(activeUserRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
     }
 }
