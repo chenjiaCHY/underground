@@ -225,6 +225,11 @@ public class AuthorityServiceImpl implements AuthorityService {
         return new Result<>(roleList);
     }
 
+    /**
+     * 获取角色列表
+     * @param queryRoleRequest
+     * @return
+     */
     @Override
     public PageQuery getRoleList(QueryRoleRequest queryRoleRequest) {
         Integer startNo = PageQuery.startLine(queryRoleRequest.getCurrPage(), queryRoleRequest.getPageSize());
@@ -239,7 +244,14 @@ public class AuthorityServiceImpl implements AuthorityService {
         if (!CollectionUtils.isEmpty(roleInfoVOList)) {
             for (RoleInfoVO roleInfo : roleInfoVOList) {
                 roleInfo.setRowNumber(rowNumber);
+                // 获取该角色有哪些权限
+                List<Action> actionList = authorityDao.getActionListByRoleId(roleInfo.getRoleId());
+                roleInfo.setActionList(actionList);
+
                 // 获取该角色被多少用户使用
+                Integer inUseCount = authorityDao.getRoleInUseCount(roleInfo.getRoleId());
+                roleInfo.setInUseCount(inUseCount);
+
                 rowNumber ++;
             }
         }
@@ -250,14 +262,14 @@ public class AuthorityServiceImpl implements AuthorityService {
         return pageQuery;
     }
 
+    /**
+     * 获取用户列表
+     * @param queryUserRequest
+     * @return
+     */
     @Override
     public PageQuery getUserList(QueryUserRequest queryUserRequest) {
         return new PageQuery(1, 1, 10, null);
-    }
-
-    @Override
-    public List<Map<String, Object>> getRoleListByUserused() {
-        return new ArrayList<>();
     }
 
     @Override

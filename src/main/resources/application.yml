@@ -43,6 +43,7 @@ whitelist:
     - /authority/userModify
     - /authority/getActionList
     - /authority/getFullRoleList
+    - /authority/getRoleList
 
 allow:
   originList:

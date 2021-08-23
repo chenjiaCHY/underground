@@ -68,4 +68,10 @@ public interface AuthorityDao {
     @DataSource("slave1")
     List<RoleInfoVO> getRoleList(@Param("startNo") Integer startNo,
                                  @Param("endNo") Integer endNo) throws RuntimeException;
+
+    @DataSource("slave1")
+    List<Action> getActionListByRoleId(@Param("roleId") String roleId) throws RuntimeException;
+
+    @DataSource("slave1")
+    Integer getRoleInUseCount(@Param("roleId") String roleId) throws RuntimeException;
 }

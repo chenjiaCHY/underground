@@ -28,8 +28,6 @@ public interface AuthorityService {
 
     PageQuery getUserList(QueryUserRequest queryUserRequest);
 
-    List<Map<String, Object>> getRoleListByUserused();
-
     RoleInfoVO getSysRoleInfo(String roleID);
 
     UserInfoVO getUserInfo(String userID);

@@ -30,7 +30,6 @@
         <result column="RoleId" property="roleId"/>
         <result column="Name" property="roleName"/>
         <result column="CreateTime" property="createTime"/>
-        <result column="Status" property="status"/>
         <collection property="actionList" ofType="com.ntschy.underground.entity.Action">
             <result column="ActionId" property="actionId"/>
             <result column="ActionName" property="name"/>
@@ -129,5 +128,36 @@
         SELECT RoleId, Name AS RoleName, CreateTime
         FROM SYS_ROLE
         ORDER BY CreateTime
+    </select>
+
+    <select id="getRoleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM SYS_ROLE
+    </select>
+
+    <select id="getRoleList" resultType="com.ntschy.underground.entity.vo.RoleInfoVO">
+        SELECT * FROM (
+            SELECT
+                RoleId,
+                Name AS RoleName,
+                CreateTime,
+                ROW_NUMBER() OVER(ORDER BY CreateTime) ROWNO
+            FROM
+                SYS_ROLE
+        ) TABLE_ALIAS
+        WHERE TABLE_ALIAS.ROWNO BETWEEN #{startNo} AND #{endNo}
+    </select>
+
+    <select id="getActionListByRoleId" resultType="com.ntschy.underground.entity.Action">
+        SELECT SA.ActionId, SA.Name, SA.Sort
+        FROM SYS_ACTION SA
+        LEFT JOIN SYS_ROLE_ACTION_MAPPING SRAM ON SA.ActionId = SRAM.ActionId
+        WHERE SRAM.RoleId = #{roleId,jdbcType=VARCHAR}
+        ORDER BY SA.Sort
+    </select>
+
+    <select id="getRoleInUseCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM SYS_USER
+        WHERE RoleId = #{roleId,jdbcType=VARCHAR} AND Status = 1
     </select>
 </mapper>
