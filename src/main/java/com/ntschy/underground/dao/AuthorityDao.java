@@ -90,4 +90,13 @@ public interface AuthorityDao {
     @DataSource("slave1")
     void activeUser(@Param("userIdList") List<String> userIdList,
                     @Param("status") Integer status) throws RuntimeException;
+
+    @DataSource("slave1")
+    LoginToken getLoginToken(@Param("userId") String userId, @Param("expiresTime") String expiresTime) throws RuntimeException;
+
+    @DataSource("slave1")
+    Integer getUrlPermissionUrl(@Param("roleId") String roleId, @Param("uri") String uri) throws RuntimeException;
+
+    @DataSource("slave1")
+    void updateLoginTokenExpiresTime(@Param("token") String token, @Param("expiresTime") String expiresTime) throws RuntimeException;
 }

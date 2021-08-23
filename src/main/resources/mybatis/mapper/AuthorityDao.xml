@@ -37,7 +37,7 @@
         </collection>
     </resultMap>
 
-    <select id="getSysRoleInfo" resultMap="RoleInfoVO">
+    <select id="getRoleInfo" resultMap="RoleInfoVO">
         SELECT
             SR.RoleId,
             SR.Name,
@@ -199,5 +199,29 @@
         <foreach collection="userIdList" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
+    </update>
+
+    <select id="getLoginToken" resultType="com.ntschy.underground.entity.vo.LoginToken">
+        SELECT t.* FROM (
+            SELECT ROW_NUMBER() OVER(ORDER BY CreateTime DESC) ROWNO,
+                TokenId, UserId, Token, ExpiresTime, Status, CreateTime
+            FROM SYS_TOKEN
+            WHERE UserId = #{userId} and ExpiresTime >= #{expiresTime} and Status = 1
+        ) t
+        WHERE ROWNO = 1
+    </select>
+
+    <select id="getUrlPermissionUrl" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM
+            SYS_ROLE_ACTION_MAPPING SRAM
+        LEFT JOIN SYS_ACTION_URL_MAPPING SAUM ON SRAM.ActionId = SAUM.ActionId
+        WHERE SRAM.RoleId = #{roleId,jdbcType=VARCHAR} AND SAUM.Url = #{uri,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateLoginTokenExpiresTime">
+        UPDATE SYS_TOKEN
+        SET ExpiresTime = #{expiresTime}
+        WHERE Token = #{token} AND Status = 1
     </update>
 </mapper>

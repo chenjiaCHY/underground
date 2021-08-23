@@ -38,9 +38,7 @@ public interface AuthorityService {
 
     Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest);
 
-    UserInfoVO getUserInfoVO(String userID, String loginName);
-
-    Integer getUrlPermissionUrl(String roleID, String uri);
+    Integer getUrlPermissionUrl(String roleId, String uri);
 
     Result activeUser(ActiveUserRequest activeUserRequest);
 }

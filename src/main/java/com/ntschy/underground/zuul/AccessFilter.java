@@ -91,7 +91,7 @@ public class AccessFilter extends ZuulFilter {
             String userID = jwt.getClaim(LOGIN_USER_ID).asString();
             String loginName = jwt.getClaim(LOGIN_NAME).asString();
 
-            UserInfoVO userInfoVO = authorityService.getUserInfoVO(userID, loginName);
+            UserInfoVO userInfoVO = authorityService.getUserInfo(userID);
 
             if (userInfoVO == null) {
                 log.error("url: {}, token为空", uri);

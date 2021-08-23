@@ -36,19 +36,17 @@ spring:
 
 whitelist:
   urlList:
-    - /test/hello
-    - /test/testProject
     - /authority/login
-    - /authority/roleModify
-    - /authority/userModify
-    - /authority/getActionList
-    - /authority/getFullRoleList
-    - /authority/getRoleList
-    - /authority/getUserList
-    - /authority/getRoleInfo
-    - /authority/getUserInfo
     - /authority/modifyUserPwd
-    - /authority/activeUser
+#    - /authority/roleModify
+#    - /authority/userModify
+#    - /authority/getActionList
+#    - /authority/getFullRoleList
+#    - /authority/getRoleList
+#    - /authority/getUserList
+#    - /authority/getRoleInfo
+#    - /authority/getUserInfo
+#    - /authority/activeUser
 
 allow:
   originList:

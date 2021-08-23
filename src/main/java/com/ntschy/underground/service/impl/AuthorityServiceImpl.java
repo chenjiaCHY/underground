@@ -325,12 +325,12 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public LoginToken getLoginToken(String userID, String getCurrentDateTime) {
-        return new LoginToken();
+        return authorityDao.getLoginToken(userID, getCurrentDateTime);
     }
 
     @Override
     public void updateLoginTokenExpiresTime(String token, String convertDateToString) {
-
+        authorityDao.updateLoginTokenExpiresTime(token, convertDateToString);
     }
 
     @Override
@@ -349,12 +349,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public UserInfoVO getUserInfoVO(String userID, String loginName) {
-        return new UserInfoVO();
-    }
-
-    @Override
-    public Integer getUrlPermissionUrl(String roleID, String uri) {
-        return 1;
+    public Integer getUrlPermissionUrl(String roleId, String uri) {
+        return authorityDao.getUrlPermissionUrl(roleId, uri);
     }
 }
