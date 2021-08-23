@@ -6,8 +6,6 @@ import lombok.Data;
 public class OperationLog {
     private String id;
 
-    private String operateModule;
-
     private String operateType;
 
     private String operateDesc;

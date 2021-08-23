@@ -3,6 +3,7 @@ package com.ntschy.underground.dao;
 import com.ntschy.underground.datasource.annotation.DataSource;
 import com.ntschy.underground.entity.Action;
 import com.ntschy.underground.entity.RoleActionMapping;
+import com.ntschy.underground.entity.base.OperationLog;
 import com.ntschy.underground.entity.dto.ModifyUserRequest;
 import com.ntschy.underground.entity.vo.LoginToken;
 import com.ntschy.underground.entity.vo.RoleInfoVO;
@@ -99,4 +100,7 @@ public interface AuthorityDao {
 
     @DataSource("slave1")
     void updateLoginTokenExpiresTime(@Param("token") String token, @Param("expiresTime") String expiresTime) throws RuntimeException;
+
+    @DataSource("slave1")
+    void insertOperateLog(OperationLog operationLog) throws RuntimeException;
 }

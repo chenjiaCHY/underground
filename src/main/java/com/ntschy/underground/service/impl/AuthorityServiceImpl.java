@@ -335,7 +335,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void insertOperateLog(OperationLog operationLog) {
-
+        authorityDao.insertOperateLog(operationLog);
     }
 
     @Override

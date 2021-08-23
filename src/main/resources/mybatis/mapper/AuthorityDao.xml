@@ -224,4 +224,9 @@
         SET ExpiresTime = #{expiresTime}
         WHERE Token = #{token} AND Status = 1
     </update>
+
+    <insert id="insertOperateLog">
+        INSERT INTO SYS_OPERATE_LOG(LogId, BusinessUrl, OperParam, JsonResult, Method, OperateUser, OperateTime, OperateIp)
+        VALUES (#{id}, #{requestURI}, #{operateRequParam}, #{operateRespParam}, #{operateMethod}, #{operateUser}, #{operateTime}, #{operateIp})
+    </insert>
 </mapper>
