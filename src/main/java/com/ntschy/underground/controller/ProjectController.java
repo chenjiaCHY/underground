@@ -14,6 +14,7 @@ package com.ntschy.underground.controller;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
+import com.ntschy.underground.entity.dto.AddRectificationRequest;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class ProjectController {
     }
 
     /**
-     * 新建项目
+     * 新增项目
      * @param addProjectRequest
      * @return
      */
@@ -63,7 +64,7 @@ public class ProjectController {
     }
 
     /**
-     * 新建巡检
+     * 新增巡检
      * @param addInspectionRequest
      * @return
      */
@@ -72,6 +73,22 @@ public class ProjectController {
     public Result addInspection(@RequestBody @Validated AddInspectionRequest addInspectionRequest) {
         try {
             Result result = projectService.addInspection(addInspectionRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 新增整改记录
+     * @param addRectificationRequest
+     * @return
+     */
+    @PostMapping("/addRectification")
+    @ResponseBody
+    public Result addRectification(@RequestBody @Validated AddRectificationRequest addRectificationRequest) {
+        try {
+            Result result = projectService.addRectification(addRectificationRequest);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

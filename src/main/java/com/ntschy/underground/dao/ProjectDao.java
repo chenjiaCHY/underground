@@ -13,6 +13,7 @@ package com.ntschy.underground.dao;
 
 import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectRecord;
+import com.ntschy.underground.entity.DO.RectificationRecord;
 import com.ntschy.underground.entity.vo.ProjectInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,10 +30,11 @@ public interface ProjectDao {
     // 新增巡检
     void addInspection(InspectionRecord inspectionRecord) throws RuntimeException;
 
+    // 新增整改
+    void addRectification(RectificationRecord rectificationRecord) throws RuntimeException;
+
     // 图片文件名插入到FILE_UPLOAD表
     void addFiles(@Param("type") Integer type,
                   @Param("businessId") String businessId,
                   @Param("fileNames") List<String> fileNames) throws RuntimeException;
-
-
 }

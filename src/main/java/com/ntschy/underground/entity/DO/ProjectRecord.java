@@ -17,7 +17,6 @@ import java.util.List;
 
 @Data
 public class ProjectRecord {
-    private Integer id;
 
     private String projectId;
 

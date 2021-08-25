@@ -18,9 +18,9 @@ import java.util.List;
 @Data
 public class InspectionRecord {
 
-    private Integer id;
-
     private String inspectionId;
+
+    private String createTime;
 
     private String inspector;
 

@@ -14,9 +14,11 @@ package com.ntschy.underground.service.impl;
 import com.ntschy.underground.dao.ProjectDao;
 import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectRecord;
+import com.ntschy.underground.entity.DO.RectificationRecord;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
+import com.ntschy.underground.entity.dto.AddRectificationRequest;
 import com.ntschy.underground.entity.vo.ProjectInfoVO;
 import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
@@ -26,6 +28,9 @@ import com.ntschy.underground.utils.Utils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -82,10 +87,13 @@ public class ProjectServiceImpl implements ProjectService {
 
         String inspectionId = Utils.GenerateUUID(32);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+
         // 插入一条记录到INSPECTION表中
         InspectionRecord inspectionRecord = new InspectionRecord();
 
         inspectionRecord.setInspectionId(inspectionId);
+        inspectionRecord.setCreateTime(sdf.format(new Date()));
         inspectionRecord.setInspector(addInspectionRequest.getInspector());
         inspectionRecord.setPhone(addInspectionRequest.getPhone());
         inspectionRecord.setType(addInspectionRequest.getInspectionType().getCode());
@@ -100,6 +108,36 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.addFiles(UploadFileType.INSPECTION.getCode(), inspectionId, addInspectionRequest.getFileNames());
 
         return new Result(true, "新增巡检成功!!!");
+    }
+
+    /**
+     * 新增整改
+     * @param addRectificationRequest
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException {
+
+        String rectificationId = Utils.GenerateUUID(32);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+
+        // 插入一条记录到INSPECTION表中
+        RectificationRecord rectificationRecord = new RectificationRecord();
+
+        rectificationRecord.setRectificationId(rectificationId);
+        rectificationRecord.setCreateTime(sdf.format(new Date()));
+        rectificationRecord.setInspectionId(addRectificationRequest.getInspectionId());
+        rectificationRecord.setDescription(addRectificationRequest.getDescription());
+
+        projectDao.addRectification(rectificationRecord);
+
+        // 将巡检照片文件名列表插入到FILE_UPLOAD表中
+        projectDao.addFiles(UploadFileType.RECTIFICATION.getCode(), rectificationId, addRectificationRequest.getFileNames());
+
+
+        return new Result(true, "新增整改成功!!!");
     }
 
 }

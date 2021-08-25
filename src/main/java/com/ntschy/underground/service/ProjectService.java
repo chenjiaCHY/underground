@@ -14,6 +14,7 @@ package com.ntschy.underground.service;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
+import com.ntschy.underground.entity.dto.AddRectificationRequest;
 import com.ntschy.underground.entity.vo.ProjectInfoVO;
 
 public interface ProjectService {
@@ -24,4 +25,7 @@ public interface ProjectService {
 
     // 新增巡检
     Result addInspection(AddInspectionRequest addInspectionRequest) throws RuntimeException;
+
+    // 新增整改
+    Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException;
 }

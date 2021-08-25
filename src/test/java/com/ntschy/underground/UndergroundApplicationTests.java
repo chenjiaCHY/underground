@@ -13,7 +13,7 @@ class UndergroundApplicationTests {
 
 	@Test
 	void contextLoads() {
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 3000; i ++) {
 			System.out.println(Utils.GenerateUUID(32));
 		}
 	}

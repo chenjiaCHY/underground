@@ -24,10 +24,16 @@
     </insert>
 
     <insert id="addInspection">
-        INSERT INTO INSPECTION(InspectionId, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment)
+        INSERT INTO INSPECTION(InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment)
         VALUES
-        (#{inspectionId,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+        (#{inspectionId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
         #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER}, '')
+    </insert>
+
+    <insert id="addRectification">
+        INSERT INTO RECTIFICATION(RectificationId, CreateTime, InspectionId, Description)
+        VALUES
+        (#{rectificationId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspectionId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
     </insert>
 
 </mapper>
