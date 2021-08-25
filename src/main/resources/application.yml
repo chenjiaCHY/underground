@@ -43,6 +43,7 @@ whitelist:
     - /project/addInspection
     - /project/addRectification
     - /project/getProjectInfo
+    - /project/addProjectFiles
 
 
 allow:

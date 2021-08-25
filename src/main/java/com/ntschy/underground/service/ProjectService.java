@@ -13,6 +13,7 @@ package com.ntschy.underground.service;
 
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
+import com.ntschy.underground.entity.dto.AddProjectFileRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
 import com.ntschy.underground.entity.dto.AddRectificationRequest;
 
@@ -28,4 +29,7 @@ public interface ProjectService {
 
     // 根据guid获取项目详情
     Result getProjectInfo(String guid) throws RuntimeException;
+
+    // 增加项目图纸
+    Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;
 }

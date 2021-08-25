@@ -13,6 +13,7 @@ package com.ntschy.underground.controller;
 
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
+import com.ntschy.underground.entity.dto.AddProjectFileRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
 import com.ntschy.underground.entity.dto.AddRectificationRequest;
 import com.ntschy.underground.service.ProjectService;
@@ -105,6 +106,22 @@ public class ProjectController {
     public Result getProjectInfo(@RequestParam("guid") String guid) {
         try {
             Result result = projectService.getProjectInfo(guid);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 增加项目图纸
+     * @param addProjectFileRequest
+     * @return
+     */
+    @PostMapping("/addProjectFiles")
+    @ResponseBody
+    public Result addProjectFiles(@RequestBody @Validated AddProjectFileRequest addProjectFileRequest) {
+        try {
+            Result result = projectService.addProjectFiles(addProjectFileRequest);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

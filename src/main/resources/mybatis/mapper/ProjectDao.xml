@@ -41,4 +41,9 @@
         WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
     </select>
 
+    <delete id="deleteFiles">
+        DELETE FROM FILE_UPLOAD
+        WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
+    </delete>
+
 </mapper>

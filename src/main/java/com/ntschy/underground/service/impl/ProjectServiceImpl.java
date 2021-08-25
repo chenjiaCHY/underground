@@ -17,6 +17,7 @@ import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
+import com.ntschy.underground.entity.dto.AddProjectFileRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
 import com.ntschy.underground.entity.dto.AddRectificationRequest;
 import com.ntschy.underground.enums.ProgressType;
@@ -146,6 +147,24 @@ public class ProjectServiceImpl implements ProjectService {
 
 
         return new Result(true, "新增整改成功!!!");
+    }
+
+    /**
+     * 增加项目图纸
+     * @param addProjectFileRequest
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException {
+
+        // 先删除旧图纸
+        projectDao.deleteFiles(UploadFileType.PROJECT.getCode(), addProjectFileRequest.getProjectId());
+
+        // 再插入新图纸
+        projectDao.addFiles(UploadFileType.PROJECT.getCode(), addProjectFileRequest.getProjectId(), addProjectFileRequest.getFileNames());
+
+        return new Result(true, "增加图纸成功!!!");
     }
 
 }

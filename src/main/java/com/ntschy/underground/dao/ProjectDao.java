@@ -35,6 +35,10 @@ public interface ProjectDao {
                   @Param("businessId") String businessId,
                   @Param("fileNames") List<String> fileNames) throws RuntimeException;
 
+    // 从FILE_UPLOAD表删除对应的文件
+    void deleteFiles(@Param("type") Integer type,
+                     @Param("businessId") String businessId) throws RuntimeException;
+
     // 根据guid获取项目详情
     ProjectRecord getProjectInfo(@Param("guid") String guid);
 
