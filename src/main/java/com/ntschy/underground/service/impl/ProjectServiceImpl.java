@@ -19,18 +19,17 @@ import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
 import com.ntschy.underground.entity.dto.AddRectificationRequest;
-import com.ntschy.underground.entity.vo.ProjectInfoVO;
-import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
 import com.ntschy.underground.enums.UploadFileType;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.Utils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -40,9 +39,18 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
-    public ProjectInfoVO getProjectInfo(String projectId) {
+    public Result getProjectInfo(String guid) {
 
-        return projectDao.getProjectInfo(projectId);
+        ProjectRecord projectRecord = projectDao.getProjectInfo(guid);
+
+        if (!ObjectUtils.isEmpty(projectRecord)) {
+            List<String> fileNames = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
+            projectRecord.setFileNames(fileNames);
+        } else {
+            return new Result(false, "获取项目信息失败!!!");
+        }
+
+        return new Result<>(projectRecord);
 
     }
 

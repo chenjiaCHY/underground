@@ -15,11 +15,8 @@ import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.AddInspectionRequest;
 import com.ntschy.underground.entity.dto.AddProjectRequest;
 import com.ntschy.underground.entity.dto.AddRectificationRequest;
-import com.ntschy.underground.entity.vo.ProjectInfoVO;
 
 public interface ProjectService {
-    ProjectInfoVO getProjectInfo(String projectId);
-
     // 新增项目
     Result addProject(AddProjectRequest addProjectRequest) throws RuntimeException;
 
@@ -28,4 +25,7 @@ public interface ProjectService {
 
     // 新增整改
     Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException;
+
+    // 根据guid获取项目详情
+    Result getProjectInfo(String guid) throws RuntimeException;
 }

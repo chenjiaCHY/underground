@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ntschy.underground.dao.ProjectDao">
 
-    <select id="getProjectInfo" resultType="com.ntschy.underground.entity.vo.ProjectInfoVO">
-        SELECT ProjectId, Scope, Name, CreateTime, CreateUser
-        FROM PROJECT
-        WHERE ProjectId = #{projectId,jdbcType=VARCHAR}
-    </select>
-
     <insert id="addProject">
         INSERT INTO PROJECT(ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType)
         VALUES
@@ -35,5 +29,16 @@
         VALUES
         (#{rectificationId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspectionId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
     </insert>
+
+    <select id="getProjectInfo" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
+        SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
+        FROM PROJECT
+        WHERE Guid = #{guid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getFiles" resultType="java.lang.String">
+        SELECT FileName FROM FILE_UPLOAD
+        WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

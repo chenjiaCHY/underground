@@ -14,7 +14,6 @@ package com.ntschy.underground.dao;
 import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
-import com.ntschy.underground.entity.vo.ProjectInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,8 +21,6 @@ import java.util.List;
 
 @Mapper
 public interface ProjectDao {
-    ProjectInfoVO getProjectInfo(@Param("projectId") String projectId);
-
     // 新增项目
     void addProject(ProjectRecord projectRecord) throws RuntimeException;
 
@@ -37,4 +34,11 @@ public interface ProjectDao {
     void addFiles(@Param("type") Integer type,
                   @Param("businessId") String businessId,
                   @Param("fileNames") List<String> fileNames) throws RuntimeException;
+
+    // 根据guid获取项目详情
+    ProjectRecord getProjectInfo(@Param("guid") String guid);
+
+    // 获取图片
+    List<String> getFiles(@Param("type") Integer type,
+                          @Param("businessId") String businessId) throws RuntimeException;
 }

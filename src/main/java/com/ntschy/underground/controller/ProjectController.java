@@ -95,5 +95,20 @@ public class ProjectController {
         }
     }
 
+    /**
+     * 根据guid获取项目详情
+     * @param guid
+     * @return
+     */
+    @GetMapping("/getProjectInfo")
+    @ResponseBody
+    public Result getProjectInfo(@RequestParam("guid") String guid) {
+        try {
+            Result result = projectService.getProjectInfo(guid);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
 
 }
