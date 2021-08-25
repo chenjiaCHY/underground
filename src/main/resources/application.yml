@@ -38,15 +38,10 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
-#    - /authority/roleModify
-#    - /authority/userModify
-#    - /authority/getActionList
-#    - /authority/getFullRoleList
-#    - /authority/getRoleList
-#    - /authority/getUserList
-#    - /authority/getRoleInfo
-#    - /authority/getUserInfo
-#    - /authority/activeUser
+    - /project/uploadImage
+    - /project/addProject
+    - /project/addInspection
+
 
 allow:
   originList:
@@ -69,3 +64,6 @@ zuul:
 
 server:
   port: 9099
+
+file:
+  uploadPath: /users/chenjia/Downloads/file/

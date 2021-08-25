@@ -8,4 +8,26 @@
         WHERE ProjectId = #{projectId,jdbcType=VARCHAR}
     </select>
 
+    <insert id="addProject">
+        INSERT INTO PROJECT(ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType)
+        VALUES
+        (#{projectId,jdbcType=VARCHAR}, #{projectScope,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{guid,jdbcType=VARCHAR}, #{shapeType,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="addFiles">
+        INSERT INTO FILE_UPLOAD(FileName, Type, BusinessId)
+        VALUES
+        <foreach collection="fileNames" item="item" separator=",">
+            (#{item,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{businessId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <insert id="addInspection">
+        INSERT INTO INSPECTION(InspectionId, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment)
+        VALUES
+        (#{inspectionId,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+        #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER}, '')
+    </insert>
+
 </mapper>
