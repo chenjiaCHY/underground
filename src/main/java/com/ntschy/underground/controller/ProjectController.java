@@ -12,10 +12,7 @@
 package com.ntschy.underground.controller;
 
 import com.ntschy.underground.entity.base.Result;
-import com.ntschy.underground.entity.dto.AddInspectionRequest;
-import com.ntschy.underground.entity.dto.AddProjectFileRequest;
-import com.ntschy.underground.entity.dto.AddProjectRequest;
-import com.ntschy.underground.entity.dto.AddRectificationRequest;
+import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,5 +124,22 @@ public class ProjectController {
             return new Result(false, e.getMessage());
         }
     }
+
+    /**
+     * 查询巡检记录
+     * @param queryInspectionRequest
+     * @return
+     */
+    @PostMapping("/getInspectionList")
+    @ResponseBody
+    public Result getInspectionList(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
+        try {
+            Result result = projectService.getInspectionList(queryInspectionRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
 
 }

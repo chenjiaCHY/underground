@@ -38,5 +38,7 @@ public class InspectionRecord {
 
     private String rectifyComment;
 
+    private String sort;
+
     private List<String> fileNames;
 }

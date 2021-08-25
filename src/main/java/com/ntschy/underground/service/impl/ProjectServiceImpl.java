@@ -16,10 +16,9 @@ import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
 import com.ntschy.underground.entity.base.Result;
-import com.ntschy.underground.entity.dto.AddInspectionRequest;
-import com.ntschy.underground.entity.dto.AddProjectFileRequest;
-import com.ntschy.underground.entity.dto.AddProjectRequest;
-import com.ntschy.underground.entity.dto.AddRectificationRequest;
+import com.ntschy.underground.entity.dto.*;
+import com.ntschy.underground.entity.vo.InspectionVO;
+import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
 import com.ntschy.underground.enums.UploadFileType;
 import com.ntschy.underground.service.ProjectService;
@@ -29,6 +28,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -96,13 +96,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         String inspectionId = Utils.GenerateUUID(32);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat sortFormat = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = new Date();
 
         // 插入一条记录到INSPECTION表中
         InspectionRecord inspectionRecord = new InspectionRecord();
 
         inspectionRecord.setInspectionId(inspectionId);
-        inspectionRecord.setCreateTime(sdf.format(new Date()));
+        inspectionRecord.setCreateTime(dateFormat.format(currentDate));
         inspectionRecord.setInspector(addInspectionRequest.getInspector());
         inspectionRecord.setPhone(addInspectionRequest.getPhone());
         inspectionRecord.setType(addInspectionRequest.getInspectionType().getCode());
@@ -110,6 +112,7 @@ public class ProjectServiceImpl implements ProjectService {
         inspectionRecord.setAddress(addInspectionRequest.getAddress());
         inspectionRecord.setDescription(addInspectionRequest.getDescription());
         inspectionRecord.setProgress(ProgressType.NOT_REVIEW.getCode());
+        inspectionRecord.setSort(sortFormat.format(currentDate));
 
         projectDao.addInspection(inspectionRecord);
 
@@ -130,15 +133,19 @@ public class ProjectServiceImpl implements ProjectService {
 
         String rectificationId = Utils.GenerateUUID(32);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat sortFormat = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date currentDate = new Date();
 
         // 插入一条记录到INSPECTION表中
         RectificationRecord rectificationRecord = new RectificationRecord();
 
         rectificationRecord.setRectificationId(rectificationId);
-        rectificationRecord.setCreateTime(sdf.format(new Date()));
+        rectificationRecord.setCreateTime(dateFormat.format(new Date()));
         rectificationRecord.setInspectionId(addRectificationRequest.getInspectionId());
         rectificationRecord.setDescription(addRectificationRequest.getDescription());
+        rectificationRecord.setSort(sortFormat.format(currentDate));
+        rectificationRecord.setRectifyUser(addRectificationRequest.getRectifyUser());
 
         projectDao.addRectification(rectificationRecord);
 
@@ -165,6 +172,66 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.addFiles(UploadFileType.PROJECT.getCode(), addProjectFileRequest.getProjectId(), addProjectFileRequest.getFileNames());
 
         return new Result(true, "增加图纸成功!!!");
+    }
+
+    /**
+     * 查询巡检记录
+     * @param queryInspectionRequest
+     * @return
+     * @throws RuntimeException
+     */
+    public Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+
+        Integer progress = null;
+        Integer type = null;
+
+        if (queryInspectionRequest.getProgress() != null) {
+            progress = queryInspectionRequest.getProgress().getCode();
+        }
+        if (queryInspectionRequest.getType() != null) {
+            type = queryInspectionRequest.getType().getCode();
+        }
+
+        List<InspectionRecord> inspectionRecords = projectDao.getInspectionList(progress, queryInspectionRequest.getCreateTime(), type);
+
+        List<InspectionVO> inspectionVOList = new ArrayList<>();
+
+        // 这两个变量用来给巡检编号-XJ210825001
+        int index = 1;
+        String beginDate = "000000";
+
+        for (InspectionRecord inspectionRecord : inspectionRecords) {
+            InspectionVO inspectionVO = new InspectionVO();
+
+            inspectionVO.setAddress(inspectionRecord.getAddress());
+            inspectionVO.setCreateTime(inspectionRecord.getCreateTime());
+            inspectionVO.setDescription(inspectionRecord.getDescription());
+            inspectionVO.setInspectionId(inspectionRecord.getInspectionId());
+            inspectionVO.setInspector(inspectionRecord.getInspector());
+            inspectionVO.setPhone(inspectionRecord.getPhone());
+            inspectionVO.setProgress(ProgressType.getName(inspectionRecord.getProgress()));
+            inspectionVO.setProjectName(inspectionRecord.getProjectName());
+            inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
+
+            String sortDate = inspectionRecord.getSort().substring(0, 6);
+
+            if (!beginDate.equals(sortDate)) {
+                index = 1;
+                beginDate = sortDate;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("XJ");
+            sb.append(sortDate);
+            sb.append(String.format("%03d", index));
+            inspectionVO.setInspectionNumber(sb.toString());
+
+            index ++;
+            inspectionVOList.add(inspectionVO);
+        }
+
+
+        return new Result<>(inspectionVOList);
     }
 
 }

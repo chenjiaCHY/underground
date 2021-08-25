@@ -45,4 +45,9 @@ public interface ProjectDao {
     // 获取图片
     List<String> getFiles(@Param("type") Integer type,
                           @Param("businessId") String businessId) throws RuntimeException;
+
+    // 查询巡检记录
+    List<InspectionRecord> getInspectionList(@Param("progress") Integer progress,
+                                             @Param("createTime") String createTime,
+                                             @Param("type") Integer type) throws RuntimeException;
 }

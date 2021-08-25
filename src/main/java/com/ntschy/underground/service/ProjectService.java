@@ -12,10 +12,7 @@
 package com.ntschy.underground.service;
 
 import com.ntschy.underground.entity.base.Result;
-import com.ntschy.underground.entity.dto.AddInspectionRequest;
-import com.ntschy.underground.entity.dto.AddProjectFileRequest;
-import com.ntschy.underground.entity.dto.AddProjectRequest;
-import com.ntschy.underground.entity.dto.AddRectificationRequest;
+import com.ntschy.underground.entity.dto.*;
 
 public interface ProjectService {
     // 新增项目
@@ -32,4 +29,7 @@ public interface ProjectService {
 
     // 增加项目图纸
     Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;
+
+    // 查询巡检记录
+    Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
 }

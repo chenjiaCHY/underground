@@ -18,16 +18,17 @@
     </insert>
 
     <insert id="addInspection">
-        INSERT INTO INSPECTION(InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment)
+        INSERT INTO INSPECTION(InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort)
         VALUES
         (#{inspectionId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-        #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER}, '')
+        #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER}, '', #{sort,jdbcType=VARCHAR})
     </insert>
 
     <insert id="addRectification">
-        INSERT INTO RECTIFICATION(RectificationId, CreateTime, InspectionId, Description)
+        INSERT INTO RECTIFICATION(RectificationId, CreateTime, InspectionId, Description, Sort, RectifyUser)
         VALUES
-        (#{rectificationId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspectionId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+        (#{rectificationId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspectionId,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, #{rectifyUser,jdbcType=VARCHAR})
     </insert>
 
     <select id="getProjectInfo" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
@@ -45,5 +46,21 @@
         DELETE FROM FILE_UPLOAD
         WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
     </delete>
+
+    <select id="getInspectionList" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
+        SELECT * FROM INSPECTION
+        <where>
+            <if test="progress != null">
+                AND Progress = #{progress,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND CreateTime = #{createTime,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                AND Type = #{type,jdbcType=INTEGER}
+            </if>
+        </where>
+        ORDER BY Sort
+    </select>
 
 </mapper>
