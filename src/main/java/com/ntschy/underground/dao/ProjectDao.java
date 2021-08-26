@@ -64,4 +64,9 @@ public interface ProjectDao {
 
     // 获取整改列表
     List<RectificationRecord> getRectificationList(@Param("inspectionId") String inspectionId) throws RuntimeException;
+
+    // 审阅巡检
+    void updateInspection(@Param("inspectionId") String inspectionId,
+                          @Param("progress") Integer progress,
+                          @Param("rectifyComment") String rectifyComment) throws RuntimeException;
 }

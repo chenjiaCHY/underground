@@ -41,4 +41,7 @@ public interface ProjectService {
 
     // 获取整改详情
     Result getRectificationInfo(RectificationVO rectificationVO) throws RuntimeException;
+
+    // 审阅巡检
+    Result reviewInspection(ReviewInspectionRequest reviewInspectionRequest) throws RuntimeException;
 }

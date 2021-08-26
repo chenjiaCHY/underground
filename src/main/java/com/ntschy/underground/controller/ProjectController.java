@@ -176,5 +176,19 @@ public class ProjectController {
         }
     }
 
-
+    /**
+     * 审阅巡检
+     * @param reviewInspectionRequest
+     * @return
+     */
+    @PostMapping("/reviewInspection")
+    @ResponseBody
+    public Result reviewInspection(@RequestBody @Validated ReviewInspectionRequest reviewInspectionRequest) {
+        try {
+            Result result = projectService.reviewInspection(reviewInspectionRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
 }

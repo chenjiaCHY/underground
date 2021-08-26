@@ -93,4 +93,13 @@
         ORDER BY Sort
     </select>
 
+    <update id="updateInspection">
+        UPDATE INSPECTION
+        SET
+        <if test="rectifyComment != null and rectifyComment != ''">
+            RectifyComment = #{rectifyComment,jdbcType=VARCHAR},
+        </if>
+        Progress = #{progress,jdbcType=INTEGER}
+        WHERE InspectionId = #{inspectionId,jdbcType=VARCHAR}
+    </update>
 </mapper>

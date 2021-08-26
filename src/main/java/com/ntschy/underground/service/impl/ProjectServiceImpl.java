@@ -323,4 +323,18 @@ public class ProjectServiceImpl implements ProjectService {
         return new Result<>(rectificationVO);
     }
 
+    /**
+     * 审阅巡检
+     * @param reviewInspectionRequest
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result reviewInspection(ReviewInspectionRequest reviewInspectionRequest) throws RuntimeException {
+
+        projectDao.updateInspection(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode(), reviewInspectionRequest.getRectifyComment());
+
+        return new Result(true, "审阅巡检成功!");
+    }
+
 }

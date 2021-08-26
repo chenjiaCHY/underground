@@ -47,6 +47,7 @@ whitelist:
     - /project/getInspectionList
     - /project/getInspectionInfo
     - /project/getRectificationInfo
+    - /project/reviewInspection
 
 
 allow:
