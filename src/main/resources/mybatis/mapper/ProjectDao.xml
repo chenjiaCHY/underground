@@ -47,8 +47,8 @@
         WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
     </delete>
 
-    <select id="getInspectionList" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
-        SELECT * FROM INSPECTION
+    <select id="getInspectionCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM INSPECTION
         <where>
             <if test="progress != null">
                 AND Progress = #{progress,jdbcType=INTEGER}
@@ -60,7 +60,30 @@
                 AND Type = #{type,jdbcType=INTEGER}
             </if>
         </where>
-        ORDER BY Sort
+    </select>
+
+    <select id="getInspectionList" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
+        SELECT * FROM (
+            SELECT ROW_NUMBER() OVER(ORDER BY Sort) rowNumber, InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort
+            FROM INSPECTION
+            <where>
+                <if test="progress != null">
+                    AND Progress = #{progress,jdbcType=INTEGER}
+                </if>
+                <if test="createTime != null and createTime != ''">
+                    AND CreateTime = #{createTime,jdbcType=VARCHAR}
+                </if>
+                <if test="type != null">
+                    AND Type = #{type,jdbcType=INTEGER}
+                </if>
+            </where>
+        ) t
+        WHERE t.rowNumber BETWEEN #{startNo} and #{endNo}
+    </select>
+
+    <select id="findCountBySort" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM INSPECTION
+        WHERE Sort >= #{beginSort,jdbcType=VARCHAR} AND Sort &lt; #{endSort,jdbcType=VARCHAR}
     </select>
 
 </mapper>

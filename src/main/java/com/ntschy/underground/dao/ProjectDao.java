@@ -46,8 +46,19 @@ public interface ProjectDao {
     List<String> getFiles(@Param("type") Integer type,
                           @Param("businessId") String businessId) throws RuntimeException;
 
+    // 查询巡检总数
+    Integer getInspectionCount(@Param("progress") Integer progress,
+                               @Param("createTime") String createTime,
+                               @Param("type") Integer type) throws RuntimeException;
+
     // 查询巡检记录
     List<InspectionRecord> getInspectionList(@Param("progress") Integer progress,
                                              @Param("createTime") String createTime,
-                                             @Param("type") Integer type) throws RuntimeException;
+                                             @Param("type") Integer type,
+                                             @Param("startNo") Integer startNo,
+                                             @Param("endNo") Integer endNo) throws RuntimeException;
+
+    // 根据Sort字段查询区间内数量
+    Integer findCountBySort(@Param("beginSort") String beginSort,
+                            @Param("endSort") String endSort) throws RuntimeException;
 }

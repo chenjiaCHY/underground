@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.controller;
 
+import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.service.ProjectService;
@@ -134,8 +135,8 @@ public class ProjectController {
     @ResponseBody
     public Result getInspectionList(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
         try {
-            Result result = projectService.getInspectionList(queryInspectionRequest);
-            return result;
+            PageQuery pageQuery = projectService.getInspectionList(queryInspectionRequest);
+            return new Result<>(pageQuery);
         } catch (Exception e) {
             return new Result(false, e.getMessage());
         }

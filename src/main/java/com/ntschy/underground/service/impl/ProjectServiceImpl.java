@@ -15,6 +15,7 @@ import com.ntschy.underground.dao.ProjectDao;
 import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
+import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
@@ -24,11 +25,13 @@ import com.ntschy.underground.enums.UploadFileType;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.Utils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -180,7 +183,10 @@ public class ProjectServiceImpl implements ProjectService {
      * @return
      * @throws RuntimeException
      */
-    public Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+    public PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+
+        Integer startNo = PageQuery.startLine(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize());
+        Integer endNo = PageQuery.endLine(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize());
 
         Integer progress = null;
         Integer type = null;
@@ -192,14 +198,25 @@ public class ProjectServiceImpl implements ProjectService {
             type = queryInspectionRequest.getType().getCode();
         }
 
-        List<InspectionRecord> inspectionRecords = projectDao.getInspectionList(progress, queryInspectionRequest.getCreateTime(), type);
+        Integer total = projectDao.getInspectionCount(progress, queryInspectionRequest.getCreateTime(), type);
+
+        List<InspectionRecord> inspectionRecords = projectDao.getInspectionList(progress, queryInspectionRequest.getCreateTime(), type, startNo, endNo);
+
+        // 如果没有查到，直接返回空
+        if (CollectionUtils.isEmpty(inspectionRecords)) {
+            PageQuery pageQuery = new PageQuery(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize(),
+                    total, Collections.emptyList());
+            return pageQuery;
+        }
 
         List<InspectionVO> inspectionVOList = new ArrayList<>();
 
-        // 这两个变量用来给巡检编号-XJ210825001
-        int index = 1;
-        String beginDate = "000000";
+        // 先查询一下第一条记录的Sort值，比如210825165314，这个时候要给它编号的话，必须知道同一天该条记录前面还有多少条记录
+        String endSort = inspectionRecords.get(0).getSort();
+        String beginSort = endSort.substring(0, 6) + "000000";
+        int index = projectDao.findCountBySort(beginSort, endSort) + 1;
 
+        beginSort = beginSort.substring(0, 6);
         for (InspectionRecord inspectionRecord : inspectionRecords) {
             InspectionVO inspectionVO = new InspectionVO();
 
@@ -215,9 +232,9 @@ public class ProjectServiceImpl implements ProjectService {
 
             String sortDate = inspectionRecord.getSort().substring(0, 6);
 
-            if (!beginDate.equals(sortDate)) {
+            if (!beginSort.equals(sortDate)) {
                 index = 1;
-                beginDate = sortDate;
+                beginSort = sortDate;
             }
 
             StringBuilder sb = new StringBuilder();
@@ -230,8 +247,10 @@ public class ProjectServiceImpl implements ProjectService {
             inspectionVOList.add(inspectionVO);
         }
 
+        PageQuery pageQuery = new PageQuery(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize(),
+                total, inspectionVOList);
 
-        return new Result<>(inspectionVOList);
+        return pageQuery;
     }
 
 }

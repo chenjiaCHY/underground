@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.service;
 
+import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 
@@ -31,5 +32,5 @@ public interface ProjectService {
     Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;
 
     // 查询巡检记录
-    Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
+    PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
 }
