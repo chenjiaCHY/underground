@@ -13,14 +13,17 @@ package com.ntschy.underground.entity.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 public class InspectionVO {
     // 编号
+    @NotBlank(message = "inspectionNumber不能为空")
     private String inspectionNumber;
 
     // 巡检id
+    @NotBlank(message = "inspectionId不能为空")
     private String inspectionId;
 
     // 巡检日期

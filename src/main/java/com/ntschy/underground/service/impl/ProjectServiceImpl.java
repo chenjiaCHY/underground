@@ -19,6 +19,7 @@ import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
+import com.ntschy.underground.entity.vo.RectificationVO;
 import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
 import com.ntschy.underground.enums.UploadFileType;
@@ -183,6 +184,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @return
      * @throws RuntimeException
      */
+    @Override
     public PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
 
         Integer startNo = PageQuery.startLine(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize());
@@ -251,6 +253,59 @@ public class ProjectServiceImpl implements ProjectService {
                 total, inspectionVOList);
 
         return pageQuery;
+    }
+
+    /**
+     * 获取巡检详情
+     * @param inspectionVO
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getInspectionInfo(InspectionVO inspectionVO) throws RuntimeException {
+
+        // 获取巡检照片
+        List<String> fileNames = projectDao.getFiles(UploadFileType.INSPECTION.getCode(), inspectionVO.getInspectionId());
+        inspectionVO.setFileNames(fileNames);
+
+        // 获取整改记录
+        List<RectificationRecord> rectificationRecords = projectDao.getRectificationList(inspectionVO.getInspectionId());
+
+        List<RectificationVO> rectificationVOS = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(rectificationRecords)) {
+
+            String beginSort = rectificationRecords.get(0).getSort().substring(0, 6);
+            Integer index = 1;
+
+            for (RectificationRecord rectificationRecord : rectificationRecords) {
+                RectificationVO rectificationVO = new RectificationVO();
+
+                rectificationVO.setCreateTime(rectificationRecord.getCreateTime());
+                rectificationVO.setDescription(rectificationRecord.getDescription());
+                rectificationVO.setRectificationId(rectificationRecord.getRectificationId());
+                rectificationVO.setInspectionId(rectificationRecord.getInspectionId());
+                rectificationVO.setRectifyUser(rectificationRecord.getRectifyUser());
+
+                String sortDate = rectificationRecord.getSort().substring(0, 6);
+
+                if (!beginSort.equals(sortDate)) {
+                    index = 1;
+                    beginSort = sortDate;
+                }
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("ZG");
+                sb.append(sortDate);
+                sb.append(String.format("%03d", index));
+                rectificationVO.setRectificationNumber(sb.toString());
+                rectificationVOS.add(rectificationVO);
+                index ++;
+            }
+        }
+
+        inspectionVO.setRectificationList(rectificationVOS);
+        return new Result<>(inspectionVO);
     }
 
 }

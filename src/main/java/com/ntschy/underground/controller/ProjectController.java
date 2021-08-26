@@ -14,6 +14,7 @@ package com.ntschy.underground.controller;
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
+import com.ntschy.underground.entity.vo.InspectionVO;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +138,22 @@ public class ProjectController {
         try {
             PageQuery pageQuery = projectService.getInspectionList(queryInspectionRequest);
             return new Result<>(pageQuery);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取巡检详情
+     * @param inspectionVO
+     * @return
+     */
+    @PostMapping("/getInspectionInfo")
+    @ResponseBody
+    public Result getInspectionInfo(@RequestBody @Validated InspectionVO inspectionVO) {
+        try {
+            Result result = projectService.getInspectionInfo(inspectionVO);
+            return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());
         }

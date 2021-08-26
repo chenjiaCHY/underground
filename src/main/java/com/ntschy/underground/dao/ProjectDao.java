@@ -61,4 +61,7 @@ public interface ProjectDao {
     // 根据Sort字段查询区间内数量
     Integer findCountBySort(@Param("beginSort") String beginSort,
                             @Param("endSort") String endSort) throws RuntimeException;
+
+    // 获取整改列表
+    List<RectificationRecord> getRectificationList(@Param("inspectionId") String inspectionId) throws RuntimeException;
 }

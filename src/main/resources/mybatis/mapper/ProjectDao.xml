@@ -86,4 +86,11 @@
         WHERE Sort >= #{beginSort,jdbcType=VARCHAR} AND Sort &lt; #{endSort,jdbcType=VARCHAR}
     </select>
 
+    <select id="getRectificationList" resultType="com.ntschy.underground.entity.DO.RectificationRecord">
+        SELECT RectificationId, CreateTime, InspectionId, Description, Sort, RectifyUser
+        FROM RECTIFICATION
+        WHERE InspectionId = #{inspectionId,jdbcType=VARCHAR}
+        ORDER BY Sort
+    </select>
+
 </mapper>
