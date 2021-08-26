@@ -308,4 +308,19 @@ public class ProjectServiceImpl implements ProjectService {
         return new Result<>(inspectionVO);
     }
 
+    /**
+     * 获取整改详情
+     * @param rectificationVO
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getRectificationInfo(RectificationVO rectificationVO) throws RuntimeException {
+        // 获取整改照片
+        List<String> fileNames = projectDao.getFiles(UploadFileType.RECTIFICATION.getCode(), rectificationVO.getRectificationId());
+        rectificationVO.setFileNames(fileNames);
+
+        return new Result<>(rectificationVO);
+    }
+
 }

@@ -15,6 +15,7 @@ import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
+import com.ntschy.underground.entity.vo.RectificationVO;
 
 public interface ProjectService {
     // 新增项目
@@ -37,4 +38,7 @@ public interface ProjectService {
 
     // 获取巡检详情
     Result getInspectionInfo(InspectionVO inspectionVO) throws RuntimeException;
+
+    // 获取整改详情
+    Result getRectificationInfo(RectificationVO rectificationVO) throws RuntimeException;
 }

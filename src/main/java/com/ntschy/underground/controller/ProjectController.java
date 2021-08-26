@@ -15,6 +15,7 @@ import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
+import com.ntschy.underground.entity.vo.RectificationVO;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,6 +154,22 @@ public class ProjectController {
     public Result getInspectionInfo(@RequestBody @Validated InspectionVO inspectionVO) {
         try {
             Result result = projectService.getInspectionInfo(inspectionVO);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取整改详情
+     * @param rectificationVO
+     * @return
+     */
+    @PostMapping("/getRectificationInfo")
+    @ResponseBody
+    public Result getRectificationInfo(@RequestBody @Validated RectificationVO rectificationVO) {
+        try {
+            Result result = projectService.getRectificationInfo(rectificationVO);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

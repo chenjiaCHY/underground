@@ -13,15 +13,18 @@ package com.ntschy.underground.entity.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 public class RectificationVO {
 
     // 编号
+    @NotBlank(message = "rectificationNumber不能为空")
     private String rectificationNumber;
 
     // 整改id
+    @NotBlank(message = "rectificationId不能为空")
     private String rectificationId;
 
     // 整改时间
