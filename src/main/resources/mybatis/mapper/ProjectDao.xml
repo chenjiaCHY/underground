@@ -102,4 +102,10 @@
         Progress = #{progress,jdbcType=INTEGER}
         WHERE InspectionId = #{inspectionId,jdbcType=VARCHAR}
     </update>
+
+    <select id="getInspectionByGuid" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
+        SELECT InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort
+        FROM INSPECTION
+        WHERE Guid = #{guid,jdbcType=VARCHAR}
+    </select>
 </mapper>

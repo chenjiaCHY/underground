@@ -27,7 +27,7 @@ public enum ProgressType {
     }
 
     public static String getName(int code) {
-        for (UploadFileType dt : UploadFileType.values()) {
+        for (ProgressType dt : ProgressType.values()) {
             if (dt.getCode() == code) {
                 return dt.getName();
             }

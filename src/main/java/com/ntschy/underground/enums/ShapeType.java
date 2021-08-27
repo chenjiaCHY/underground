@@ -26,7 +26,7 @@ public enum  ShapeType {
     }
 
     public static String getName(int code) {
-        for (UploadFileType dt : UploadFileType.values()) {
+        for (ShapeType dt : ShapeType.values()) {
             if (dt.getCode() == code) {
                 return dt.getName();
             }

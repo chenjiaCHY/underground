@@ -42,23 +42,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Resource
     private ProjectDao projectDao;
 
-
-    @Override
-    public Result getProjectInfo(String guid) {
-
-        ProjectRecord projectRecord = projectDao.getProjectInfo(guid);
-
-        if (!ObjectUtils.isEmpty(projectRecord)) {
-            List<String> fileNames = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
-            projectRecord.setFileNames(fileNames);
-        } else {
-            return new Result(false, "获取项目信息失败!!!");
-        }
-
-        return new Result<>(projectRecord);
-
-    }
-
     /**
      * 新建项目
      * @param addProjectRequest
@@ -156,8 +139,27 @@ public class ProjectServiceImpl implements ProjectService {
         // 将巡检照片文件名列表插入到FILE_UPLOAD表中
         projectDao.addFiles(UploadFileType.RECTIFICATION.getCode(), rectificationId, addRectificationRequest.getFileNames());
 
-
         return new Result(true, "新增整改成功!!!");
+    }
+
+    /**
+     * 获取项目详情
+     * @param guid
+     * @return
+     */
+    @Override
+    public Result getProjectInfo(String guid) {
+
+        ProjectRecord projectRecord = projectDao.getProjectInfo(guid);
+
+        if (!ObjectUtils.isEmpty(projectRecord)) {
+            List<String> fileNames = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
+            projectRecord.setFileNames(fileNames);
+        } else {
+            return new Result(false, "获取项目信息失败!!!");
+        }
+
+        return new Result<>(projectRecord);
     }
 
     /**
@@ -231,6 +233,7 @@ public class ProjectServiceImpl implements ProjectService {
             inspectionVO.setProgress(ProgressType.getName(inspectionRecord.getProgress()));
             inspectionVO.setProjectName(inspectionRecord.getProjectName());
             inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
+            inspectionVO.setRectifyComment(inspectionRecord.getRectifyComment());
 
             String sortDate = inspectionRecord.getSort().substring(0, 6);
 
@@ -335,6 +338,48 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.updateInspection(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode(), reviewInspectionRequest.getRectifyComment());
 
         return new Result(true, "审阅巡检成功!");
+    }
+
+    /**
+     * 通过guid查询巡检详情
+     * @param guid
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getInspectionByGuid(String guid) throws RuntimeException {
+
+        InspectionRecord inspectionRecord = projectDao.getInspectionByGuid(guid);
+
+        if (ObjectUtils.isEmpty(inspectionRecord)) {
+            return new Result(false, "没有找到对应的巡检记录！");
+        }
+
+        InspectionVO inspectionVO = new InspectionVO();
+
+        // 查询编号，即查询同一天前面还有多少条记录
+        String endSort = inspectionRecord.getSort();
+        String beginSort = endSort.substring(0, 6) + "000000";
+        int index = projectDao.findCountBySort(beginSort, endSort) + 1;
+        StringBuilder sb = new StringBuilder();
+        sb.append("XJ");
+        sb.append(endSort.substring(0, 6));
+        sb.append(String.format("%03d", index));
+        inspectionVO.setInspectionNumber(sb.toString());
+        inspectionVO.setAddress(inspectionRecord.getAddress());
+        inspectionVO.setCreateTime(inspectionRecord.getCreateTime());
+        inspectionVO.setDescription(inspectionRecord.getDescription());
+        inspectionVO.setInspectionId(inspectionRecord.getInspectionId());
+        inspectionVO.setInspector(inspectionRecord.getInspector());
+        inspectionVO.setPhone(inspectionRecord.getPhone());
+        inspectionVO.setProgress(ProgressType.getName(inspectionRecord.getProgress()));
+        inspectionVO.setProjectName(inspectionRecord.getProjectName());
+        inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
+        inspectionVO.setRectifyComment(inspectionRecord.getRectifyComment());
+
+        getInspectionInfo(inspectionVO);
+
+        return new Result<>(inspectionVO);
     }
 
 }

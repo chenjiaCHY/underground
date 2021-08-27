@@ -25,7 +25,7 @@ public enum  InspectionType {
     }
 
     public static String getName(int code) {
-        for (UploadFileType dt : UploadFileType.values()) {
+        for (InspectionType dt : InspectionType.values()) {
             if (dt.getCode() == code) {
                 return dt.getName();
             }
