@@ -24,12 +24,6 @@ spring:
         password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         type: com.zaxxer.hikari.HikariDataSource
-#      - key: slave2
-#        url: jdbc:sqlserver://192.168.35.27:1433;DatabaseName=ARCHIVE
-#        username: uAcer4Y33bbMbMobQKT0Ag==
-#        password: uAcer4Y33bbMbMobQKT0Ag==
-#        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-#        type: com.zaxxer.hikari.HikariDataSource
     aop:
       auto: true
       proxy-target-class: true
@@ -38,18 +32,6 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
-    - /project/uploadImage
-    - /project/addProject
-    - /project/addInspection
-    - /project/addRectification
-    - /project/getProjectInfo
-    - /project/addProjectFiles
-    - /project/getInspectionList
-    - /project/getInspectionInfo
-    - /project/getRectificationInfo
-    - /project/reviewInspection
-    - /project/getInspectionByGuid
-
 
 allow:
   originList:
