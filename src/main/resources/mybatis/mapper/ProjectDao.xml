@@ -18,10 +18,11 @@
     </insert>
 
     <insert id="addInspection">
-        INSERT INTO INSPECTION(InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort)
+        INSERT INTO INSPECTION(InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort, Guid)
         VALUES
-        (#{inspectionId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-        #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{progress,jdbcType=INTEGER}, '', #{sort,jdbcType=VARCHAR})
+        (#{inspectionId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{inspector,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        #{progress,jdbcType=INTEGER}, '', #{sort,jdbcType=VARCHAR}, #{guid,jdbcType=VARCHAR})
     </insert>
 
     <insert id="addRectification">

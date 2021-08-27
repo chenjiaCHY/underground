@@ -100,6 +100,7 @@ public class ProjectServiceImpl implements ProjectService {
         inspectionRecord.setDescription(addInspectionRequest.getDescription());
         inspectionRecord.setProgress(ProgressType.NOT_REVIEW.getCode());
         inspectionRecord.setSort(sortFormat.format(currentDate));
+        inspectionRecord.setGuid(addInspectionRequest.getGuid());
 
         projectDao.addInspection(inspectionRecord);
 
