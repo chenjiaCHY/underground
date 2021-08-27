@@ -31,5 +31,7 @@ public class AddInspectionRequest {
 
     private String description;
 
+    private String guid;
+
     private List<String> fileNames;
 }

@@ -40,5 +40,7 @@ public class InspectionRecord {
 
     private String sort;
 
+    private String guid;
+
     private List<String> fileNames;
 }
