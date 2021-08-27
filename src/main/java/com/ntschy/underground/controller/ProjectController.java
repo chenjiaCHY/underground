@@ -191,4 +191,20 @@ public class ProjectController {
             return new Result(false, e.getMessage());
         }
     }
+
+    /**
+     * 根据guid获取巡检记录详情
+     * @param guid
+     * @return
+     */
+    @GetMapping("/getInspectionByGuid")
+    @ResponseBody
+    public Result getInspectionByGuid(@RequestParam("guid") String guid) {
+        try {
+            Result result = projectService.getInspectionByGuid(guid);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
 }

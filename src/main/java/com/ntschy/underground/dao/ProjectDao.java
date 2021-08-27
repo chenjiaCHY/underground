@@ -69,4 +69,7 @@ public interface ProjectDao {
     void updateInspection(@Param("inspectionId") String inspectionId,
                           @Param("progress") Integer progress,
                           @Param("rectifyComment") String rectifyComment) throws RuntimeException;
+
+    // 通过guid查询巡检详情
+    InspectionRecord getInspectionByGuid(@Param("guid") String guid) throws RuntimeException;
 }
