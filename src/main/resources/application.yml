@@ -56,4 +56,4 @@ server:
   port: 9099
 
 file:
-  uploadPath: /users/chenjia/Downloads/file/
+  uploadPath: D:\\upload\
