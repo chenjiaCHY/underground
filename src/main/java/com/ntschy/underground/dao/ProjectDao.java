@@ -39,6 +39,9 @@ public interface ProjectDao {
     void deleteFiles(@Param("type") Integer type,
                      @Param("businessId") String businessId) throws RuntimeException;
 
+    // 获取项目列表
+    List<ProjectRecord> getProjectList() throws RuntimeException;
+
     // 根据guid获取项目详情
     ProjectRecord getProjectInfo(@Param("guid") String guid);
 
@@ -72,4 +75,9 @@ public interface ProjectDao {
 
     // 通过guid查询巡检详情
     InspectionRecord getInspectionByGuid(@Param("guid") String guid) throws RuntimeException;
+
+    // 查询所有巡检记录，不分页
+    List<InspectionRecord> getAllInspection(@Param("progress") Integer progress,
+                                            @Param("createTime") String createTime,
+                                            @Param("type") Integer type) throws RuntimeException;
 }

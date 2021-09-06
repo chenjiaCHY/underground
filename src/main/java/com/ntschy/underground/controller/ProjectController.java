@@ -97,6 +97,21 @@ public class ProjectController {
     }
 
     /**
+     * 获取项目列表，平板端使用
+     * @return
+     */
+    @GetMapping("/getProjectList")
+    @ResponseBody
+    public Result getProjectList() {
+        try {
+            Result result = projectService.getProjectList();
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
      * 根据guid获取项目详情
      * @param guid
      * @return
@@ -122,6 +137,22 @@ public class ProjectController {
     public Result addProjectFiles(@RequestBody @Validated AddProjectFileRequest addProjectFileRequest) {
         try {
             Result result = projectService.addProjectFiles(addProjectFileRequest);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 查询巡检列表，无分页，pad使用
+     * @param queryInspectionRequest
+     * @return
+     */
+    @PostMapping("/getAllInspection")
+    @ResponseBody
+    public Result getAllInspection(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
+        try {
+            Result result = projectService.getAllInspection(queryInspectionRequest);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

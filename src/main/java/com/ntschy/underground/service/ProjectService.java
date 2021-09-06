@@ -27,11 +27,17 @@ public interface ProjectService {
     // 新增整改
     Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException;
 
+    // 获取项目列表
+    Result getProjectList() throws RuntimeException;
+
     // 根据guid获取项目详情
     Result getProjectInfo(String guid) throws RuntimeException;
 
     // 增加项目图纸
     Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;
+
+    // 查询巡检记录，pad用，不分页
+    Result getAllInspection(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
 
     // 查询巡检记录
     PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;

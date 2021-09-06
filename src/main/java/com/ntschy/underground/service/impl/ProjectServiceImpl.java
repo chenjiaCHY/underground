@@ -31,10 +31,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -144,6 +141,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     /**
+     * 获取项目列表
+     * @return
+     */
+    @Override
+    public Result getProjectList() {
+        List<ProjectRecord> projectRecordList = projectDao.getProjectList();
+        projectRecordList = Optional.ofNullable(projectRecordList).orElse(Collections.emptyList());
+
+        return new Result<>(projectRecordList);
+    }
+
+    /**
      * 获取项目详情
      * @param guid
      * @return
@@ -179,6 +188,74 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.addFiles(UploadFileType.PROJECT.getCode(), addProjectFileRequest.getProjectId(), addProjectFileRequest.getFileNames());
 
         return new Result(true, "增加图纸成功!!!");
+    }
+
+    /**
+     * 查询巡检记录，pad用，不分页
+     * @param queryInspectionRequest
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getAllInspection(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+
+        Integer progress = null;
+        Integer type = null;
+
+        if (queryInspectionRequest.getProgress() != null) {
+            progress = queryInspectionRequest.getProgress().getCode();
+        }
+        if (queryInspectionRequest.getType() != null) {
+            type = queryInspectionRequest.getType().getCode();
+        }
+
+        List<InspectionRecord> inspectionRecords = projectDao.getAllInspection(progress, queryInspectionRequest.getCreateTime(), type);
+
+        // 如果没有查到，直接返回空
+        if (CollectionUtils.isEmpty(inspectionRecords)) {
+            return new Result(false, "未查到相关记录！");
+        }
+
+        List<InspectionVO> inspectionVOList = new ArrayList<>();
+
+        // 先查询一下第一条记录的Sort值，比如210825165314，这个时候要给它编号的话，必须知道同一天该条记录前面还有多少条记录
+        String endSort = inspectionRecords.get(0).getSort();
+        String beginSort = endSort.substring(0, 6) + "000000";
+        int index = projectDao.findCountBySort(beginSort, endSort) + 1;
+
+        beginSort = beginSort.substring(0, 6);
+        for (InspectionRecord inspectionRecord : inspectionRecords) {
+            InspectionVO inspectionVO = new InspectionVO();
+
+            inspectionVO.setAddress(inspectionRecord.getAddress());
+            inspectionVO.setCreateTime(inspectionRecord.getCreateTime());
+            inspectionVO.setDescription(inspectionRecord.getDescription());
+            inspectionVO.setInspectionId(inspectionRecord.getInspectionId());
+            inspectionVO.setInspector(inspectionRecord.getInspector());
+            inspectionVO.setPhone(inspectionRecord.getPhone());
+            inspectionVO.setProgress(ProgressType.getName(inspectionRecord.getProgress()));
+            inspectionVO.setProjectName(inspectionRecord.getProjectName());
+            inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
+            inspectionVO.setRectifyComment(inspectionRecord.getRectifyComment());
+
+            String sortDate = inspectionRecord.getSort().substring(0, 6);
+
+            if (!beginSort.equals(sortDate)) {
+                index = 1;
+                beginSort = sortDate;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("XJ");
+            sb.append(sortDate);
+            sb.append(String.format("%03d", index));
+            inspectionVO.setInspectionNumber(sb.toString());
+
+            index ++;
+            inspectionVOList.add(inspectionVO);
+        }
+
+        return new Result<>(inspectionVOList);
     }
 
     /**

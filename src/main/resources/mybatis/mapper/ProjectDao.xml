@@ -109,4 +109,25 @@
         FROM INSPECTION
         WHERE Guid = #{guid,jdbcType=VARCHAR}
     </select>
+
+    <select id="getAllInspection" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
+        SELECT InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort
+        FROM INSPECTION
+        <where>
+            <if test="progress != null">
+                AND Progress = #{progress,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                AND CreateTime = #{createTime,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                AND Type = #{type,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <select id="getProjectList" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
+        SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
+        FROM PROJECT
+    </select>
 </mapper>
