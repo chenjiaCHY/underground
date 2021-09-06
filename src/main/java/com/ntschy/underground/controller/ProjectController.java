@@ -150,7 +150,7 @@ public class ProjectController {
      */
     @PostMapping("/getAllInspection")
     @ResponseBody
-    public Result getAllInspection(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
+    public Result getAllInspection(@RequestBody QueryInspectionRequest queryInspectionRequest) {
         try {
             Result result = projectService.getAllInspection(queryInspectionRequest);
             return result;
