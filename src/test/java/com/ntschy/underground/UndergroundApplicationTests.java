@@ -13,9 +13,13 @@ class UndergroundApplicationTests {
 
 	@Test
 	void contextLoads() {
-		for (int i = 0; i < 10; i ++) {
-			System.out.println(Utils.GenerateUUID(32));
-		}
+//		BasicTextEncryptor encryptor = new BasicTextEncryptor();
+//		encryptor.setPassword("NTSchy123456");
+//		System.out.println(encryptor.encrypt("sde"));
+
+//		for (int i = 0; i < 10; i ++) {
+//			System.out.println(Utils.GenerateUUID(32));
+//		}
 	}
 
 }

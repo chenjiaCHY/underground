@@ -31,7 +31,11 @@ public class AddInspectionRequest {
 
     private String description;
 
-    private String guid;
+    // 天地图坐标x
+    private String xt;
+
+    // 天地图坐标y
+    private String yt;
 
     private List<String> fileNames;
 }

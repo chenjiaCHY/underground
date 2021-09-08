@@ -15,6 +15,7 @@ import com.ntschy.underground.enums.ShapeType;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -29,11 +30,10 @@ public class AddProjectRequest {
 
     private String createUser;
 
-    @NotBlank(message = "guid不能为空")
-    private String guid;
-
     @NotNull(message = "形状类型不能为空")
     private ShapeType shapeType;
+
+    private List<String> points;
 
     private List<String> fileNames;
 }

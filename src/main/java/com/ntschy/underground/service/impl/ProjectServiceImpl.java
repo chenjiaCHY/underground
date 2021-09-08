@@ -49,6 +49,11 @@ public class ProjectServiceImpl implements ProjectService {
     public Result addProject(AddProjectRequest addProjectRequest) throws RuntimeException {
 
         String projectId = Utils.GenerateUUID(32);
+        String guid = Utils.GenerateUUID(32);
+
+        // 插入一条记录到空间表
+
+        // 转换坐标后插入到坐标转换表
 
         // 插入一条记录到PROJECT表中
         ProjectRecord projectRecord = new ProjectRecord();
@@ -58,7 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectRecord.setProjectName(addProjectRequest.getProjectName());
         projectRecord.setCreateTime(addProjectRequest.getCreateTime());
         projectRecord.setCreateUser(addProjectRequest.getCreateUser());
-        projectRecord.setGuid(addProjectRequest.getGuid());
+        projectRecord.setGuid(guid);
         projectRecord.setShapeType(addProjectRequest.getShapeType().getCode());
 
         projectDao.addProject(projectRecord);
@@ -79,6 +84,10 @@ public class ProjectServiceImpl implements ProjectService {
     public Result addInspection(AddInspectionRequest addInspectionRequest) throws RuntimeException {
 
         String inspectionId = Utils.GenerateUUID(32);
+        String guid = Utils.GenerateUUID(32);
+        // 将天地图坐标转换成PC端坐标
+
+        // 可能需要将坐标点插入到空间表中
 
         SimpleDateFormat sortFormat = new SimpleDateFormat("yyMMddHHmmss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -97,7 +106,7 @@ public class ProjectServiceImpl implements ProjectService {
         inspectionRecord.setDescription(addInspectionRequest.getDescription());
         inspectionRecord.setProgress(ProgressType.NOT_REVIEW.getCode());
         inspectionRecord.setSort(sortFormat.format(currentDate));
-        inspectionRecord.setGuid(addInspectionRequest.getGuid());
+        inspectionRecord.setGuid(guid);
 
         projectDao.addInspection(inspectionRecord);
 
