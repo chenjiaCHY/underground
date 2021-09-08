@@ -16,13 +16,14 @@ import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
 import com.ntschy.underground.entity.vo.RectificationVO;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProjectService {
     // 新增项目
     Result addProject(AddProjectRequest addProjectRequest) throws RuntimeException;
 
     // 新增巡检
-    Result addInspection(AddInspectionRequest addInspectionRequest) throws RuntimeException;
+    Result addInspection(AddInspectionRequest addInspectionRequest, MultipartFile[] files) throws RuntimeException;
 
     // 新增整改
     Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException;

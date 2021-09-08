@@ -13,8 +13,10 @@ package com.ntschy.underground.service.impl;
 
 import com.ntschy.underground.dao.ProjectDao;
 import com.ntschy.underground.entity.DO.InspectionRecord;
+import com.ntschy.underground.entity.DO.ProjectPoint;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
+import com.ntschy.underground.entity.ShapePoint;
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
@@ -24,10 +26,14 @@ import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
 import com.ntschy.underground.enums.UploadFileType;
 import com.ntschy.underground.service.ProjectService;
+import com.ntschy.underground.utils.ToolUpload;
 import com.ntschy.underground.utils.Utils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -39,6 +45,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Resource
     private ProjectDao projectDao;
 
+    @Value("${file.uploadPath}")
+    private String uploadPath;
+
     /**
      * 新建项目
      * @param addProjectRequest
@@ -49,11 +58,33 @@ public class ProjectServiceImpl implements ProjectService {
     public Result addProject(AddProjectRequest addProjectRequest) throws RuntimeException {
 
         String projectId = Utils.GenerateUUID(32);
-        String guid = Utils.GenerateUUID(32);
 
-        // 插入一条记录到空间表
+        // 转换点坐标并存到PROJECT_POINTS表
+        List<ShapePoint> points = addProjectRequest.getPoints();
+        if (CollectionUtils.isEmpty(points)) {
+            return new Result(false, "坐标点列表为空");
+        }
 
-        // 转换坐标后插入到坐标转换表
+        List<ProjectPoint> projectPointList = new ArrayList<>();
+        int index = 1;
+        for (ShapePoint point : points) {
+            String pid = Utils.GenerateUUID(32);
+            ProjectPoint projectPoint = new ProjectPoint();
+            projectPoint.setPid(pid);
+            projectPoint.setGuid(addProjectRequest.getGuid());
+            projectPoint.setX(point.getX());
+            projectPoint.setY(point.getY());
+            // 坐标转换
+            projectPoint.setXt(point.getX());
+            projectPoint.setYt(point.getY());
+            projectPoint.setIndex(index);
+            projectPoint.setGeoType(addProjectRequest.getShapeType().getCode());
+            index ++;
+            projectPointList.add(projectPoint);
+        }
+
+        // 一次性插入到PROJECT_POINTS表
+        projectDao.insertProjectPoints(projectPointList);
 
         // 插入一条记录到PROJECT表中
         ProjectRecord projectRecord = new ProjectRecord();
@@ -63,7 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectRecord.setProjectName(addProjectRequest.getProjectName());
         projectRecord.setCreateTime(addProjectRequest.getCreateTime());
         projectRecord.setCreateUser(addProjectRequest.getCreateUser());
-        projectRecord.setGuid(guid);
+        projectRecord.setGuid(addProjectRequest.getGuid());
         projectRecord.setShapeType(addProjectRequest.getShapeType().getCode());
 
         projectDao.addProject(projectRecord);
@@ -81,13 +112,20 @@ public class ProjectServiceImpl implements ProjectService {
      * @throws RuntimeException
      */
     @Override
-    public Result addInspection(AddInspectionRequest addInspectionRequest) throws RuntimeException {
+    public Result addInspection(AddInspectionRequest addInspectionRequest, MultipartFile[] files) throws RuntimeException {
 
         String inspectionId = Utils.GenerateUUID(32);
-        String guid = Utils.GenerateUUID(32);
-        // 将天地图坐标转换成PC端坐标
 
-        // 可能需要将坐标点插入到空间表中
+        // 上传照片
+        List<String> fileNames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            System.out.println(file.getOriginalFilename());
+
+            String fileName = ToolUpload.fileUpload2(file, uploadPath);
+            if (!StringUtils.isEmpty(fileName)) {
+                fileNames.add(fileName);
+            }
+        }
 
         SimpleDateFormat sortFormat = new SimpleDateFormat("yyMMddHHmmss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -106,12 +144,16 @@ public class ProjectServiceImpl implements ProjectService {
         inspectionRecord.setDescription(addInspectionRequest.getDescription());
         inspectionRecord.setProgress(ProgressType.NOT_REVIEW.getCode());
         inspectionRecord.setSort(sortFormat.format(currentDate));
-        inspectionRecord.setGuid(guid);
+        inspectionRecord.setXt(addInspectionRequest.getXt());
+        inspectionRecord.setYt(addInspectionRequest.getYt());
+        // 转换下坐标
+        inspectionRecord.setX(addInspectionRequest.getXt());
+        inspectionRecord.setY(addInspectionRequest.getYt());
 
         projectDao.addInspection(inspectionRecord);
 
         // 将巡检照片文件名列表插入到FILE_UPLOAD表中
-        projectDao.addFiles(UploadFileType.INSPECTION.getCode(), inspectionId, addInspectionRequest.getFileNames());
+        projectDao.addFiles(UploadFileType.INSPECTION.getCode(), inspectionId, fileNames);
 
         return new Result(true, "新增巡检成功!!!");
     }

@@ -71,9 +71,9 @@ public class ProjectController {
      */
     @PostMapping("/addInspection")
     @ResponseBody
-    public Result addInspection(@RequestBody @Validated AddInspectionRequest addInspectionRequest) {
+    public Result addInspection(@Validated AddInspectionRequest addInspectionRequest, @RequestParam("files") MultipartFile[] files) {
         try {
-            Result result = projectService.addInspection(addInspectionRequest);
+            Result result = projectService.addInspection(addInspectionRequest, files);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

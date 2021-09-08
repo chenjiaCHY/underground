@@ -13,6 +13,7 @@ package com.ntschy.underground.dao;
 
 import com.ntschy.underground.datasource.annotation.DataSource;
 import com.ntschy.underground.entity.DO.InspectionRecord;
+import com.ntschy.underground.entity.DO.ProjectPoint;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
 import org.apache.ibatis.annotations.Mapper;
@@ -96,4 +97,8 @@ public interface ProjectDao {
     List<InspectionRecord> getAllInspection(@Param("progress") Integer progress,
                                             @Param("createTime") String createTime,
                                             @Param("type") Integer type) throws RuntimeException;
+
+    // 坐标点转换后插入到表中
+    @DataSource("slave1")
+    void insertProjectPoints(@Param("pointList") List<ProjectPoint> pointList) throws RuntimeException;
 }

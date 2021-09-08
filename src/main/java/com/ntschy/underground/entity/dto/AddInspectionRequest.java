@@ -14,6 +14,7 @@ package com.ntschy.underground.entity.dto;
 import com.ntschy.underground.enums.InspectionType;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -32,10 +33,10 @@ public class AddInspectionRequest {
     private String description;
 
     // 天地图坐标x
+    @NotBlank(message = "x坐标不能为空")
     private String xt;
 
     // 天地图坐标y
+    @NotBlank(message = "y坐标不能为空")
     private String yt;
-
-    private List<String> fileNames;
 }

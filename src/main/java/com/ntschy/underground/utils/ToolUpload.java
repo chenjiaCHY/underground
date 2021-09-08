@@ -49,4 +49,39 @@ public class ToolUpload {
             }
         }
     }
+
+    public static String fileUpload2(MultipartFile file, String tempPath) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if (null == file) {
+            return "";
+        } else if (file.isEmpty()) {
+            return "";
+        } else {
+
+            File fileDir = new File(tempPath);
+            if (!fileDir.exists()) {
+                fileDir.mkdirs();
+            }
+
+            String originFileName = file.getOriginalFilename();
+
+            String suffix = originFileName.substring(originFileName.lastIndexOf(".") + 1);
+
+            String fileName = Utils.GenerateUUID(32);
+
+            String uploadFilePath = tempPath + fileName + "." + suffix;
+
+            File dest = new File(uploadFilePath);
+
+            try {
+                file.transferTo(dest);
+                String currentFileName = fileName + "." + suffix;
+                return currentFileName;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+    }
 }

@@ -40,7 +40,13 @@ public class InspectionRecord {
 
     private String sort;
 
-    private String guid;
+    private String xt;
+
+    private String yt;
+
+    private String x;
+
+    private String y;
 
     private List<String> fileNames;
 }

@@ -130,4 +130,12 @@
         SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
         FROM PROJECT
     </select>
+
+    <insert id="insertProjectPoints">
+        INSERT INTO PROJECT_POINTS(PID, GUID, X, Y, Xt, Yt, Index, GeoType)
+        VALUES
+        <foreach collection="pointList" item="item" separator=",">
+            (#{item.pid}, #{item.guid}, #{item.x}, #{item.y}, #{item.xt}, #{item.yt}, #{item.index}, #{item.geoType})
+        </foreach>
+    </insert>
 </mapper>
