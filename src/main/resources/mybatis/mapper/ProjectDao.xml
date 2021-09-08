@@ -126,9 +126,45 @@
         </where>
     </select>
 
-    <select id="getProjectList" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
-        SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
-        FROM PROJECT
+    <resultMap id="ProjectInfoVO" type="com.ntschy.underground.entity.DO.ProjectRecord">
+        <result column="ProjectId" property="projectId"></result>
+        <result column="ProjectScope" property="projectScope"></result>
+        <result column="ProjectName" property="projectName"></result>
+        <result column="CreateTime" property="createTime"></result>
+        <result column="CreateUser" property="createUser"></result>
+        <result column="Guid" property="guid"></result>
+        <result column="ShapeType" property="shapeType"></result>
+        <collection property="points" ofType="com.ntschy.underground.entity.DO.ProjectPoint">
+            <id column="PID" property="pid"></id>
+            <result column="GUID" property="guid"></result>
+            <result column="X" property="x"></result>
+            <result column="Y" property="y"></result>
+            <result column="Xt" property="xt"></result>
+            <result column="Yt" property="yt"></result>
+            <result column="Index" property="index"></result>
+            <result column="GeoType" property="geoType"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="getProjectList" resultMap="ProjectInfoVO">
+        SELECT
+        PROJECT.ProjectId,
+        PROJECT.ProjectScope,
+        PROJECT.ProjectName,
+        PROJECT.CreateTime,
+        PROJECT.CreateUser,
+        PROJECT.Guid,
+        PROJECT.ShapeType,
+        PROJECT_POINTS.PID,
+        PROJECT_POINTS.GUID,
+        PROJECT_POINTS.X,
+        PROJECT_POINTS.Y,
+        PROJECT_POINTS.Xt,
+        PROJECT_POINTS.Yt,
+        PROJECT_POINTS.Index,
+        PROJECT_POINTS.GeoType
+        FROM PROJECT LEFT JOIN PROJECT_POINTS ON PROJECT.Guid = PROJECT_POINTS.GUID
     </select>
 
     <insert id="insertProjectPoints">

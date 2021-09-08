@@ -32,5 +32,7 @@ public class ProjectRecord {
 
     private Integer shapeType;
 
+    private List<ProjectPoint> points;
+
     private List<String> fileNames;
 }

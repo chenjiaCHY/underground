@@ -148,9 +148,9 @@ public class ProjectController {
      * @param queryInspectionRequest
      * @return
      */
-    @PostMapping("/getAllInspection")
+    @PostMapping("/getInspectionList")
     @ResponseBody
-    public Result getAllInspection(@RequestBody QueryInspectionRequest queryInspectionRequest) {
+    public Result getInspectionList(@RequestBody QueryInspectionRequest queryInspectionRequest) {
         try {
             Result result = projectService.getAllInspection(queryInspectionRequest);
             return result;
@@ -164,9 +164,9 @@ public class ProjectController {
      * @param queryInspectionRequest
      * @return
      */
-    @PostMapping("/getInspectionList")
+    @PostMapping("/getInspectionPage")
     @ResponseBody
-    public Result getInspectionList(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
+    public Result getInspectionPage(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
         try {
             PageQuery pageQuery = projectService.getInspectionList(queryInspectionRequest);
             return new Result<>(pageQuery);
@@ -217,22 +217,6 @@ public class ProjectController {
     public Result reviewInspection(@RequestBody @Validated ReviewInspectionRequest reviewInspectionRequest) {
         try {
             Result result = projectService.reviewInspection(reviewInspectionRequest);
-            return result;
-        } catch (Exception e) {
-            return new Result(false, e.getMessage());
-        }
-    }
-
-    /**
-     * 根据guid获取巡检记录详情
-     * @param guid
-     * @return
-     */
-    @GetMapping("/getInspectionByGuid")
-    @ResponseBody
-    public Result getInspectionByGuid(@RequestParam("guid") String guid) {
-        try {
-            Result result = projectService.getInspectionByGuid(guid);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

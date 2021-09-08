@@ -51,7 +51,4 @@ public interface ProjectService {
 
     // 审阅巡检
     Result reviewInspection(ReviewInspectionRequest reviewInspectionRequest) throws RuntimeException;
-
-    // 通过guid查询巡检详情
-    Result getInspectionByGuid(String guid) throws RuntimeException;
 }

@@ -468,47 +468,4 @@ public class ProjectServiceImpl implements ProjectService {
 
         return new Result(true, "审阅巡检成功!");
     }
-
-    /**
-     * 通过guid查询巡检详情
-     * @param guid
-     * @return
-     * @throws RuntimeException
-     */
-    @Override
-    public Result getInspectionByGuid(String guid) throws RuntimeException {
-
-        InspectionRecord inspectionRecord = projectDao.getInspectionByGuid(guid);
-
-        if (ObjectUtils.isEmpty(inspectionRecord)) {
-            return new Result(false, "没有找到对应的巡检记录！");
-        }
-
-        InspectionVO inspectionVO = new InspectionVO();
-
-        // 查询编号，即查询同一天前面还有多少条记录
-        String endSort = inspectionRecord.getSort();
-        String beginSort = endSort.substring(0, 6) + "000000";
-        int index = projectDao.findCountBySort(beginSort, endSort) + 1;
-        StringBuilder sb = new StringBuilder();
-        sb.append("XJ");
-        sb.append(endSort.substring(0, 6));
-        sb.append(String.format("%03d", index));
-        inspectionVO.setInspectionNumber(sb.toString());
-        inspectionVO.setAddress(inspectionRecord.getAddress());
-        inspectionVO.setCreateTime(inspectionRecord.getCreateTime());
-        inspectionVO.setDescription(inspectionRecord.getDescription());
-        inspectionVO.setInspectionId(inspectionRecord.getInspectionId());
-        inspectionVO.setInspector(inspectionRecord.getInspector());
-        inspectionVO.setPhone(inspectionRecord.getPhone());
-        inspectionVO.setProgress(ProgressType.getName(inspectionRecord.getProgress()));
-        inspectionVO.setProjectName(inspectionRecord.getProjectName());
-        inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
-        inspectionVO.setRectifyComment(inspectionRecord.getRectifyComment());
-
-        getInspectionInfo(inspectionVO);
-
-        return new Result<>(inspectionVO);
-    }
-
 }
