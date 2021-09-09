@@ -152,7 +152,7 @@ public class ProjectController {
     @ResponseBody
     public Result getInspectionList(@RequestBody QueryInspectionRequest queryInspectionRequest) {
         try {
-            Result result = projectService.getAllInspection(queryInspectionRequest);
+            Result result = projectService.getInspectionList(queryInspectionRequest);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());
@@ -168,7 +168,7 @@ public class ProjectController {
     @ResponseBody
     public Result getInspectionPage(@RequestBody @Validated QueryInspectionRequest queryInspectionRequest) {
         try {
-            PageQuery pageQuery = projectService.getInspectionList(queryInspectionRequest);
+            PageQuery pageQuery = projectService.getInspectionPage(queryInspectionRequest);
             return new Result<>(pageQuery);
         } catch (Exception e) {
             return new Result(false, e.getMessage());

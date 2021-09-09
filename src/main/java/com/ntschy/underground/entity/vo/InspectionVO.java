@@ -50,6 +50,18 @@ public class InspectionVO {
     // 整改进度
     private String progress;
 
+    // pc端x坐标
+    private String x;
+
+    // pc端y坐标
+    private String y;
+
+    // 天地图x坐标
+    private String xt;
+
+    // 天地图y坐标
+    private String yt;
+
     // 巡检意见
     private String RectifyComment;
 

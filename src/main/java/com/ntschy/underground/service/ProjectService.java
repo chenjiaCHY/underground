@@ -38,10 +38,10 @@ public interface ProjectService {
     Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;
 
     // 查询巡检记录，pad用，不分页
-    Result getAllInspection(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
+    Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
 
     // 查询巡检记录
-    PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
+    PageQuery getInspectionPage(QueryInspectionRequest queryInspectionRequest) throws RuntimeException;
 
     // 获取巡检详情
     Result getInspectionInfo(InspectionVO inspectionVO) throws RuntimeException;

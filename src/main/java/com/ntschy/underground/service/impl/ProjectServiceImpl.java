@@ -248,7 +248,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @throws RuntimeException
      */
     @Override
-    public Result getAllInspection(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+    public Result getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
 
         Integer progress = null;
         Integer type = null;
@@ -288,6 +288,11 @@ public class ProjectServiceImpl implements ProjectService {
             inspectionVO.setProjectName(inspectionRecord.getProjectName());
             inspectionVO.setType(InspectionType.getName(inspectionRecord.getType()));
             inspectionVO.setRectifyComment(inspectionRecord.getRectifyComment());
+            inspectionVO.setX(inspectionRecord.getX());
+            inspectionVO.setY(inspectionRecord.getY());
+            inspectionVO.setXt(inspectionRecord.getXt());
+            inspectionVO.setYt(inspectionRecord.getYt());
+
 
             String sortDate = inspectionRecord.getSort().substring(0, 6);
 
@@ -316,7 +321,7 @@ public class ProjectServiceImpl implements ProjectService {
      * @throws RuntimeException
      */
     @Override
-    public PageQuery getInspectionList(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
+    public PageQuery getInspectionPage(QueryInspectionRequest queryInspectionRequest) throws RuntimeException {
 
         Integer startNo = PageQuery.startLine(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize());
         Integer endNo = PageQuery.endLine(queryInspectionRequest.getCurrPage(), queryInspectionRequest.getPageSize());

@@ -111,7 +111,7 @@
     </select>
 
     <select id="getAllInspection" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
-        SELECT InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort
+        SELECT InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort, Xt, Yt, X, Y
         FROM INSPECTION
         <where>
             <if test="progress != null">
@@ -165,6 +165,7 @@
         PROJECT_POINTS.Sort,
         PROJECT_POINTS.GeoType
         FROM PROJECT LEFT JOIN PROJECT_POINTS ON PROJECT.Guid = PROJECT_POINTS.GUID
+        ORDER BY PROJECT.CreateTime, PROJECT_POINTS.Sort
     </select>
 
     <insert id="insertProjectPoints">
