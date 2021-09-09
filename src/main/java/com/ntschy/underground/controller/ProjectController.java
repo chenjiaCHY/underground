@@ -144,7 +144,7 @@ public class ProjectController {
     }
 
     /**
-     * 查询巡检列表，无分页，pad使用
+     * 查询所有巡检，无分页
      * @param queryInspectionRequest
      * @return
      */

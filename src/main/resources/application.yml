@@ -12,22 +12,22 @@ spring:
       max-request-size: 500MB
   datasource:
     master:
-      url: jdbc:sqlserver://192.168.1.199:1433;DatabaseName=CCSWGIS
-      username: Gc/e5HUhl4NepzGhx2MlWA==
-      password: Gc/e5HUhl4NepzGhx2MlWA==
+      url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=underground
+      username: sA7+mCcw/APe13fxOfNgqw==
+      password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
       driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
       type: com.zaxxer.hikari.HikariDataSource
     cluster:
       - key: slave1
-        url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=underground
+        url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=undergroundSys
         username: sA7+mCcw/APe13fxOfNgqw==
         password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         type: com.zaxxer.hikari.HikariDataSource
       - key: slave2
-        url: jdbc:sqlserver://192.168.1.162:1433;DatabaseName=undergroundSys
-        username: sA7+mCcw/APe13fxOfNgqw==
-        password: WbLY4qbRhEoXndVpoJlv8+IIpBFqwO0z
+        url: jdbc:sqlserver://192.168.1.199:1433;DatabaseName=CCSWGIS
+        username: Gc/e5HUhl4NepzGhx2MlWA==
+        password: Gc/e5HUhl4NepzGhx2MlWA==
         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         type: com.zaxxer.hikari.HikariDataSource
     aop:
