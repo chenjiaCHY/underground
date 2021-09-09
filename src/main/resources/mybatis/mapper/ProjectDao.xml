@@ -141,7 +141,7 @@
             <result column="Y" property="y"></result>
             <result column="Xt" property="xt"></result>
             <result column="Yt" property="yt"></result>
-            <result column="Index" property="index"></result>
+            <result column="Sort" property="sort"></result>
             <result column="GeoType" property="geoType"></result>
         </collection>
 
@@ -162,16 +162,16 @@
         PROJECT_POINTS.Y,
         PROJECT_POINTS.Xt,
         PROJECT_POINTS.Yt,
-        PROJECT_POINTS.[Index],
+        PROJECT_POINTS.Sort,
         PROJECT_POINTS.GeoType
         FROM PROJECT LEFT JOIN PROJECT_POINTS ON PROJECT.Guid = PROJECT_POINTS.GUID
     </select>
 
     <insert id="insertProjectPoints">
-        INSERT INTO PROJECT_POINTS(PID, GUID, X, Y, Xt, Yt, Index, GeoType)
+        INSERT INTO PROJECT_POINTS(PID, GUID, X, Y, Xt, Yt, Sort, GeoType)
         VALUES
         <foreach collection="pointList" item="item" separator=",">
-            (#{item.pid}, #{item.guid}, #{item.x}, #{item.y}, #{item.xt}, #{item.yt}, #{item.index}, #{item.geoType})
+            (#{item.pid}, #{item.guid}, #{item.x}, #{item.y}, #{item.xt}, #{item.yt}, #{item.sort}, #{item.geoType})
         </foreach>
     </insert>
 </mapper>

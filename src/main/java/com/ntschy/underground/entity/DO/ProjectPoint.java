@@ -26,7 +26,7 @@ public class ProjectPoint {
 
     private String yt;
 
-    private Integer index;
+    private Integer sort;
 
     private Integer geoType;
 

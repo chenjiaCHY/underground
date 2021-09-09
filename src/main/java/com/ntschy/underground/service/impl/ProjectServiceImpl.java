@@ -66,7 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         List<ProjectPoint> projectPointList = new ArrayList<>();
-        int index = 1;
+        int sort = 1;
         for (ShapePoint point : points) {
             String pid = Utils.GenerateUUID(32);
             ProjectPoint projectPoint = new ProjectPoint();
@@ -77,9 +77,9 @@ public class ProjectServiceImpl implements ProjectService {
             // 坐标转换
             projectPoint.setXt(point.getX());
             projectPoint.setYt(point.getY());
-            projectPoint.setIndex(index);
+            projectPoint.setSort(sort);
             projectPoint.setGeoType(addProjectRequest.getShapeType().getCode());
-            index ++;
+            sort ++;
             projectPointList.add(projectPoint);
         }
 
