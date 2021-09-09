@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ntschy.underground.dao.ProjectDao;
 import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectPoint;
@@ -28,6 +29,8 @@ import com.ntschy.underground.enums.UploadFileType;
 import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import com.ntschy.underground.utils.Utils;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +39,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.xml.namespace.QName;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -47,6 +51,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Value("${file.uploadPath}")
     private String uploadPath;
+
+    @Value("${webservice.url}")
+    private String webServiceUrl;
+
+    @Value("${webservice.namespace}")
+    private String nameSpace;
+
+    @Value("${webservice.pctotdt}")
+    private String pcToTdt;
+
+    @Value("${webservice.tdttopc}")
+    private String tdtToPc;
 
     /**
      * 新建项目
@@ -75,8 +91,10 @@ public class ProjectServiceImpl implements ProjectService {
             projectPoint.setX(point.getX());
             projectPoint.setY(point.getY());
             // 坐标转换
-            projectPoint.setXt(point.getX());
-            projectPoint.setYt(point.getY());
+            Map<String, String> coordinateMap = coordinateConvert(point.getX(), point.getY(), "PCTOTDT");
+
+            projectPoint.setXt(coordinateMap.get("x"));
+            projectPoint.setYt(coordinateMap.get("y"));
             projectPoint.setSort(sort);
             projectPoint.setGeoType(addProjectRequest.getShapeType().getCode());
             sort ++;
@@ -147,8 +165,9 @@ public class ProjectServiceImpl implements ProjectService {
         inspectionRecord.setXt(addInspectionRequest.getXt());
         inspectionRecord.setYt(addInspectionRequest.getYt());
         // 转换下坐标
-        inspectionRecord.setX(addInspectionRequest.getXt());
-        inspectionRecord.setY(addInspectionRequest.getYt());
+        Map<String, String> coordinateMap = coordinateConvert(addInspectionRequest.getXt(), addInspectionRequest.getYt(), "TDTTOPC");
+        inspectionRecord.setX(coordinateMap.get("x"));
+        inspectionRecord.setY(coordinateMap.get("y"));
 
         projectDao.addInspection(inspectionRecord);
 
@@ -472,5 +491,42 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.updateInspection(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode(), reviewInspectionRequest.getRectifyComment());
 
         return new Result(true, "审阅巡检成功!");
+    }
+
+    /**
+     * 坐标转换
+     * @return
+     */
+    private Map<String, String> coordinateConvert(String x, String y, String type) {
+
+        String functionName = "";
+        if (type.equals("PCTOTDT")) {
+            functionName = pcToTdt;
+        } else {
+            functionName = tdtToPc;
+        }
+
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+        Client client = dcf.createClient(webServiceUrl);
+        Map<String, String> coordinateMap = new HashMap<>();
+
+        try {
+            QName qName = new QName(nameSpace, functionName);
+            Object[] objects = client.invoke(qName, Double.valueOf(x), Double.valueOf(y));
+
+            JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(objects[0]));
+            jsonObject.getDouble("x");
+
+            coordinateMap.put("x", jsonObject.getDouble("x").toString());
+            coordinateMap.put("y", jsonObject.getDouble("y").toString());
+
+            System.out.println("dsds");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return coordinateMap;
+
     }
 }
