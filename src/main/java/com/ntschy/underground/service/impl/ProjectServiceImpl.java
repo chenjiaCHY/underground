@@ -31,6 +31,7 @@ import com.ntschy.underground.utils.ToolUpload;
 import com.ntschy.underground.utils.Utils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -58,11 +59,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Value("${webservice.namespace}")
     private String nameSpace;
 
-    @Value("${webservice.pctotdt}")
-    private String pcToTdt;
+    @Value("${webservice.pctopad}")
+    private String pcToPad;
 
-    @Value("${webservice.tdttopc}")
-    private String tdtToPc;
+    @Value("${webservice.padtopc}")
+    private String padToPc;
+
+    @Autowired
+    Client client;
 
     /**
      * 新建项目
@@ -91,7 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
             projectPoint.setX(point.getX());
             projectPoint.setY(point.getY());
             // 坐标转换
-            Map<String, String> coordinateMap = coordinateConvert(point.getX(), point.getY(), "PCTOTDT");
+            Map<String, String> coordinateMap = coordinateConvert(point.getX(), point.getY(), "PCTOPAD");
 
             projectPoint.setXt(coordinateMap.get("x"));
             projectPoint.setYt(coordinateMap.get("y"));
@@ -500,14 +504,12 @@ public class ProjectServiceImpl implements ProjectService {
     private Map<String, String> coordinateConvert(String x, String y, String type) {
 
         String functionName = "";
-        if (type.equals("PCTOTDT")) {
-            functionName = pcToTdt;
+        if (type.equals("PCTOPAD")) {
+            functionName = pcToPad;
         } else {
-            functionName = tdtToPc;
+            functionName = padToPc;
         }
 
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-        Client client = dcf.createClient(webServiceUrl);
         Map<String, String> coordinateMap = new HashMap<>();
 
         try {
@@ -519,9 +521,6 @@ public class ProjectServiceImpl implements ProjectService {
 
             coordinateMap.put("x", jsonObject.getDouble("x").toString());
             coordinateMap.put("y", jsonObject.getDouble("y").toString());
-
-            System.out.println("dsds");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

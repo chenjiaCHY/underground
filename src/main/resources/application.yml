@@ -67,5 +67,5 @@ file:
 webservice:
   url: http://192.168.1.162:8088/WebService.asmx?wsdl
   namespace: http://tempuri.org/
-  pctotdt: Cgcs2000Cm120ToTdtCm120
-  tdttopc: TdtCm120To2000Cm120
+  pctopad: Cgcs2000Cm120ToTdtCm120
+  padtopc: TdtCm120To2000Cm120
