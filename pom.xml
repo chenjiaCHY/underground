@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ntschy</groupId>
 	<artifactId>underground</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>underground</name>
 	<description>underground utility</description>
 	<properties>
@@ -116,14 +116,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
+				<version>2.2.4.RELEASE</version>
 			</plugin>
 		</plugins>
 	</build>
