@@ -16,23 +16,92 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.data.shapefile.ShapefileDataStore;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 
 public class ShapeUtil {
+
+    public static JSONObject shape2geoJson(File shpFile) {
+        // 获取文件前缀名
+        String fileName = shpFile.getName();
+        String layerName = fileName.substring(0, fileName.lastIndexOf("."));
+
+        ShapefileDataStore dataStore = buildDataStore(shpFile);
+//        dataStore.setCharset(Charset.forName("GBK"));
+        StringBuffer sb = new StringBuffer();
+        FeatureJSON fJson = new FeatureJSON();
+        JSONObject result = new JSONObject();
+        JSONObject geoJson = new JSONObject();
+        JSONArray features = new JSONArray();
+        result.put("name", layerName);
+        result.put("data", geoJson);
+        geoJson.put("type", "FeatureCollection");
+        try {
+            String typeName = dataStore.getTypeNames()[0];
+            SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
+            SimpleFeatureCollection collection = featureSource.getFeatures();
+            SimpleFeatureIterator iterator = collection.features();
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                StringWriter writer = new StringWriter();
+                fJson.writeFeature(feature, writer);
+                JSONObject json = JSONObject.parseObject(writer.toString());
+                features.add(json);
+            }
+            geoJson.put("features", features);
+            iterator.close();
+            sb.append(geoJson);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dataStore.dispose();
+        }
+        return result;
+    }
+
+    public static ShapefileDataStore buildDataStore(String shpFilePath) {
+        return buildDataStore(new File(shpFilePath));
+    }
+
+    public static ShapefileDataStore buildDataStore(File shpFile) {
+        ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
+        try {
+            ShapefileDataStore dataStore = (ShapefileDataStore) factory.createDataStore(shpFile.toURI().toURL());
+            if (dataStore != null) {
+                dataStore.setCharset(Charset.forName("GBK"));
+            }
+            return dataStore;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+//    public static void data2Shape(String dirPath, TableInfo)
 
     public static void data2shape(String zipPath, String srcDirName, JSONArray json) {
         String geometryName = "the_geom";
@@ -118,6 +187,37 @@ public class ShapeUtil {
             ZipUtil.zip(fileDir, zipPath, srcDirName + ".zip");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static JSONObject zip2geoJson(String zipFilePath, String unzipDir) {
+        try {
+            String dirName = zipFilePath.substring(0, zipFilePath.lastIndexOf("."));
+            ZipUtil.unzip(zipFilePath, unzipDir, true);
+            List<File> shapeFiles = new ArrayList<>();
+            findFileBySuffix(new File(dirName), shapeFiles);
+            if (shapeFiles.size() != 1) {
+                throw new RuntimeException("shape压缩文件错误");
+            }
+            File shapeFile = shapeFiles.get(0);
+            return shape2geoJson(shapeFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 递归获得文件夹下所有的shp后缀文件
+    public static void findFileBySuffix(File file, List<File> resultList) {
+        // 判断是否为文件夹
+        if (file.isDirectory()) {
+            File[] listFiles = file.listFiles();
+            // 执行操作
+            for (File f : listFiles) {
+                findFileBySuffix(f, resultList);
+            }
+        } else if (file.getName().endsWith(".shp")) {
+            resultList.add(file);
         }
     }
 }
