@@ -30,7 +30,6 @@ import com.ntschy.underground.service.ProjectService;
 import com.ntschy.underground.utils.ToolUpload;
 import com.ntschy.underground.utils.Utils;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
