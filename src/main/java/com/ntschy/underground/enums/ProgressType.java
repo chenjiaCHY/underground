@@ -15,8 +15,8 @@ public enum ProgressType {
 
     NOT_REVIEW(1, "未审阅"),
     NOT_RECTIFY(2, "未整改"),
-    RECTIFYING(3, "正在整改"),
-    DONE(4, "已完成");
+    RECTIFYING(3, "整改中"),
+    DONE(4, "整改完成");
 
     private int code;
     private String name;
