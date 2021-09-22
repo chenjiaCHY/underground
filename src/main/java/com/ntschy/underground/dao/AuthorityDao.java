@@ -100,7 +100,4 @@ public interface AuthorityDao {
 
     @DataSource("slave1")
     void updateLoginTokenExpiresTime(@Param("token") String token, @Param("expiresTime") String expiresTime) throws RuntimeException;
-
-    @DataSource("slave1")
-    void insertOperateLog(OperationLog operationLog) throws RuntimeException;
 }

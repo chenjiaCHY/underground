@@ -34,8 +34,6 @@ public interface AuthorityService {
 
     void updateLoginTokenExpiresTime(String token, String convertDateToString);
 
-    void insertOperateLog(OperationLog operationLog);
-
     Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest);
 
     Integer getUrlPermissionUrl(String roleId, String uri);

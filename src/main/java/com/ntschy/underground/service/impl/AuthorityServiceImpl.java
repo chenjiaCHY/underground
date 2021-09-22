@@ -334,11 +334,6 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public void insertOperateLog(OperationLog operationLog) {
-        authorityDao.insertOperateLog(operationLog);
-    }
-
-    @Override
     public Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest) {
 
         modifyPwdRequest.setNewPwd(MD5Utils.StringToMD5(modifyPwdRequest.getNewPwd()));
