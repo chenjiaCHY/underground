@@ -122,21 +122,11 @@ public class LogAspect {
     @AfterReturning(returning = "ret", pointcut = "pointcut()")
     public void doAfterReturning(Object ret) throws Throwable {
         endTime.set(System.currentTimeMillis());
-        log.info("返回数据:" + ret);
-
-        OperationLog operationLog = Optional.ofNullable(OperateLogHandler.getOperationLog()).orElse(null);
-
-        if (!ObjectUtils.isEmpty(operationLog)) {
-            operationLog.setOperateRespParam(JSON.toJSONString(ret));
-            if (operationLog.getOperateRequParam().length() > 4000) {
-                operationLog.setOperateRequParam(operationLog.getOperateRequParam().substring(0, 4000));
-            }
-            if (operationLog.getOperateRespParam().length() > 4000) {
-                operationLog.setOperateRespParam(operationLog.getOperateRespParam().substring(0, 4000));
-            }
-            authorityService.insertOperateLog(operationLog);
-            OperateLogHandler.remove();
+        int retLength = ret.toString().length();
+        if (retLength > 100) {
+            retLength = 100;
         }
+        log.info("返回数据:" + ret.toString().substring(0, retLength));
 
         log.info("结束时间:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endTime.get()));
         log.info("用时:" + (endTime.get() - startTime.get()));
@@ -164,23 +154,6 @@ public class LogAspect {
         log.error("异常发生时间:{}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         log.error("异常名称:{}", e.getClass().getName());
         log.error("异常信息:{}", stackTraceElements);
-        OperationLog operationLog = Optional.ofNullable(OperateLogHandler.getOperationLog()).orElse(null);
-
-        if (!ObjectUtils.isEmpty(operationLog)) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(exName);
-            stringBuilder.append("\n");
-            stringBuilder.append(stackTraceElements);
-            operationLog.setOperateRespParam(stringBuilder.toString());
-            if (operationLog.getOperateRequParam().length() > 4000) {
-                operationLog.setOperateRequParam(operationLog.getOperateRequParam().substring(0, 4000));
-            }
-            if (operationLog.getOperateRespParam().length() > 4000) {
-                operationLog.setOperateRespParam(operationLog.getOperateRespParam().substring(0, 4000));
-            }
-            authorityService.insertOperateLog(operationLog);
-            OperateLogHandler.remove();
-        }
 
         log.info("请求时间:{}", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime.get()));
         log.info("请求URL:{}", url);
