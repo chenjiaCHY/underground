@@ -5,6 +5,10 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 spring:
+  mvc:
+    static-path-pattern: /img/**
+  resources:
+    static-locations: file:D://upload/
   servlet:
     multipart:
       enabled: true
@@ -38,6 +42,7 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
+    - /img/**
 
 allow:
   originList:
