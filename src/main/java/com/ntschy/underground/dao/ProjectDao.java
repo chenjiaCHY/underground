@@ -83,6 +83,9 @@ public interface ProjectDao {
                                             @Param("createTime") String createTime,
                                             @Param("type") Integer type) throws RuntimeException;
 
+    // 删除整改记录
+    void deleteRectification(@Param("rectificationId") String rectificationId) throws RuntimeException;
+
     // 坐标点转换后插入到表中
     void insertProjectPoints(@Param("pointList") List<ProjectPoint> pointList) throws RuntimeException;
 }

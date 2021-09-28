@@ -43,6 +43,8 @@ whitelist:
     - /authority/login
     - /authority/modifyUserPwd
     - /report/shapeFileToJson
+    - /project/getRectificationList
+    - /project/deleteRectification
     - /img/**
 
 allow:

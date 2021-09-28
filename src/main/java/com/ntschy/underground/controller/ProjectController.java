@@ -192,6 +192,22 @@ public class ProjectController {
     }
 
     /**
+     * 获取整改列表
+     * @param inspectionId
+     * @return
+     */
+    @GetMapping("/getRectificationList")
+    @ResponseBody
+    public Result getRectificationList(@RequestParam("inspectionId") String inspectionId) {
+        try {
+            Result result = projectService.getRectificationList(inspectionId);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
      * 获取整改详情
      * @param rectificationVO
      * @return
@@ -201,6 +217,22 @@ public class ProjectController {
     public Result getRectificationInfo(@RequestBody @Validated RectificationVO rectificationVO) {
         try {
             Result result = projectService.getRectificationInfo(rectificationVO);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 删除整改记录
+     * @param rectificationId
+     * @return
+     */
+    @GetMapping("/deleteRectification")
+    @ResponseBody
+    public Result deleteRectification(@RequestParam("rectificationId") String rectificationId) {
+        try {
+            Result result = projectService.deleteRectification(rectificationId);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

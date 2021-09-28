@@ -475,6 +475,53 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     /**
+     * 获取整改列表
+     * @param inspectionId
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getRectificationList(String inspectionId) throws RuntimeException {
+        // 获取整改记录
+        List<RectificationRecord> rectificationRecords = projectDao.getRectificationList(inspectionId);
+
+        List<RectificationVO> rectificationVOS = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(rectificationRecords)) {
+
+            String beginSort = rectificationRecords.get(0).getSort().substring(0, 6);
+            Integer index = 1;
+
+            for (RectificationRecord rectificationRecord : rectificationRecords) {
+                RectificationVO rectificationVO = new RectificationVO();
+
+                rectificationVO.setCreateTime(rectificationRecord.getCreateTime());
+                rectificationVO.setDescription(rectificationRecord.getDescription());
+                rectificationVO.setRectificationId(rectificationRecord.getRectificationId());
+                rectificationVO.setInspectionId(rectificationRecord.getInspectionId());
+                rectificationVO.setRectifyUser(rectificationRecord.getRectifyUser());
+
+                String sortDate = rectificationRecord.getSort().substring(0, 6);
+
+                if (!beginSort.equals(sortDate)) {
+                    index = 1;
+                    beginSort = sortDate;
+                }
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("ZG");
+                sb.append(sortDate);
+                sb.append(String.format("%03d", index));
+                rectificationVO.setRectificationNumber(sb.toString());
+                rectificationVOS.add(rectificationVO);
+                index ++;
+            }
+        }
+
+        return new Result<>(rectificationVOS);
+    }
+
+    /**
      * 获取整改详情
      * @param rectificationVO
      * @return
@@ -487,6 +534,20 @@ public class ProjectServiceImpl implements ProjectService {
         rectificationVO.setFileNames(fileNames);
 
         return new Result<>(rectificationVO);
+    }
+
+    /**
+     * 删除整改记录
+     * @param rectificationId
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result deleteRectification(String rectificationId) throws RuntimeException {
+
+        projectDao.deleteRectification(rectificationId);
+
+        return new Result(true, "删除整改成功！");
     }
 
     /**
