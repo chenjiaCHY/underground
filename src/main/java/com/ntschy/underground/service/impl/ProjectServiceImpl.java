@@ -140,8 +140,6 @@ public class ProjectServiceImpl implements ProjectService {
         // 上传照片
         List<String> fileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            System.out.println(file.getOriginalFilename());
-
             String fileName = ToolUpload.fileUpload2(file, uploadPath);
             if (!StringUtils.isEmpty(fileName)) {
                 fileNames.add(fileName);
@@ -187,9 +185,18 @@ public class ProjectServiceImpl implements ProjectService {
      * @throws RuntimeException
      */
     @Override
-    public Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException {
+    public Result addRectification(AddRectificationRequest addRectificationRequest, MultipartFile[] files) throws RuntimeException {
 
         String rectificationId = Utils.GenerateUUID(32);
+
+        // 上传照片
+        List<String> fileNames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String fileName = ToolUpload.fileUpload2(file, uploadPath);
+            if (!StringUtils.isEmpty(fileName)) {
+                fileNames.add(fileName);
+            }
+        }
 
         SimpleDateFormat sortFormat = new SimpleDateFormat("yyMMddHHmmss");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -208,7 +215,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.addRectification(rectificationRecord);
 
         // 将巡检照片文件名列表插入到FILE_UPLOAD表中
-        projectDao.addFiles(UploadFileType.RECTIFICATION.getCode(), rectificationId, addRectificationRequest.getFileNames());
+        projectDao.addFiles(UploadFileType.RECTIFICATION.getCode(), rectificationId, fileNames);
 
         return new Result(true, "新增整改成功!!!");
     }

@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.*;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.geotools.data.shapefile.ShapefileDataStore;
+
 
 import java.io.File;
 import java.io.IOException;

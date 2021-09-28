@@ -26,7 +26,7 @@ public interface ProjectService {
     Result addInspection(AddInspectionRequest addInspectionRequest, MultipartFile[] files) throws RuntimeException;
 
     // 新增整改
-    Result addRectification(AddRectificationRequest addRectificationRequest) throws RuntimeException;
+    Result addRectification(AddRectificationRequest addRectificationRequest, MultipartFile[] files) throws RuntimeException;
 
     // 获取项目列表
     Result getProjectList() throws RuntimeException;

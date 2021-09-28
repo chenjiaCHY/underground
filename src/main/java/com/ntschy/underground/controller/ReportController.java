@@ -56,4 +56,13 @@ public class ReportController {
         }
     }
 
+    @RequestMapping("/shapeFileToJson")
+    public Object shapeFileToJson() {
+
+        File file = new File("D:\\bitPoint.shp");
+
+        System.out.println(file.getName());
+        return ShapeUtil.shape2geoJson(file);
+    }
+
 }

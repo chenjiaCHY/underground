@@ -87,9 +87,9 @@ public class ProjectController {
      */
     @PostMapping("/addRectification")
     @ResponseBody
-    public Result addRectification(@RequestBody @Validated AddRectificationRequest addRectificationRequest) {
+    public Result addRectification(@Validated AddRectificationRequest addRectificationRequest, @RequestParam("files") MultipartFile[] files) {
         try {
-            Result result = projectService.addRectification(addRectificationRequest);
+            Result result = projectService.addRectification(addRectificationRequest, files);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

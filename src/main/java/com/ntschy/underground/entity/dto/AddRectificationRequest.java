@@ -23,6 +23,4 @@ public class AddRectificationRequest {
     private String description;
 
     private String rectifyUser;
-
-    private List<String> fileNames;
 }
