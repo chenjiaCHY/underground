@@ -202,7 +202,7 @@ public class ProjectServiceImpl implements ProjectService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date currentDate = new Date();
 
-        // 插入一条记录到INSPECTION表中
+        // 插入一条记录到RECTIFICATION表中
         RectificationRecord rectificationRecord = new RectificationRecord();
 
         rectificationRecord.setRectificationId(rectificationId);
@@ -213,6 +213,9 @@ public class ProjectServiceImpl implements ProjectService {
         rectificationRecord.setRectifyUser(addRectificationRequest.getRectifyUser());
 
         projectDao.addRectification(rectificationRecord);
+
+        // 修改巡检状态为整改中
+        projectDao.updateInspectionStatus(addRectificationRequest.getInspectionId(), ProgressType.RECTIFYING.getCode());
 
         // 将巡检照片文件名列表插入到FILE_UPLOAD表中
         projectDao.addFiles(UploadFileType.RECTIFICATION.getCode(), rectificationId, fileNames);
@@ -544,6 +547,17 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public Result deleteRectification(String rectificationId) throws RuntimeException {
+
+        // 如果状态是整改完成，则不允许删除整改记录
+        InspectionRecord inspectionRecord = projectDao.getInspectionByRectificationId(rectificationId);
+
+        if (inspectionRecord == null) {
+            return new Result(false, "未找到相应的巡检记录！");
+        }
+
+        if (inspectionRecord.getProgress() == ProgressType.DONE.getCode()) {
+            return new Result(false, "整改已完成，不允许删除整改记录！");
+        }
 
         projectDao.deleteRectification(rectificationId);
 

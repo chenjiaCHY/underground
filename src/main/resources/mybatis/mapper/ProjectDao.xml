@@ -178,6 +178,17 @@
 
     <delete id="deleteRectification">
         DELETE FROM RECTIFICATION
-        WHERE RectificationId=${rectificationId,jdbcType=VARCHAR}
+        WHERE RectificationId=#{rectificationId,jdbcType=VARCHAR}
     </delete>
+
+    <update id="updateInspectionStatus">
+        UPDATE INSPECTION
+        SET Progress=#{progress,jdbcType=INTEGER}
+        WHERE InspectionId=#{inspectionId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getInspectionByRectificationId" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
+        SELECT * FROM INSPECTION
+        WHERE InspectionId = (SELECT InspectionId FROM RECTIFICATION WHERE RectificationId=#{rectificationId,jdbcType=VARCHAR})
+    </select>
 </mapper>

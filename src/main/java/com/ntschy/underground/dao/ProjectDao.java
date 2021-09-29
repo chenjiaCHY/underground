@@ -88,4 +88,8 @@ public interface ProjectDao {
 
     // 坐标点转换后插入到表中
     void insertProjectPoints(@Param("pointList") List<ProjectPoint> pointList) throws RuntimeException;
+
+    void updateInspectionStatus(@Param("inspectionId") String inspectionId, @Param("progress") Integer progress) throws RuntimeException;
+
+    InspectionRecord getInspectionByRectificationId(@Param("rectificationId") String rectificationId) throws RuntimeException;
 }
