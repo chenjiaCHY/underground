@@ -29,10 +29,10 @@ spring:
         driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
         type: com.zaxxer.hikari.HikariDataSource
       - key: slave2
-        url: jdbc:sqlserver://192.168.5.203:1433;DatabaseName=KFQGX
-        username: SAuAzq0dCWqjjKx02QAvCg==
-        password: P8yBgUSeARS/u3cGg7SOeMWWgQylZOYR
-        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        url: jdbc:postgresql://192.168.5.199:5432/PP
+        username: fD1wkqYy9geRyVJYtEY++35sBKa+s1lu
+        password: fD1wkqYy9geRyVJYtEY++35sBKa+s1lu
+        driver-class-name: org.postgresql.Driver
         type: com.zaxxer.hikari.HikariDataSource
     aop:
       auto: true
@@ -44,6 +44,7 @@ whitelist:
     - /authority/modifyUserPwd
     - /report/shapeFileToJson
     - /img/**
+    - /report/downloadDXF
 
 allow:
   originList:

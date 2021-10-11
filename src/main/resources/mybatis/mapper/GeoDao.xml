@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2021. All Rights Reserved.
+  ~ ProjectName: underground
+  ~ FileName: GeoDao.xml
+  ~ Author: 陈佳
+  ~ Date: 2021/10/11 下午3:39
+  ~ Version: 1.0
+  ~ LastModified
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ntschy.underground.dao.GeoDao">
+
+    <select id="getGeom" resultType="java.lang.String">
+        SELECT st_astext(geom) FROM ${tableName}
+        WHERE st_intersects(geom, ${innerSQL})='t'
+    </select>
+</mapper>
