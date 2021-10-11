@@ -475,7 +475,13 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 获取巡检照片
         List<FileDec> files = projectDao.getFiles(UploadFileType.INSPECTION.getCode(), inspectionVO.getInspectionId());
-        inspectionVO.setFiles(files);
+        List<String> fileNames = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(files)) {
+            for (FileDec fileDec : files) {
+                fileNames.add(fileDec.getFileName());
+            }
+        }
+        inspectionVO.setFileNames(fileNames);
 
         // 获取整改记录
         List<RectificationRecord> rectificationRecords = projectDao.getRectificationList(inspectionVO.getInspectionId());
@@ -576,7 +582,13 @@ public class ProjectServiceImpl implements ProjectService {
     public Result getRectificationInfo(RectificationVO rectificationVO) throws RuntimeException {
         // 获取整改照片
         List<FileDec> files = projectDao.getFiles(UploadFileType.RECTIFICATION.getCode(), rectificationVO.getRectificationId());
-        rectificationVO.setFiles(files);
+        List<String> fileNames = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(files)) {
+            for (FileDec fileDec : files) {
+                fileNames.add(fileDec.getFileName());
+            }
+        }
+        rectificationVO.setFileNames(fileNames);
 
         return new Result<>(rectificationVO);
     }

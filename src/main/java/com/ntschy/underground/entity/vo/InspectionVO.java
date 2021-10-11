@@ -67,7 +67,7 @@ public class InspectionVO {
     private String RectifyComment;
 
     // 巡检照片
-    private List<FileDec> files;
+    private List<String> fileNames;
 
     // 整改记录
     private List<RectificationVO> rectificationList;

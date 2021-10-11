@@ -41,5 +41,5 @@ public class RectificationVO {
     private String rectifyUser;
 
     // 整改照片
-    private List<FileDec> files;
+    private List<String> fileNames;
 }
