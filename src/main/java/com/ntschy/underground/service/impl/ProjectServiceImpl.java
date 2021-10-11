@@ -254,7 +254,7 @@ public class ProjectServiceImpl implements ProjectService {
                 for (FileDec file : files) {
                     File projectFile = new File(uploadPath + file.getFileName());
                     if (projectFile != null) {
-                        file.setFileSize(projectFile.length());
+                        file.setFileSize(projectFile.length() / 1024);
                     }
                 }
             }
@@ -283,7 +283,7 @@ public class ProjectServiceImpl implements ProjectService {
                 for (FileDec file : files) {
                     File projectFile = new File(uploadPath + file.getFileName());
                     if (projectFile != null) {
-                        file.setFileSize(projectFile.length());
+                        file.setFileSize(projectFile.length() / 1024);
                     }
                 }
             }
