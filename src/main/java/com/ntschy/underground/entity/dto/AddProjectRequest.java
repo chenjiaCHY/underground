@@ -12,6 +12,7 @@
 package com.ntschy.underground.entity.dto;
 
 import com.ntschy.underground.entity.ShapePoint;
+import com.ntschy.underground.entity.base.FileDec;
 import com.ntschy.underground.enums.ShapeType;
 import lombok.Data;
 
@@ -39,5 +40,5 @@ public class AddProjectRequest {
     @NotNull(message = "形状类型不能为空")
     private ShapeType shapeType;
 
-    private List<String> fileNames;
+    private List<FileDec> fileNames;
 }

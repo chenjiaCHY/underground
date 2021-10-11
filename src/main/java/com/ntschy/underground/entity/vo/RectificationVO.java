@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.entity.vo;
 
+import com.ntschy.underground.entity.base.FileDec;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -40,5 +41,5 @@ public class RectificationVO {
     private String rectifyUser;
 
     // 整改照片
-    private List<String> fileNames;
+    private List<FileDec> files;
 }

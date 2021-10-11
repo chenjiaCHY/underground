@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.entity.DO;
 
+import com.ntschy.underground.entity.base.FileDec;
 import lombok.Data;
 
 import java.util.List;
@@ -34,5 +35,5 @@ public class ProjectRecord {
 
     private List<ProjectPoint> points;
 
-    private List<String> fileNames;
+    private List<FileDec> files;
 }

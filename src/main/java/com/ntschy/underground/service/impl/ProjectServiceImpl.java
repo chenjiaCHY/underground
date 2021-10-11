@@ -18,6 +18,7 @@ import com.ntschy.underground.entity.DO.ProjectPoint;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
 import com.ntschy.underground.entity.ShapePoint;
+import com.ntschy.underground.entity.base.FileDec;
 import com.ntschy.underground.entity.base.PageQuery;
 import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
@@ -40,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.xml.namespace.QName;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -138,11 +140,11 @@ public class ProjectServiceImpl implements ProjectService {
         String inspectionId = Utils.GenerateUUID(32);
 
         // 上传照片
-        List<String> fileNames = new ArrayList<>();
+        List<FileDec> fileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileName = ToolUpload.fileUpload2(file, uploadPath);
-            if (!StringUtils.isEmpty(fileName)) {
-                fileNames.add(fileName);
+            FileDec fileDec = ToolUpload.fileUpload2(file, uploadPath);
+            if (fileDec != null) {
+                fileNames.add(fileDec);
             }
         }
 
@@ -190,11 +192,11 @@ public class ProjectServiceImpl implements ProjectService {
         String rectificationId = Utils.GenerateUUID(32);
 
         // 上传照片
-        List<String> fileNames = new ArrayList<>();
+        List<FileDec> fileNames = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileName = ToolUpload.fileUpload2(file, uploadPath);
-            if (!StringUtils.isEmpty(fileName)) {
-                fileNames.add(fileName);
+            FileDec fileDec = ToolUpload.fileUpload2(file, uploadPath);
+            if (fileDec != null) {
+                fileNames.add(fileDec);
             }
         }
 
@@ -241,13 +243,51 @@ public class ProjectServiceImpl implements ProjectService {
      * @return
      */
     @Override
-    public Result getProjectInfo(String guid) {
+    public Result getProjectInfoByGuid(String guid) {
 
-        ProjectRecord projectRecord = projectDao.getProjectInfo(guid);
+        ProjectRecord projectRecord = projectDao.getProjectInfoByGuid(guid);
 
         if (!ObjectUtils.isEmpty(projectRecord)) {
-            List<String> fileNames = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
-            projectRecord.setFileNames(fileNames);
+            List<FileDec> files = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
+
+            if (!CollectionUtils.isEmpty(files)) {
+                for (FileDec file : files) {
+                    File projectFile = new File(uploadPath + file.getFileName());
+                    if (projectFile != null) {
+                        file.setFileSize(projectFile.length());
+                    }
+                }
+            }
+            projectRecord.setFiles(files);
+        } else {
+            return new Result(false, "获取项目信息失败!!!");
+        }
+
+        return new Result<>(projectRecord);
+    }
+
+    /**
+     * 获取项目详情
+     * @param projectId
+     * @return
+     */
+    @Override
+    public Result getProjectInfoByProjectId(String projectId) {
+
+        ProjectRecord projectRecord = projectDao.getProjectInfoByProjectId(projectId);
+
+        if (!ObjectUtils.isEmpty(projectRecord)) {
+            List<FileDec> files = projectDao.getFiles(UploadFileType.PROJECT.getCode(), projectRecord.getProjectId());
+
+            if (!CollectionUtils.isEmpty(files)) {
+                for (FileDec file : files) {
+                    File projectFile = new File(uploadPath + file.getFileName());
+                    if (projectFile != null) {
+                        file.setFileSize(projectFile.length());
+                    }
+                }
+            }
+            projectRecord.setFiles(files);
         } else {
             return new Result(false, "获取项目信息失败!!!");
         }
@@ -434,8 +474,8 @@ public class ProjectServiceImpl implements ProjectService {
     public Result getInspectionInfo(InspectionVO inspectionVO) throws RuntimeException {
 
         // 获取巡检照片
-        List<String> fileNames = projectDao.getFiles(UploadFileType.INSPECTION.getCode(), inspectionVO.getInspectionId());
-        inspectionVO.setFileNames(fileNames);
+        List<FileDec> files = projectDao.getFiles(UploadFileType.INSPECTION.getCode(), inspectionVO.getInspectionId());
+        inspectionVO.setFiles(files);
 
         // 获取整改记录
         List<RectificationRecord> rectificationRecords = projectDao.getRectificationList(inspectionVO.getInspectionId());
@@ -521,6 +561,8 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
+        Collections.reverse(rectificationVOS);
+
         return new Result<>(rectificationVOS);
     }
 
@@ -533,8 +575,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Result getRectificationInfo(RectificationVO rectificationVO) throws RuntimeException {
         // 获取整改照片
-        List<String> fileNames = projectDao.getFiles(UploadFileType.RECTIFICATION.getCode(), rectificationVO.getRectificationId());
-        rectificationVO.setFileNames(fileNames);
+        List<FileDec> files = projectDao.getFiles(UploadFileType.RECTIFICATION.getCode(), rectificationVO.getRectificationId());
+        rectificationVO.setFiles(files);
 
         return new Result<>(rectificationVO);
     }

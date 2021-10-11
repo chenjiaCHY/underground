@@ -16,6 +16,7 @@ import com.ntschy.underground.entity.DO.InspectionRecord;
 import com.ntschy.underground.entity.DO.ProjectPoint;
 import com.ntschy.underground.entity.DO.ProjectRecord;
 import com.ntschy.underground.entity.DO.RectificationRecord;
+import com.ntschy.underground.entity.base.FileDec;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,7 +36,7 @@ public interface ProjectDao {
     // 图片文件名插入到FILE_UPLOAD表
     void addFiles(@Param("type") Integer type,
                   @Param("businessId") String businessId,
-                  @Param("fileNames") List<String> fileNames) throws RuntimeException;
+                  @Param("fileNames") List<FileDec> fileNames) throws RuntimeException;
 
     // 从FILE_UPLOAD表删除对应的文件
     void deleteFiles(@Param("type") Integer type,
@@ -45,10 +46,13 @@ public interface ProjectDao {
     List<ProjectRecord> getProjectList() throws RuntimeException;
 
     // 根据guid获取项目详情
-    ProjectRecord getProjectInfo(@Param("guid") String guid);
+    ProjectRecord getProjectInfoByGuid(@Param("guid") String guid);
+
+    // 根据guid获取项目详情
+    ProjectRecord getProjectInfoByProjectId(@Param("projectId") String projectId);
 
     // 获取图片
-    List<String> getFiles(@Param("type") Integer type,
+    List<FileDec> getFiles(@Param("type") Integer type,
                           @Param("businessId") String businessId) throws RuntimeException;
 
     // 查询巡检总数

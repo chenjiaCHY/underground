@@ -116,11 +116,27 @@ public class ProjectController {
      * @param guid
      * @return
      */
-    @GetMapping("/getProjectInfo")
+    @GetMapping("/getProjectInfoByGuid")
     @ResponseBody
-    public Result getProjectInfo(@RequestParam("guid") String guid) {
+    public Result getProjectInfoByGuid(@RequestParam("guid") String guid) {
         try {
-            Result result = projectService.getProjectInfo(guid);
+            Result result = projectService.getProjectInfoByGuid(guid);
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 根据projectId获取项目详情
+     * @param projectId
+     * @return
+     */
+    @GetMapping("/getProjectInfoByProjectId")
+    @ResponseBody
+    public Result getProjectInfoByProjectId(@RequestParam("projectId") String projectId) {
+        try {
+            Result result = projectService.getProjectInfoByProjectId(projectId);
             return result;
         } catch (Exception e) {
             return new Result(false, e.getMessage());

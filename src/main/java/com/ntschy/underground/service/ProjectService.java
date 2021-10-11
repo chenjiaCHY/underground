@@ -32,7 +32,10 @@ public interface ProjectService {
     Result getProjectList() throws RuntimeException;
 
     // 根据guid获取项目详情
-    Result getProjectInfo(String guid) throws RuntimeException;
+    Result getProjectInfoByGuid(String guid) throws RuntimeException;
+
+    // 根据projectId获取项目详情
+    Result getProjectInfoByProjectId(String projectId) throws RuntimeException;
 
     // 增加项目图纸
     Result addProjectFiles(AddProjectFileRequest addProjectFileRequest) throws RuntimeException;

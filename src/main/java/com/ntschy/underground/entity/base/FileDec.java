@@ -9,6 +9,8 @@ public class FileDec {
 
     private String originFileName;
 
+    private Long fileSize;
+
     public FileDec(String fileName, String originFileName) {
         this.fileName = fileName;
         this.originFileName = originFileName;

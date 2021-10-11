@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.entity.dto;
 
+import com.ntschy.underground.entity.base.FileDec;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -24,5 +25,5 @@ public class AddProjectFileRequest {
     private String projectId;
 
     @NotEmpty(message = "fileNames不能为空")
-    private List<String> fileNames;
+    private List<FileDec> fileNames;
 }

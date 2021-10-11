@@ -10,10 +10,10 @@
     </insert>
 
     <insert id="addFiles">
-        INSERT INTO FILE_UPLOAD(FileName, Type, BusinessId)
+        INSERT INTO FILE_UPLOAD(FileName, Type, BusinessId, OriginFileName)
         VALUES
         <foreach collection="fileNames" item="item" separator=",">
-            (#{item,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{businessId,jdbcType=VARCHAR})
+            (#{item.fileName,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{businessId,jdbcType=VARCHAR}, #{item.originFileName,jdbcType=VARCHAR})
         </foreach>
     </insert>
 
@@ -32,14 +32,20 @@
         #{description,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, #{rectifyUser,jdbcType=VARCHAR})
     </insert>
 
-    <select id="getProjectInfo" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
+    <select id="getProjectInfoByGuid" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
         SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
         FROM PROJECT
         WHERE Guid = #{guid,jdbcType=VARCHAR}
     </select>
 
-    <select id="getFiles" resultType="java.lang.String">
-        SELECT FileName FROM FILE_UPLOAD
+    <select id="getProjectInfoByProjectId" resultType="com.ntschy.underground.entity.DO.ProjectRecord">
+        SELECT ProjectId, ProjectScope, ProjectName, CreateTime, CreateUser, Guid, ShapeType
+        FROM PROJECT
+        WHERE ProjectId = #{projectId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getFiles" resultType="com.ntschy.underground.entity.base.FileDec">
+        SELECT FileName, OriginFileName FROM FILE_UPLOAD
         WHERE Type = #{type,jdbcType=INTEGER} AND BusinessId = #{businessId,jdbcType=VARCHAR}
     </select>
 

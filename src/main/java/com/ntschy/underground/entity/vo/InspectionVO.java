@@ -11,6 +11,7 @@
 
 package com.ntschy.underground.entity.vo;
 
+import com.ntschy.underground.entity.base.FileDec;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -66,7 +67,7 @@ public class InspectionVO {
     private String RectifyComment;
 
     // 巡检照片
-    private List<String> fileNames;
+    private List<FileDec> files;
 
     // 整改记录
     private List<RectificationVO> rectificationList;

@@ -50,13 +50,13 @@ public class ToolUpload {
         }
     }
 
-    public static String fileUpload2(MultipartFile file, String tempPath) {
+    public static FileDec fileUpload2(MultipartFile file, String tempPath) {
         Map<String, Object> resultMap = new HashMap<>();
 
         if (null == file) {
-            return "";
+            return null;
         } else if (file.isEmpty()) {
-            return "";
+            return null;
         } else {
 
             File fileDir = new File(tempPath);
@@ -76,11 +76,11 @@ public class ToolUpload {
 
             try {
                 file.transferTo(dest);
-                String currentFileName = fileName + "." + suffix;
-                return currentFileName;
+                FileDec fileDec = new FileDec(fileName + "." + suffix, originFileName);
+                return fileDec;
             } catch (IOException e) {
                 e.printStackTrace();
-                return "";
+                return null;
             }
         }
     }
