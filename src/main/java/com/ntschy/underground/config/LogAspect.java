@@ -122,12 +122,16 @@ public class LogAspect {
     @AfterReturning(returning = "ret", pointcut = "pointcut()")
     public void doAfterReturning(Object ret) throws Throwable {
         endTime.set(System.currentTimeMillis());
-        int retLength = ret.toString().length();
+        int retLength = 0;
+        if (ret != null) {
+            retLength = ret.toString().length();
+        }
         if (retLength > 100) {
             retLength = 100;
         }
-        log.info("返回数据:" + ret.toString().substring(0, retLength));
-
+        if (ret != null) {
+            log.info("返回数据:" + ret.toString().substring(0, retLength));
+        }
         log.info("结束时间:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endTime.get()));
         log.info("用时:" + (endTime.get() - startTime.get()));
     }
