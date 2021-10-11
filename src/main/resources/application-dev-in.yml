@@ -1,0 +1,77 @@
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  mvc:
+    static-path-pattern: /img/**
+  resources:
+    static-locations: file:D://upload/
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+  datasource:
+    master:
+      url: jdbc:sqlserver://192.168.5.203:1433;DatabaseName=underground
+      username: SAuAzq0dCWqjjKx02QAvCg==
+      password: P8yBgUSeARS/u3cGg7SOeMWWgQylZOYR
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      type: com.zaxxer.hikari.HikariDataSource
+    cluster:
+      - key: slave1
+        url: jdbc:sqlserver://192.168.5.203:1433;DatabaseName=undergroundSys
+        username: SAuAzq0dCWqjjKx02QAvCg==
+        password: P8yBgUSeARS/u3cGg7SOeMWWgQylZOYR
+        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        type: com.zaxxer.hikari.HikariDataSource
+      - key: slave2
+        url: jdbc:sqlserver://192.168.5.203:1433;DatabaseName=KFQGX
+        username: SAuAzq0dCWqjjKx02QAvCg==
+        password: P8yBgUSeARS/u3cGg7SOeMWWgQylZOYR
+        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+        type: com.zaxxer.hikari.HikariDataSource
+    aop:
+      auto: true
+      proxy-target-class: true
+
+whitelist:
+  urlList:
+    - /authority/login
+    - /authority/modifyUserPwd
+    - /report/shapeFileToJson
+    - /img/**
+
+allow:
+  originList:
+    - 127.0.0.1
+
+jwt:
+  expire_time: 24 * 60 * 60 * 1000
+  expire_time_hour: 24
+
+filter:
+  zuul: 4,5,6,7
+
+zuul:
+  routes:
+    gis:
+      path: /arcgis/**
+      url: http://192.168.35.27:6080/arcgis
+  sensitive-headers:
+    - Cookie,Set-Cookie,Authorization
+
+server:
+  port: 9099
+
+file:
+  uploadPath: D:\\upload\
+
+webservice:
+  url: http://192.168.35.123:18088/WebService.asmx?wsdl
+  namespace: http://tempuri.org/
+  pctopad: Cgcs2000Cm120ToTdtCm120
+  padtopc: TdtCm120To2000Cm120

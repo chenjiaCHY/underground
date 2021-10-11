@@ -14,10 +14,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.ntschy.underground.utils.ShapeUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.jsevy.jdxf.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/report")
@@ -63,6 +65,12 @@ public class ReportController {
 
         System.out.println(file.getName());
         return ShapeUtil.shape2geoJson(file);
+    }
+
+    @RequestMapping("/downloadDXF")
+    public void downloadDXF(List<String> tables, String points, HttpServletResponse response) {
+
+
     }
 
 }
