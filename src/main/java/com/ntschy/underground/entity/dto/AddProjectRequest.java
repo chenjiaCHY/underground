@@ -40,5 +40,5 @@ public class AddProjectRequest {
     @NotNull(message = "形状类型不能为空")
     private ShapeType shapeType;
 
-    private List<FileDec> fileNames;
+    private List<FileDec> files;
 }
