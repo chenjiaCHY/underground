@@ -123,7 +123,9 @@ public class ProjectServiceImpl implements ProjectService {
         projectDao.addProject(projectRecord);
 
         // 将图纸文件名列表插入到FILE_UPLOAD表中
-        projectDao.addFiles(UploadFileType.PROJECT.getCode(), projectId, addProjectRequest.getFiles());
+        if (!CollectionUtils.isEmpty(addProjectRequest.getFiles())) {
+            projectDao.addFiles(UploadFileType.PROJECT.getCode(), projectId, addProjectRequest.getFiles());
+        }
 
         return new Result(true, "新增项目成功!!!");
     }
