@@ -26,6 +26,7 @@
 		<gson.version>2.8.5</gson.version>
 		<fastjson.version>1.2.44</fastjson.version>
 		<spring.cloud.version>Hoxton.RELEASE</spring.cloud.version>
+		<skipTests>true</skipTests>
 	</properties>
 	<dependencies>
 		<dependency>
