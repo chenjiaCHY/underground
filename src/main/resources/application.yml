@@ -42,7 +42,6 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
-    - /report/shapeFileToJson
     - /img/**
 
 allow:
