@@ -30,12 +30,12 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public String generateDXF(List<String> tables, String points) {
 
-        String[] polygonPoints = points.split(",");
+        String[] destPoints = points.split(",");
 
         StringBuilder innerSql = new StringBuilder();
         innerSql.append("( select st_geomfromtext('polygon((");
-        for (int i = 0; i < polygonPoints.length - 1; i ++) {
-            innerSql.append(polygonPoints[i]);
+        for (int i = 0; i < destPoints.length - 1; i ++) {
+            innerSql.append(destPoints[i]);
 
             if ((i + 1) % 2 == 0) {
                 innerSql.append(",");
@@ -43,7 +43,7 @@ public class ReportServiceImpl implements ReportService {
             innerSql.append(" ");
         }
 
-        innerSql.append(polygonPoints[polygonPoints.length - 1]);
+        innerSql.append(destPoints[destPoints.length - 1]);
         innerSql.append("))'))");
 
         DXFDocument dxfDocument = new DXFDocument("Example");
@@ -69,13 +69,27 @@ public class ReportServiceImpl implements ReportService {
                                     Double.valueOf(linePointList[1]),
                                     Double.valueOf(linePointList[2]),
                                     Double.valueOf(linePointList[3]));
-                        }
-
-                        if (geom.startsWith("POINT")) {
+                        } else if (geom.startsWith("POINT")) {
                             String pointPoints = geom.substring(6, geom.length() - 1);
                             String[] pointPointList = pointPoints.split(" ");
 
                             dxfGraphics.drawPoint(Double.valueOf(pointPointList[0]), Double.valueOf(pointPointList[1]));
+                        } else if (geom.startsWith("MULTIPOLYGON")) {
+                            String polygonPoints = geom.substring(15, geom.length() - 3);
+                            polygonPoints = polygonPoints.replace(" ", ",");
+                            String[] polygonPointList = polygonPoints.split(",");
+
+                            Integer polygonSize = polygonPointList.length / 2 - 1;
+
+                            double[] xList = new double[polygonSize];
+                            double[] yList = new double[polygonSize];
+
+                            for (int i = 0, j = 0; i < polygonSize; i++, j = j + 2) {
+                                xList[i] = Double.valueOf(polygonPointList[j]);
+                                yList[i] = Double.valueOf(polygonPointList[j + 1]);
+                            }
+
+                            dxfGraphics.drawPolygon(xList, yList, polygonSize);
                         }
                     }
                 }
