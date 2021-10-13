@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @RestController
@@ -73,7 +74,7 @@ public class ReportController {
         String dxfText = reportService.generateDXF(downloadDxfRequest.getTables(), downloadDxfRequest.getPoints());
 
         response.setHeader("Content-Type", "application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=example.dxf");
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("开发区管线.dxf", "UTF-8"));
         OutputStream fileOutputStream = response.getOutputStream();
 
         fileOutputStream.write(dxfText.getBytes(StandardCharsets.UTF_8));

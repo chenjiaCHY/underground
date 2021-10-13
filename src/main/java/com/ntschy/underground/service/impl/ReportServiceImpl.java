@@ -46,7 +46,7 @@ public class ReportServiceImpl implements ReportService {
         innerSql.append(destPoints[destPoints.length - 1]);
         innerSql.append("))'))");
 
-        DXFDocument dxfDocument = new DXFDocument("Example");
+        DXFDocument dxfDocument = new DXFDocument("开发区管线");
         DXFGraphics dxfGraphics = dxfDocument.getGraphics();
 
         dxfGraphics.setColor(Color.BLUE);
