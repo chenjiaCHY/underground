@@ -629,7 +629,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Result reviewInspection(ReviewInspectionRequest reviewInspectionRequest) throws RuntimeException {
 
-        projectDao.updateInspection(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode(), reviewInspectionRequest.getRectifyComment());
+        if (reviewInspectionRequest.getProgress().getCode() == ProgressType.NOT_RECTIFY.getCode()) {
+            projectDao.updateInspection(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode(), reviewInspectionRequest.getRectifyComment());
+        } else {
+            projectDao.updateInspectionStatus(reviewInspectionRequest.getInspectionId(), reviewInspectionRequest.getProgress().getCode());
+        }
 
         return new Result(true, "审阅巡检成功!");
     }
