@@ -32,30 +32,13 @@ public class ReportServiceImpl implements ReportService {
 
         String[] polygonPoints = points.split(",");
 
-        // 拼装sql并获取最小的X和Y
-        Double xMin = 0.0;
-        Double yMin = 0.0;
         StringBuilder innerSql = new StringBuilder();
         innerSql.append("( select st_geomfromtext('polygon((");
         for (int i = 0; i < polygonPoints.length - 1; i ++) {
             innerSql.append(polygonPoints[i]);
 
-            if (i == 0) {
-                xMin = Double.valueOf(polygonPoints[i]);
-            }
-            if (i == 1) {
-                yMin = Double.valueOf(polygonPoints[i]);
-            }
-
             if ((i + 1) % 2 == 0) {
                 innerSql.append(",");
-                if (yMin > Double.valueOf(polygonPoints[i])) {
-                    yMin = Double.valueOf(polygonPoints[i]);
-                }
-            } else {
-                if (xMin > Double.valueOf(polygonPoints[i])) {
-                    xMin = Double.valueOf(polygonPoints[i]);
-                }
             }
             innerSql.append(" ");
         }
@@ -82,17 +65,17 @@ public class ReportServiceImpl implements ReportService {
 
                             String[] linePointList = linePoints.split(",");
 
-                            dxfGraphics.drawLine(Double.valueOf(linePointList[0]) - xMin,
-                                    Double.valueOf(linePointList[1]) -yMin,
-                                    Double.valueOf(linePointList[2]) - xMin,
-                                    Double.valueOf(linePointList[3]) - yMin);
+                            dxfGraphics.drawLine(Double.valueOf(linePointList[0]),
+                                    Double.valueOf(linePointList[1]),
+                                    Double.valueOf(linePointList[2]),
+                                    Double.valueOf(linePointList[3]));
                         }
 
                         if (geom.startsWith("POINT")) {
                             String pointPoints = geom.substring(6, geom.length() - 1);
                             String[] pointPointList = pointPoints.split(" ");
 
-                            dxfGraphics.drawPoint(Double.valueOf(pointPointList[0]) - xMin, Double.valueOf(pointPointList[1]) - yMin);
+                            dxfGraphics.drawPoint(Double.valueOf(pointPointList[0]), Double.valueOf(pointPointList[1]));
                         }
                     }
                 }
