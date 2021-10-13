@@ -67,7 +67,7 @@ server:
   port: 9099
 
 file:
-  uploadPath: E:\\upload\
+  uploadPath: E://underground/nginx-1.18.0/html/file/
 
 webservice:
   url: http://2.93.3.170:8088/WebService.asmx?wsdl
