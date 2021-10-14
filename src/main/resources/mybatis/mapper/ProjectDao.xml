@@ -159,13 +159,13 @@
         LEFT JOIN FILE_UPLOAD FU ON INS.InspectionId = FU.BusinessId
         <where>
             <if test="progress != null">
-                AND Progress = #{progress,jdbcType=INTEGER}
+                AND INS.Progress = #{progress,jdbcType=INTEGER}
             </if>
             <if test="createTime != null and createTime != ''">
-                AND CreateTime = #{createTime,jdbcType=VARCHAR}
+                AND INS.CreateTime = #{createTime,jdbcType=VARCHAR}
             </if>
             <if test="type != null">
-                AND Type = #{type,jdbcType=INTEGER}
+                AND INS.Type = #{type,jdbcType=INTEGER}
             </if>
         </where>
     </select>
