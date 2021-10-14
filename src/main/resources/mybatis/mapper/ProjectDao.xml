@@ -116,9 +116,47 @@
         WHERE Guid = #{guid,jdbcType=VARCHAR}
     </select>
 
-    <select id="getAllInspection" resultType="com.ntschy.underground.entity.DO.InspectionRecord">
-        SELECT InspectionId, CreateTime, Inspector, Phone, Type, ProjectName, Address, Description, Progress, RectifyComment, Sort, Xt, Yt, X, Y
-        FROM INSPECTION
+    <resultMap id="InspectionMap" type="com.ntschy.underground.entity.DO.InspectionRecord">
+        <result column="InspectionId" property="inspectionId"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="Inspector" property="inspector"/>
+        <result column="Phone" property="phone"/>
+        <result column="Type" property="type"/>
+        <result column="ProjectName" property="projectName"/>
+        <result column="Address" property="address"/>
+        <result column="Description" property="description"/>
+        <result column="Progress" property="progress"/>
+        <result column="RectifyComment" property="rectifyComment"/>
+        <result column="Sort" property="sort"/>
+        <result column="Xt" property="xt"/>
+        <result column="Yt" property="yt"/>
+        <result column="X" property="x"/>
+        <result column="Y" property="y"/>
+        <collection property="fileNames" ofType="java.lang.String">
+            <result column="FileName"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllInspection" resultMap="InspectionMap">
+        SELECT
+            INS.InspectionId,
+            INS.CreateTime,
+            INS.Inspector,
+            INS.Phone,
+            INS.Type,
+            INS.ProjectName,
+            INS.Address,
+            INS.Description,
+            INS.Progress,
+            INS.RectifyComment,
+            INS.Sort,
+            INS.Xt,
+            INS.Yt,
+            INS.X,
+            INS.Y,
+            FU.FileName
+        FROM INSPECTION INS
+        LEFT JOIN FILE_UPLOAD FU ON INS.InspectionId = FU.BusinessId
         <where>
             <if test="progress != null">
                 AND Progress = #{progress,jdbcType=INTEGER}

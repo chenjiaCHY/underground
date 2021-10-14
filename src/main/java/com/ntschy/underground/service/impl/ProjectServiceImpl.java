@@ -366,7 +366,7 @@ public class ProjectServiceImpl implements ProjectService {
             inspectionVO.setY(inspectionRecord.getY());
             inspectionVO.setXt(inspectionRecord.getXt());
             inspectionVO.setYt(inspectionRecord.getYt());
-
+            inspectionVO.setFileNames(inspectionRecord.getFileNames());
 
             String sortDate = inspectionRecord.getSort().substring(0, 6);
 
