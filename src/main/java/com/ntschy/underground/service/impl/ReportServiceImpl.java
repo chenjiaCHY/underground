@@ -66,14 +66,14 @@ public class ReportServiceImpl implements ReportService {
                             String[] linePointList = linePoints.split(",");
 
                             dxfGraphics.drawLine(Double.valueOf(linePointList[0]),
-                                    Double.valueOf(linePointList[1]),
+                                    0 - Double.valueOf(linePointList[1]),
                                     Double.valueOf(linePointList[2]),
-                                    Double.valueOf(linePointList[3]));
+                                    0 - Double.valueOf(linePointList[3]));
                         } else if (geom.startsWith("POINT")) {
                             String pointPoints = geom.substring(6, geom.length() - 1);
                             String[] pointPointList = pointPoints.split(" ");
 
-                            dxfGraphics.drawPoint(Double.valueOf(pointPointList[0]), Double.valueOf(pointPointList[1]));
+                            dxfGraphics.drawPoint(Double.valueOf(pointPointList[0]), 0 - Double.valueOf(pointPointList[1]));
                         } else if (geom.startsWith("MULTIPOLYGON")) {
                             String polygonPoints = geom.substring(15, geom.length() - 3);
                             polygonPoints = polygonPoints.replace(" ", ",");
@@ -86,7 +86,7 @@ public class ReportServiceImpl implements ReportService {
 
                             for (int i = 0, j = 0; i < polygonSize; i++, j = j + 2) {
                                 xList[i] = Double.valueOf(polygonPointList[j]);
-                                yList[i] = Double.valueOf(polygonPointList[j + 1]);
+                                yList[i] = 0 - Double.valueOf(polygonPointList[j + 1]);
                             }
 
                             dxfGraphics.drawPolygon(xList, yList, polygonSize);
