@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
         origins.toArray(allowedOrigin);
 
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigin)
+                //.allowedOrigins(allowedOrigin)
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
