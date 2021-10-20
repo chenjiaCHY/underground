@@ -14,5 +14,5 @@ import java.util.List;
 
 public interface ReportService {
     // 生成DXF文本
-    String generateDXF(List<String> tables, String points) throws RuntimeException;
+    String generateDXF(String tableNames, String points) throws RuntimeException;
 }

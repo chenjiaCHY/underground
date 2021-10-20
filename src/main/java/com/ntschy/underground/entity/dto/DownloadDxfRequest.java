@@ -18,8 +18,8 @@ import java.util.List;
 
 @Data
 public class DownloadDxfRequest {
-    @NotNull(message = "tables不能为空")
-    private List<String> tables;
+    @NotBlank(message = "tableNames不能为空")
+    private String tableNames;
 
     @NotBlank(message = "points不能为空")
     private String points;

@@ -71,8 +71,12 @@ server:
 file:
   uploadPath: D:\\upload\
 
+dxf:
+  path: D://
+
 webservice:
   url: http://192.168.35.123:18088/WebService.asmx?wsdl
   namespace: http://tempuri.org/
   pctopad: Cgcs2000Cm120ToTdtCm120
   padtopc: TdtCm120To2000Cm120
+  exportdxf: ExportDxf

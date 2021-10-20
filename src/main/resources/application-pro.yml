@@ -69,8 +69,12 @@ server:
 file:
   uploadPath: E://underground/nginx-1.18.0/html/file/
 
+dxf:
+  path: E://underground/dxf/
+
 webservice:
   url: http://2.93.3.170:8088/WebService.asmx?wsdl
   namespace: http://tempuri.org/
   pctopad: Cgcs2000Cm120ToTdtCm120
   padtopc: TdtCm120To2000Cm120
+  exportdxf: ExportDxf

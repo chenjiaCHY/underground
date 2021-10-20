@@ -70,6 +70,9 @@ server:
 file:
   uploadPath: D:\\upload\
 
+dxf:
+  path: D://
+
 webservice:
   url: http://192.168.1.162:8088/WebService.asmx?wsdl
   namespace: http://tempuri.org/
