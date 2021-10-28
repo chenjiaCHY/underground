@@ -36,13 +36,13 @@ public class ReportServiceImpl implements ReportService {
     Client client;
 
     @Override
-    public String generateDXF(String tableNames, String points) {
+    public String generateDXF(String layerNames, String points) {
 
         String fileName = "";
 
         try {
             QName qName = new QName(nameSpace, exportdxf);
-            Object[] objects = client.invoke(qName, tableNames, points);
+            Object[] objects = client.invoke(qName, layerNames, points);
 
             fileName = objects[0].toString();
 

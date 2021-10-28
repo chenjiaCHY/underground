@@ -33,51 +33,53 @@ public class ReportController {
     private ReportService reportService;
 
     @PostMapping("/downloadDXF")
-    public void downloadDXF(@RequestBody @Validated DownloadDxfRequest downloadDxfRequest, HttpServletResponse response) throws Exception {
+    public String downloadDXF(@RequestBody @Validated DownloadDxfRequest downloadDxfRequest) throws Exception {
 
-        String fileName = reportService.generateDXF(downloadDxfRequest.getTableNames(), downloadDxfRequest.getPoints());
+        String fileName = reportService.generateDXF(downloadDxfRequest.getLayerNames(), downloadDxfRequest.getPoints());
 
         if (StringUtils.isBlank(fileName)) {
             throw new Exception("文件下载失败！");
         }
 
-        File file = new File(dxfPath + fileName);
+        return fileName;
 
-        if (file.exists()) {
-            response.setHeader("Content-Type", "application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            OutputStream fileOutputStream = response.getOutputStream();
-
-            byte[] buffer = new byte[1024];
-            FileInputStream fis = null;
-            BufferedInputStream bis = null;
-            try {
-                fis = new FileInputStream(file);
-                bis = new BufferedInputStream(fis);
-                int i = bis.read(buffer);
-                while (i != -1) {
-                    fileOutputStream.write(buffer, 0, i);
-                    i = bis.read(buffer);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (bis != null) {
-                    try {
-                        bis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (fis != null) {
-                    try {
-                        fis.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+//        File file = new File(dxfPath + fileName);
+//
+//        if (file.exists()) {
+//            response.setHeader("Content-Type", "application/octet-stream");
+//            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+//            OutputStream fileOutputStream = response.getOutputStream();
+//
+//            byte[] buffer = new byte[1024];
+//            FileInputStream fis = null;
+//            BufferedInputStream bis = null;
+//            try {
+//                fis = new FileInputStream(file);
+//                bis = new BufferedInputStream(fis);
+//                int i = bis.read(buffer);
+//                while (i != -1) {
+//                    fileOutputStream.write(buffer, 0, i);
+//                    i = bis.read(buffer);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (bis != null) {
+//                    try {
+//                        bis.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if (fis != null) {
+//                    try {
+//                        fis.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }
 
     }
 
