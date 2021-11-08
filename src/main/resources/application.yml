@@ -65,7 +65,7 @@ zuul:
     - Cookie,Set-Cookie,Authorization
 
 server:
-  port: 9099
+  port: 9098
 
 file:
   uploadPath: D:\\upload\
