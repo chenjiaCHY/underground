@@ -59,4 +59,7 @@ public interface ProjectService {
 
     // 审阅巡检
     Result reviewInspection(ReviewInspectionRequest reviewInspectionRequest) throws RuntimeException;
+
+    // 获取统计信息
+    Result getStatistics() throws RuntimeException;
 }

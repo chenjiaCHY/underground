@@ -270,4 +270,19 @@ public class ProjectController {
             return new Result(false, e.getMessage());
         }
     }
+
+    /**
+     * 首页获取统计信息
+     * @return
+     */
+    @GetMapping("/getStatistics")
+    @ResponseBody
+    public Result getStatistics() {
+        try {
+            Result result = projectService.getStatistics();
+            return result;
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
 }

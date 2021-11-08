@@ -96,4 +96,10 @@ public interface ProjectDao {
     void updateInspectionStatus(@Param("inspectionId") String inspectionId, @Param("progress") Integer progress) throws RuntimeException;
 
     InspectionRecord getInspectionByRectificationId(@Param("rectificationId") String rectificationId) throws RuntimeException;
+
+    // 获取项目数量
+    Integer getProjectCount() throws RuntimeException;
+
+    // 获取本周新增巡检数量
+    Integer getInspectionThisWeek(@Param("createTime") String createTime) throws RuntimeException;
 }

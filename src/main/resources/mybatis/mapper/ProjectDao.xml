@@ -235,4 +235,13 @@
         SELECT * FROM INSPECTION
         WHERE InspectionId = (SELECT InspectionId FROM RECTIFICATION WHERE RectificationId=#{rectificationId,jdbcType=VARCHAR})
     </select>
+
+    <select id="getProjectCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM PROJECT
+    </select>
+
+    <select id="getInspectionThisWeek" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM INSPECTION
+        WHERE CreateTime >= #{createTime,jdbcType=VARCHAR}
+    </select>
 </mapper>

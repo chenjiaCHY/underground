@@ -24,6 +24,7 @@ import com.ntschy.underground.entity.base.Result;
 import com.ntschy.underground.entity.dto.*;
 import com.ntschy.underground.entity.vo.InspectionVO;
 import com.ntschy.underground.entity.vo.RectificationVO;
+import com.ntschy.underground.entity.vo.StatisticsVO;
 import com.ntschy.underground.enums.InspectionType;
 import com.ntschy.underground.enums.ProgressType;
 import com.ntschy.underground.enums.UploadFileType;
@@ -636,6 +637,35 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return new Result(true, "审阅巡检成功!");
+    }
+
+    /**
+     * 获取统计信息
+     * @return
+     * @throws RuntimeException
+     */
+    @Override
+    public Result getStatistics() throws RuntimeException {
+
+        StatisticsVO statisticsVO = new StatisticsVO();
+
+        Integer projectCount = projectDao.getProjectCount();
+
+        Integer inspectionCount = projectDao.getInspectionCount(null, null, null);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.WEEK_OF_MONTH, 0);
+        calendar.set(Calendar.DAY_OF_WEEK, 2);
+        Date time = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Integer inspectionThisWeek = projectDao.getInspectionThisWeek(sdf.format(time));
+
+        statisticsVO.setProjectCount(projectCount);
+        statisticsVO.setInspectionCount(inspectionCount);
+        statisticsVO.setInspectionThisWeek(inspectionThisWeek);
+
+        return new Result<>(statisticsVO);
     }
 
     /**
