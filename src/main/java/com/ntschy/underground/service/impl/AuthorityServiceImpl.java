@@ -175,13 +175,9 @@ public class AuthorityServiceImpl implements AuthorityService {
         }
 
         if (operateType == 1) {
-            String password = Optional.ofNullable(modifyUserRequest.getPassword()).orElse("");
-            if (StringUtils.isBlank(password)) {
-                throw new RuntimeException("密码不能为空");
-            }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             modifyUserRequest.setUserId(userId);
-            modifyUserRequest.setPassword(MD5Utils.StringToMD5(password));
+            modifyUserRequest.setPassword(MD5Utils.generateInitPwd());
             modifyUserRequest.setCreateTime(sdf.format(new Date()));
 
             authorityDao.insertUser(modifyUserRequest);
@@ -336,6 +332,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Result modifyUserPwd(ModifyPwdRequest modifyPwdRequest) {
 
+        // 先检查旧密码是否有效
+        String oldPasswd = authorityDao.getPasswordByAccount(modifyPwdRequest.getAccount());
+        if (StringUtils.isBlank(oldPasswd) || !oldPasswd.equals(MD5Utils.StringToMD5(modifyPwdRequest.getOldPwd()))) {
+            return new Result(false, "旧密码错误!!!");
+        }
+
         modifyPwdRequest.setNewPwd(MD5Utils.StringToMD5(modifyPwdRequest.getNewPwd()));
         authorityDao.modifyUserPwd(modifyPwdRequest.getAccount(), modifyPwdRequest.getNewPwd());
 
@@ -346,5 +348,15 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     public Integer getUrlPermissionUrl(String roleId, String uri) {
         return authorityDao.getUrlPermissionUrl(roleId, uri);
+    }
+
+    @Override
+    public void resetPwd(String userId) {
+        UserInfoVO userInfoVO = authorityDao.getUserInfo(userId,null,null, null);
+        if (ObjectUtils.isEmpty(userInfoVO)){
+            throw new RuntimeException("invalid userId");
+        }
+
+        authorityDao.updatePwd(userId, MD5Utils.generateInitPwd());
     }
 }

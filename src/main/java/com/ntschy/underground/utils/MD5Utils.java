@@ -21,6 +21,6 @@ public class MD5Utils {
     }
 
     public static String generateInitPwd() {
-        return StringToMD5("Qwert@888");
+        return StringToMD5("111111");
     }
 }

@@ -42,6 +42,8 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
+    - /project/getStatistics
+    - /project/getInspectionPage
     - /img/**
 
 allow:

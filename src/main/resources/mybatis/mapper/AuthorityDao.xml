@@ -225,4 +225,14 @@
         WHERE Token = #{token} AND Status = 1
     </update>
 
+    <select id="getPasswordByAccount" resultType="java.lang.String">
+        SELECT Password FROM SYS_USER WHERE Account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updatePwd">
+        UPDATE SYS_USER
+        SET Password=#{password,jdbcType=VARCHAR}
+        WHERE UserId=#{userId,jdbcType=VARCHAR}
+    </update>
+
 </mapper>

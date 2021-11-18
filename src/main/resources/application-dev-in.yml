@@ -42,9 +42,9 @@ whitelist:
   urlList:
     - /authority/login
     - /authority/modifyUserPwd
-    - /report/shapeFileToJson
+    - /project/getStatistics
+    - /project/getInspectionPage
     - /img/**
-    - /report/downloadDXF
 
 allow:
   originList:

@@ -22,6 +22,9 @@ public class ModifyPwdRequest {
     @NotBlank(message = "登录名不能为空")
     private String account;
 
+    @NotBlank(message = "旧密码不能为空")
+    private String oldPwd;
+
     @NotBlank(message = "新密码不能为空")
     @Length(min = 8, max = 16, message = "密码长度必须大于8位且不大于16位")
     private String newPwd;

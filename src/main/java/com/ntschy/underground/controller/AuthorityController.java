@@ -203,4 +203,23 @@ public class AuthorityController {
             return new Result(false, e.getMessage());
         }
     }
+
+    /**
+     * 重置用户密码
+     * @param userId
+     * @return
+     */
+    @GetMapping(value = "/resetPwd")
+    @ResponseBody
+    public Result resetPwd(@RequestParam("userId") String userId){
+        try {
+
+            authorityService.resetPwd(userId);
+
+            return new Result(true, "密码重置成功");
+
+        }catch (Exception ex){
+            return new Result<>(false,ex.getMessage());
+        }
+    }
 }

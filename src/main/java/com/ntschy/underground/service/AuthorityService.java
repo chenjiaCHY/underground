@@ -39,4 +39,6 @@ public interface AuthorityService {
     Integer getUrlPermissionUrl(String roleId, String uri);
 
     Result activeUser(ActiveUserRequest activeUserRequest);
+
+    void resetPwd(String userId);
 }
