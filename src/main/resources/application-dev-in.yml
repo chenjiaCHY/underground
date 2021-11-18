@@ -69,13 +69,13 @@ server:
   port: 9099
 
 file:
-  uploadPath: D:\\upload\
+  uploadPath: C:\\underground\nginx-1.18.0\html\file\
 
 dxf:
   path: D://
 
 webservice:
-  url: http://192.168.35.123:18088/WebService.asmx?wsdl
+  url: http://192.168.35.29:8088/WebService.asmx?wsdl
   namespace: http://tempuri.org/
   pctopad: Cgcs2000Cm120ToTdtCm120
   padtopc: TdtCm120To2000Cm120
